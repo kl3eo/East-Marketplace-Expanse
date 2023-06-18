@@ -44,8 +44,8 @@ export default function NFTPrice ({ nft }) {
       >
         <span style={{ display: 'inline-block', transform: 'translateY(3px)' }}>
           <Image
-            alt='Matic'
-            src='/matic.png'
+            alt='EXP'
+            src='/exp.png'
             width="20px"
             height="20px"
             onMouseEnter={handlePopoverOpen}

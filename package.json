@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "PORT=3002 next start",
     "lint": "next lint",
     "test": "hardhat test",
     "node": "hardhat node",

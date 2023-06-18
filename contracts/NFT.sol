@@ -74,4 +74,21 @@ contract NFT is ERC721URIStorage {
 
         return createdTokenIds;
     }
+
+    function _beforeTokenTransfer(
+        address from,
+        address to,
+        uint256 tokenId
+    ) internal virtual override {
+        super._beforeTokenTransfer(from, to, tokenId);
+        if (from != address(0) && to == address(0)) { // burning
+            address owner = ownerOf(tokenId);
+            require(owner == msg.sender, "Only the owner of NFT can burn it");
+        }
+    }
+
+    function burn(uint256 tokenId) public {
+        super._burn(tokenId);
+	_tokenIds.decrement();
+    }
 }

@@ -7,6 +7,7 @@ export function getProvider () {
 }
 
 export const chains = {
+/*
   polygonMumbaiTestnet: {
     name: 'Polygon Testnet Mumbai',
     chain: 'Polygon',
@@ -30,6 +31,30 @@ export const chains = {
     explorers: [{
       name: 'polygonscan',
       url: 'https://mumbai.polygonscan.com',
+      standard: 'EIP3091'
+    }]
+  },
+*/
+  expanse:  {
+    name: 'Expanse',
+    chain: 'Expanse',
+    rpc: [
+      'https://node.expanse.tech'
+    ],
+    faucets: [
+    ],
+    nativeCurrency: {
+      name: 'EXP',
+      symbol: 'EXP',
+      decimals: 18
+    },
+    infoURL: 'https://expanse.tech/',
+    shortName: 'expanse',
+    chainId: 2,
+    networkId: 2,
+    explorers: [{
+      name: 'expanse explorer',
+      url: 'https://explorer.expanse.tech',
       standard: 'EIP3091'
     }]
   }

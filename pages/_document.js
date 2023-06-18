@@ -11,7 +11,7 @@ export default class MyDocument extends Document {
         <Head>
           <meta property="og:image" content="https://user-images.githubusercontent.com/16388408/151682517-6c0d89eb-80e6-4eeb-a6b0-6d584cdca5a3.png"/>
           <meta property="og:title" content="Markkop's NFT Marketplace"/>
-          <meta property="og:description" content="A Fullstack DApp built with Solidity, Hardhat and NextJS"/>
+          <meta property="og:description" content="Das Markt"/>
           {/* PWA primary color */}
           <meta name="theme-color" content={theme.palette.primary.main} />
           <link

@@ -36,9 +36,9 @@ export default function UnsupportedChain () {
     if (!account) return 'Connect wallet'
 
     const providerTextList = {
-      Metamask: 'Add/Change to Polygon Mumbai Testnet on Metamask',
-      imToken: 'Add/Change to Polygon Mumbai Testnet on imToken',
-      Wallet: 'Add/Change to Polygon Mumbai Testnet on Wallet'
+      Metamask: 'Add/Change to Expanse on Metamask',
+      imToken: 'Add/Change to Expanse on imToken',
+      Wallet: 'Add/Change to Expanse on Wallet'
     }
     return providerTextList[getProvider()]
   }
@@ -50,7 +50,8 @@ export default function UnsupportedChain () {
       <Button
         variant='outlined'
         color='primary'
-        onClick={ () => addNetwork(chains.polygonMumbaiTestnet, account) }
+        // onClick={ () => addNetwork(chains.polygonMumbaiTestnet, account) }
+        onClick={ () => addNetwork(chains.expanse, account) }
         sx={{
           maxWidth: 600,
           margin: 'auto',

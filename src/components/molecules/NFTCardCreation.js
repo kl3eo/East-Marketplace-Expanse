@@ -23,7 +23,8 @@ const useStyles = makeStyles({
   }
 })
 
-const defaultFileUrl = 'https://miro.medium.com/max/250/1*DSNfSDcOe33E2Aup1Sww2w.jpeg'
+// const defaultFileUrl = 'https://miro.medium.com/max/250/1*DSNfSDcOe33E2Aup1Sww2w.jpeg'
+const defaultFileUrl = 'https://club.room-house.com/img/logo_rh_250.png'
 
 export default function NFTCardCreation ({ addNFTToList }) {
   const [file, setFile] = useState(null)

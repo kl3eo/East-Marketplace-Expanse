@@ -16,21 +16,22 @@ const pages = [
     href: '/'
   },
   {
-    title: 'MY NFTs',
+    title: 'My NFTs',
     href: '/my-nfts'
   }
 ]
 
 const NavBar = () => {
   const { account } = useContext(Web3Context)
-  const logo = '🖼️'
+  // const logo = '🖼️'
+  const logo = 'RH'
 
   return (
-    <AppBar position="static">
-      <Container maxWidth="100%">
-        <Toolbar disableGutters>
+    <AppBar position="static" sx={{ marginBottom: '20px' }}>
+      <Container maxWidth="100%" sx={{ backgroundColor: '#001122' }}>
+        <Toolbar disableGutters sx={{ backgroundColor: '#001122' }}>
           <Typography
-            variant="h3"
+            variant="h2"
             noWrap
             component="div"
             sx={{ p: '10px', flexGrow: { xs: 1, md: 0 }, display: 'flex' }}

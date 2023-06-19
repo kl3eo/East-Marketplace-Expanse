@@ -4,7 +4,7 @@ import middleware from './middleware/middleware'
 import nextConnect from 'next-connect'
 import FormData from 'form-data'
 
-const nftBaseUrl = 'https://aspen.room-house.com'
+const pinataBaseUrl = 'https://api.pinata.cloud'
 
 const handler = nextConnect()
 handler.use(middleware)
@@ -36,37 +36,30 @@ handler.post(async function handlePost ({ body, files }, response) {
 async function uploadFileToIPFS (data) {
   const formData = new FormData()
   formData.append('file', fs.createReadStream(data.path), data.originalFileName)
-  formData.append('type', 'i')
 
   try {
-    const { data: responseData } = await axios.post(`${nftBaseUrl}/cgi/upload.pl`, formData, {
+    const { data: responseData } = await axios.post(`${pinataBaseUrl}/pinning/pinFileToIPFS`, formData, {
       headers: {
         'Content-Type': `multipart/form-data; boundary=${formData._boundary}`,
         pinata_api_key: process.env.PINATA_API_KEY,
         pinata_secret_api_key: process.env.PINATA_SECRET_KEY
       }
     })
-    const url = `${nftBaseUrl}/store/images/${responseData.result}?filename=${data.originalFilename}`
+    const url = `https://ipfs.io/ipfs/${responseData.IpfsHash}?filename=${data.originalFilename}`
     return url
   } catch (error) {
     console.log(error)
   }
 }
 async function uploadJsonToIPFS (json, fileName) {
-  const formData1 = new FormData()
-  formData1.append('name', json.name)
-  formData1.append('description', json.description)
-  formData1.append('file', json.image)
-  formData1.append('type', 'j')
   try {
-    const { data: responseData } = await axios.post(`${nftBaseUrl}/cgi/upload.pl`, formData1, {
+    const { data: responseData } = await axios.post(`${pinataBaseUrl}/pinning/pinJSONToIPFS`, json, {
       headers: {
-        'Content-Type': `multipart/form-data; boundary=${formData1._boundary}`,
         pinata_api_key: process.env.PINATA_API_KEY,
         pinata_secret_api_key: process.env.PINATA_SECRET_KEY
       }
     })
-    const url = `${nftBaseUrl}/store/metadata/${responseData.result}?filename=${fileName}`
+    const url = `https://ipfs.io/ipfs/${responseData.IpfsHash}?filename=${fileName}`
     return url
   } catch (error) {
     console.log(error.response.data)

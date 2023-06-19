@@ -23,6 +23,5 @@ yarn && yarn build
 yarn run start
 
 
-## TODO
-
-replace Pinata IPFS with some free unlimited space uploader
+## DONE
+replaceD Pinata IPFS with a free unlimited space uploader

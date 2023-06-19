@@ -71,6 +71,7 @@ export default function NFTCardCreation ({ addNFTToList }) {
       const formData = createNFTFormDataFile(name, description, file)
       const metadataUrl = await uploadFileToIPFS(formData)
       const tokenId = await createNft(metadataUrl)
+      console.log('new token:', tokenId)
       addNFTToList(tokenId)
       setFileUrl(defaultFileUrl)
       reset()

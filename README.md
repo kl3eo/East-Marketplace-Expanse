@@ -24,4 +24,8 @@ yarn run start
 
 
 ## DONE
-replaceD Pinata IPFS with a free unlimited space uploader
+replace Pinata IPFS with a free unlimited space uploader
+==
+show lots first without connect, then connect
+==
+filter lots on metadata

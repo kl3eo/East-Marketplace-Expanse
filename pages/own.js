@@ -7,7 +7,7 @@ import { mapCreatedAndOwnedTokenIdsAsMarketItems, getUniqueOwnedAndCreatedTokenI
 import UnsupportedChain from '../src/components/molecules/UnsupportedChain'
 import ConnectWalletMessage from '../src/components/molecules/ConnectWalletMessage'
 
-export default function CreatorDashboard () {
+export default function OwnDashboard () {
   const [nfts, setNfts] = useState([])
   const { account, marketplaceContract, nftContract, isReady, hasWeb3, network, searchStr } = useContext(Web3Context)
   const [isLoading, setIsLoading] = useState(true)

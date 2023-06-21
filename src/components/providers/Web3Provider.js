@@ -14,7 +14,8 @@ const contextDefaultValues = {
   nftContract: null,
   isReady: false,
   hasWeb3: false,
-  hasInit: false
+  hasInit: false,
+  searchStr: ''
 }
 
 const networkNames = {
@@ -35,6 +36,7 @@ export default function Web3Provider ({ children }) {
   const [nftContract, setNFTContract] = useState(contextDefaultValues.nftContract)
   const [isReady, setIsReady] = useState(contextDefaultValues.isReady)
   const [hasInit, setHasInit] = useState(contextDefaultValues.hasInit)
+  const [searchStr, setSearchStr] = useState(contextDefaultValues.searchStr)
 
   useEffect(() => {
     initializeWeb3()
@@ -49,6 +51,7 @@ export default function Web3Provider ({ children }) {
     const myProvider = ethers.getDefaultProvider(providerURL)
     setHasInit(true)
     setHasWeb3(false)
+    setSearchStr('')
     await getAndSetWeb3ContextWithoutSigner(myProvider)
   }
 
@@ -66,6 +69,7 @@ export default function Web3Provider ({ children }) {
       const connection = await web3Modal.connect()
       setHasWeb3(true)
       setHasInit(true)
+      setSearchStr('')
       const myProvider = new ethers.providers.Web3Provider(connection, 'any')
       await getAndSetWeb3ContextWithSigner(myProvider)
 
@@ -141,7 +145,9 @@ export default function Web3Provider ({ children }) {
         network,
         balance,
         initializeWeb3,
-        hasWeb3
+        hasWeb3,
+        searchStr,
+        setSearchStr
       }}
     >
       {children}

@@ -5,7 +5,7 @@ import { LinearProgress } from '@mui/material'
 import UnsupportedChain from '../src/components/molecules/UnsupportedChain'
 import { mapAvailableMarketItems } from '../src/utils/nft'
 
-export default function Home () {
+export default function Markt () {
   const [nfts, setNfts] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const { marketplaceContract, nftContract, isReady, network, searchStr } = useContext(Web3Context)

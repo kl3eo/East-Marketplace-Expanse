@@ -27,7 +27,7 @@ const NavBar = () => {
   const logo = 'RH'
 
   return (
-    <AppBar position="static" sx={{ marginBottom: '20px' }}>
+    <AppBar position="static" sx={{ marginBottom: '12px' }}>
       <Container maxWidth="100%" sx={{ backgroundColor: '#001122' }}>
         <Toolbar disableGutters sx={{ backgroundColor: '#001122' }}>
           <Typography

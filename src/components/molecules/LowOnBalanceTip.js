@@ -9,7 +9,7 @@ export default function LowOnBalanceTip () {
         p: '5px 15px'
       }}>
       <Typography variant="body2" color="text.secondary">
-        Low on MATIC? Use this <a href='https://faucet.polygon.technology/' target="_blank ">faucet</a> to get free test tokens!
+        Low on Expanse? Use this <a href='https://wallet.room-house.com' target="_blank ">swap</a> to get coins!
       </Typography>
     </Paper>
   )

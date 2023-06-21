@@ -26,7 +26,7 @@ export default function MyApp (props) {
         <CacheProvider value={emotionCache}>
           <Head>
             <meta name="viewport" content="initial-scale=1, width=device-width" />
-            <title>Room-House NFT Marketpalace</title>
+            <title>Room-House NFT Marketplace</title>
           </Head>
           <ThemeProvider theme={theme}>
               <CssBaseline />

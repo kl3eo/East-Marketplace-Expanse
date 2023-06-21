@@ -17,6 +17,9 @@ export default function Home () {
     if (!isReady) return
     const data = await marketplaceContract.fetchAvailableMarketItems()
     const items = await Promise.all(data.map(mapAvailableMarketItems(nftContract)))
+    // filter, sort items here
+    items.sort(function (a, b) { const ai = parseInt(a.price); const bi = parseInt(b.price); return ai < bi ? 1 : (ai === bi ? 0 : -1) })
+    // console.log('items', items)
     setNfts(items)
     setIsLoading(false)
   }

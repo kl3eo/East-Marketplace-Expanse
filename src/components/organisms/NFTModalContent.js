@@ -38,7 +38,7 @@ export default function NFTModalContent ({ nft, onClick }) {
     <Paper className={classes.root}>
       <Grid container className={classes.mainContainer}>
         <Grid item className={classes.imageContainer}>
-          <Image src={nft.image} alt={nft.title} layout='fill' objectFit='contain' onClick={onClick}/>
+          <Image src={nft.image} alt={nft.title} layout='fill' objectFit='contain' loading='lazy' onClick={onClick}/>
         </Grid>
       </Grid>
     </Paper>

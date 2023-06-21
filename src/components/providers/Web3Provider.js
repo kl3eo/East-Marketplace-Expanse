@@ -51,7 +51,7 @@ export default function Web3Provider ({ children }) {
     const myProvider = ethers.getDefaultProvider(providerURL)
     setHasInit(true)
     setHasWeb3(false)
-    setSearchStr('')
+    // setSearchStr('')
     await getAndSetWeb3ContextWithoutSigner(myProvider)
   }
 
@@ -69,7 +69,7 @@ export default function Web3Provider ({ children }) {
       const connection = await web3Modal.connect()
       setHasWeb3(true)
       setHasInit(true)
-      setSearchStr('')
+      // setSearchStr('')
       const myProvider = new ethers.providers.Web3Provider(connection, 'any')
       await getAndSetWeb3ContextWithSigner(myProvider)
 

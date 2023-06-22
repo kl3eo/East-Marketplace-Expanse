@@ -1,4 +1,4 @@
-
+import { isMobile } from 'react-device-detect'
 import { useContext } from 'react'
 import { useRouter } from 'next/router'
 import AppBar from '@mui/material/AppBar'
@@ -15,19 +15,19 @@ import SearchTextField from '../atoms/SearchTextField'
 
 const pages = [
   {
-    title: 'Market',
+    title: isMobile ? '🚀' : 'Market',
     href: '/'
   },
   {
-    title: 'My NFTs',
+    title: isMobile ? 'Ⓜ' : 'My NFTs',
     href: '/my-nfts'
   }
 ]
 
 const NavBar = () => {
   const { account, setSearchStr, searchStr } = useContext(Web3Context)
-  const logo = 'RH'
-  const navText = 'Show'
+  const logo = isMobile ? '' : 'RH'
+  const navText = isMobile ? '➡' : 'Show'
   const { pathname } = useRouter()
   // console.log('pathname', pathname)
   const navLink = pathname === '/' ? '/markt' : pathname === '/markt' ? '/' : pathname === '/my-nfts' ? '/own' : pathname === '/own' ? '/my-nfts' : '/markt'
@@ -44,7 +44,7 @@ const NavBar = () => {
             {logo}
           </Typography>
           <Box sx={{ flexGrow: 1, display: 'flex' }}>
-            {pages.map(({ title, href }) => <NavItem title={title} href={href} key={title}/>)}
+            {pages.map(({ title, href }) => <NavItem title={title} href={href} key={title} sx={{ maxWidth: isMobile ? '30px' : '120px' }}/>)}
           </Box>
           <SearchTextField value={searchStr} onChange={e => setSearchStr(e.target.value)}/>
           <NavItem title={navText} href={navLink} key={navText}/>

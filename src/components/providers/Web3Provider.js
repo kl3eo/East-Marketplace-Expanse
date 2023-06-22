@@ -48,6 +48,7 @@ export default function Web3Provider ({ children }) {
 
   async function initializeWeb3WithoutSigner () {
     const providerURL = 'https://node.expanse.tech'
+    // const providerURL = 'https://cube.room-house.com:8470'
     const myProvider = ethers.getDefaultProvider(providerURL)
     setHasInit(true)
     setHasWeb3(false)

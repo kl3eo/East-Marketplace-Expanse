@@ -35,6 +35,7 @@ export const chains = {
     }]
   },
 */
+// 'https://cube.room-house.com:8470'
   expanse:  {
     name: 'Expanse',
     chain: 'Expanse',

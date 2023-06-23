@@ -28,3 +28,6 @@ yarn run start
 ..replace Pinata IPFS with a free unlimited space uploader
 ..show lots first without connect, then connect
 ..filter lots on metadata
+..search 'tags' of metadata
+..replace 'approval' with new sell
+..auto click 'Connect' button in 3 sec

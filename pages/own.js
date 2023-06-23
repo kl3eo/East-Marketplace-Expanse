@@ -30,7 +30,7 @@ export default function OwnDashboard () {
     const filteredItems = []
     let i = 0
     let j = 0
-    for (i = 0; i < myNfts.length; i++) { const r = new RegExp(searchStr, 'gi'); if (searchStr.length === 0 || (myNfts[i].name && myNfts[i].name.length && r.test(myNfts[i].name)) || (myNfts[i].description && myNfts[i].description.length && r.test(myNfts[i].description))) { filteredItems[j] = myNfts[i]; j++ } }
+    for (i = 0; i < myNfts.length; i++) { const r = new RegExp(searchStr, 'gi'); if (searchStr.length === 0 || (myNfts[i].name && myNfts[i].name.length && r.test(myNfts[i].name)) || (myNfts[i].description && myNfts[i].description.length && r.test(myNfts[i].description)) || (myNfts[i].tags && myNfts[i].tags.length && r.test(myNfts[i].tags))) { filteredItems[j] = myNfts[i]; j++ } }
     setNfts(filteredItems)
     // setNfts(myNfts)
     setIsLoading(false)

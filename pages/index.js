@@ -22,7 +22,7 @@ export default function Home () {
     const filteredItems = []
     let i = 0
     let j = 0
-    for (i = 0; i < items.length; i++) { const r = new RegExp(searchStr, 'gi'); if (searchStr.length === 0 || (items[i].name && items[i].name.length && r.test(items[i].name)) || (items[i].description && items[i].description.length && r.test(items[i].description))) { filteredItems[j] = items[i]; j++ } }
+    for (i = 0; i < items.length; i++) { const r = new RegExp(searchStr, 'gi'); if (searchStr.length === 0 || (items[i].name && items[i].name.length && r.test(items[i].name)) || (items[i].description && items[i].description.length && r.test(items[i].description)) || (items[i].tags && items[i].tags.length && r.test(items[i].tags))) { filteredItems[j] = items[i]; j++ } }
     setNfts(filteredItems)
     setIsLoading(false)
   }

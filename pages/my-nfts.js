@@ -27,10 +27,11 @@ export default function CreatorDashboard () {
     const myNfts = await Promise.all(myUniqueCreatedAndOwnedTokenIds.map(
       mapCreatedAndOwnedTokenIdsAsMarketItems(marketplaceContract, nftContract, account)
     ))
+    myNfts.sort(function (a, b) { const ai = parseInt(a.price); const bi = parseInt(b.price); return ai < bi ? 1 : (ai === bi ? 0 : -1) })
     const filteredItems = []
     let i = 0
     let j = 0
-    for (i = 0; i < myNfts.length; i++) { const r = new RegExp(searchStr, 'gi'); if (searchStr.length === 0 || (myNfts[i].name && myNfts[i].name.length && r.test(myNfts[i].name)) || (myNfts[i].description && myNfts[i].description.length && r.test(myNfts[i].description))) { filteredItems[j] = myNfts[i]; j++ } }
+    for (i = 0; i < myNfts.length; i++) { const r = new RegExp(searchStr, 'gi'); if (searchStr.length === 0 || (myNfts[i].name && myNfts[i].name.length && r.test(myNfts[i].name)) || (myNfts[i].description && myNfts[i].description.length && r.test(myNfts[i].description)) || (myNfts[i].tags && myNfts[i].tags.length && r.test(myNfts[i].tags))) { filteredItems[j] = myNfts[i]; j++ } }
     setNfts(filteredItems)
     // setNfts(myNfts)
     setIsLoading(false)

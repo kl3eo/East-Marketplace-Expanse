@@ -48,7 +48,8 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
     }
 
     if (nft.owner === account && nft.marketItemId && !nft.hasMarketApproval) {
-      return <NFTCard nft={nft} action="approve" updateNFT={() => updateNFT(index, nft.tokenId)}/>
+      // return <NFTCard nft={nft} action="approve" updateNFT={() => updateNFT(index, nft.tokenId)}/>
+      return <NFTCard nft={nft} action="sell" updateNFT={() => updateNFT(index, nft.tokenId)}/>
     }
 
     if (nft.owner === account) {

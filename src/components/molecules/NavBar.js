@@ -29,6 +29,7 @@ const NavBar = () => {
   const logo = isMobile ? '' : 'RH'
   const navText = isMobile ? '➡' : 'Show'
   const { pathname } = useRouter()
+
   // console.log('pathname', pathname)
   const navLink = pathname === '/' ? '/markt' : pathname === '/markt' ? '/' : pathname === '/my-nfts' ? '/own' : pathname === '/own' ? '/my-nfts' : '/markt'
   return (
@@ -48,7 +49,7 @@ const NavBar = () => {
           </Box>
           <SearchTextField value={searchStr} onChange={e => setSearchStr(e.target.value)}/>
           <NavItem title={navText} href={navLink} key={navText}/>
-          {account ? <ConnectedAccountAddress account={account}/> : <ConnectButton />}
+          {account ? <ConnectedAccountAddress account={account}/> : <ConnectButton/>}
         </Toolbar>
       </Container>
     </AppBar>

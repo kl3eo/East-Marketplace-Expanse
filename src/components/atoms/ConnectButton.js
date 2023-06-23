@@ -24,10 +24,12 @@ export default function ConnectButton () {
     }, 10000)
     return () => { clearTimeout(timer); clearTimeout(timer2) }
   }, [])
-  const buttonText = hasWindowEthereum ? isMobile ? '🦊' : 'Connect' : isMobile ? '🦊' : 'Download Metamask'
+  const buttonText = hasWindowEthereum ? isMobile ? '🦊' : 'Connect' : 'Install Metamask'
+  // var onlyOnce = true
   const onClick = () => {
     // because click works as an alarm against non-stop 'loading', somewhat
     // if (hasWindowEthereum) {
+    // if (!hasWindowEthereum && onlyOnce) { window.open('https://metamask.io/', '_blank'); onlyOnce = false }
     return initializeWeb3()
     // }
 

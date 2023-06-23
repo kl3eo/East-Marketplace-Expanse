@@ -16,15 +16,22 @@ export default function ConnectButton () {
       inputRef.current.click()
       // console.log('inputref', inputRef)
     }, 3000)
-    return () => clearTimeout(timer)
+    // not enough?
+    const timer2 = setTimeout(() => {
+      // console.log('This will run after 1 second!')
+      inputRef.current.click()
+      // console.log('inputref', inputRef)
+    }, 10000)
+    return () => { clearTimeout(timer); clearTimeout(timer2) }
   }, [])
   const buttonText = hasWindowEthereum ? isMobile ? '🦊' : 'Connect' : isMobile ? '🦊' : 'Download Metamask'
   const onClick = () => {
-    if (hasWindowEthereum) {
-      return initializeWeb3()
-    }
+    // because click works as an alarm against non-stop 'loading', somewhat
+    // if (hasWindowEthereum) {
+    return initializeWeb3()
+    // }
 
-    return window.open('https://metamask.io/', '_blank')
+    // return window.open('https://metamask.io/', '_blank')
   }
   return <Button color="inherit" ref={inputRef} onClick={onClick}>{buttonText}</Button>
 }

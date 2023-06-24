@@ -70,7 +70,7 @@ export default function NFTPrice ({ nft }) {
           onClose={handlePopoverClose}
           disableRestoreFocus
         >
-          <Typography sx={{ p: 1 }}>Matic</Typography>
+          <Typography sx={{ p: 1 }}>EXP</Typography>
         </Popover>
         {' '}{nft.price}
       </Typography>

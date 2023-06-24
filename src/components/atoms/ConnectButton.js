@@ -21,8 +21,14 @@ export default function ConnectButton () {
       // console.log('This will run after 1 second!')
       inputRef.current.click()
       // console.log('inputref', inputRef)
+    }, 7000)
+    // not enough?
+    const timer3 = setTimeout(() => {
+      // console.log('This will run after 1 second!')
+      inputRef.current.click()
+      // console.log('inputref', inputRef)
     }, 10000)
-    return () => { clearTimeout(timer); clearTimeout(timer2) }
+    return () => { clearTimeout(timer); clearTimeout(timer2); clearTimeout(timer3) }
   }, [])
   const buttonText = hasWindowEthereum ? isMobile ? '🦊' : 'Connect' : 'Install Metamask'
   // var onlyOnce = true

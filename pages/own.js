@@ -27,6 +27,8 @@ export default function OwnDashboard () {
     const myNfts = await Promise.all(myUniqueCreatedAndOwnedTokenIds.map(
       mapCreatedAndOwnedTokenIdsAsMarketItems(marketplaceContract, nftContract, account)
     ))
+    // filter, sort items here
+    myNfts.sort(function (a, b) { const ai = parseInt(a.price); const bi = parseInt(b.price); return ai < bi ? 1 : (ai === bi ? 0 : -1) })
     const filteredItems = []
     let i = 0
     let j = 0

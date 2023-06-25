@@ -7,14 +7,14 @@ export default function SearchTextField ({ onChange }) {
       id="search-input"
       label=""
       name="search"
-      placeholder="find"
+      placeholder="🔍"
       size="small"
       fullWidth
       margin="dense"
       type="text"
       inputProps={{ step: 'any' }}
       onChange={onChange}
-      sx={{ margin: '0', padding: '3px', width: isMobile ? '180px' : '120px', color: '#222222', backgroundColor: '#eeeeee' }}
+      style={{ margin: '0', padding: isMobile ? '2px' : '3px', width: isMobile ? '180px' : '120px', color: '#222222', backgroundColor: '#eeeeee' }}
     />
   )
 }

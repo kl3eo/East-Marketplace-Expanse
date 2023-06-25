@@ -30,7 +30,6 @@ const NavBar = () => {
   const navText = isMobile ? '➡' : 'Show'
   const { pathname } = useRouter()
 
-  // console.log('pathname', pathname)
   const navLink = pathname === '/' ? '/markt' : pathname === '/markt' ? '/' : pathname === '/my-nfts' ? '/own' : pathname === '/own' ? '/my-nfts' : '/markt'
   return (
     <AppBar position="static" sx={{ marginBottom: '12px' }}>
@@ -45,7 +44,7 @@ const NavBar = () => {
             {logo}
           </Typography>
           <Box sx={{ flexGrow: 1, display: 'flex' }}>
-            {pages.map(({ title, href }) => <NavItem title={title} href={href} key={title} sx={{ maxWidth: isMobile ? '30px' : '120px' }}/>)}
+            {pages.map(({ title, href }) => <NavItem title={title} href={href} key={title} style={{ maxWidth: isMobile ? '30px' : '120px' }}/>)}
           </Box>
           <SearchTextField value={searchStr} onChange={e => setSearchStr(e.target.value)}/>
           <NavItem title={navText} href={navLink} key={navText}/>

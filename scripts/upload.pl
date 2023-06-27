@@ -52,7 +52,8 @@ if ($type eq 'j') {
 	
 	$name = $chu[0];
 	
-	$desc =~ s/\"/\'/g;
+	$name =~ s/\"/\'/g; 
+ 	$desc =~ s/\"/\'/g;
 
 	open(LOCAL, "> $base/$dir/$name") or die 'error';
 	print LOCAL "{\"name\":\"".$tname."\",\"description\":\"".$desc."\",\"image\":\"".$file."\"}";

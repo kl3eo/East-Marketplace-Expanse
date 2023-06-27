@@ -26,7 +26,7 @@ const pages = [
 
 const NavBar = () => {
   const { account, setSearchStr, searchStr } = useContext(Web3Context)
-  const logo = isMobile ? '' : 'RH'
+  const logo = isMobile ? '' : ''
   const navText = isMobile ? '➡' : 'Show'
   const { pathname } = useRouter()
 

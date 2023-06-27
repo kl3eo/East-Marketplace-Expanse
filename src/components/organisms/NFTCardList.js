@@ -43,6 +43,7 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
   }
 
   function NFT ({ nft, index }) {
+    // console.log('nft', nft)
     if (!nft.owner) {
       return <NFTCardCreation addNFTToList={addNFTToList}/>
     }

@@ -1,0 +1,17 @@
+.back_to_top {
+  position: fixed;
+  bottom: 20px;
+  right: 2px;
+  margin: 0 auto;
+  font-size: 36px;
+  background: orange;
+  color: white;
+  cursor: pointer;
+  border-radius: 36px;
+  border: none;
+  box-shadow: 0 5px 10px #ccc;
+}
+
+.back_to_top:hover {
+  background: red;
+}

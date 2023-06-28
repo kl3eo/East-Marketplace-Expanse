@@ -10,7 +10,12 @@ export default function BaseLayout ({ children }) {
   const { network, balance, isReady, hasWeb3 } = useContext(Web3Context)
   const isLowOnEther = balance < 0.1
   const [showButton, setShowButton] = useState(false)
-
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // for smoothly scrolling
+    })
+  }
   useEffect(() => {
     window.addEventListener('scroll', () => {
       if (window.pageYOffset > 300) {
@@ -20,14 +25,6 @@ export default function BaseLayout ({ children }) {
       }
     })
   }, [])
-
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth' // for smoothly scrolling
-    })
-  }
-
   return (
     <>
       <NFTModalProvider>

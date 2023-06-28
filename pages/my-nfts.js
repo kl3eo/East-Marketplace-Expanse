@@ -23,10 +23,17 @@ export default function CreatorDashboard () {
 
   async function loadNFTs () {
     if (!isReady || !hasWeb3) return <></>
+    const startTime = new Date()
     const myUniqueCreatedAndOwnedTokenIds = await getUniqueOwnedAndCreatedTokenIds(nftContract)
+    const endTime0 = new Date()
+    const diff = endTime0 - startTime
+    console.log('myUniqueCreatedAndOwnedTokenIds', myUniqueCreatedAndOwnedTokenIds, 'time elapsed', diff)
     const myNfts = await Promise.all(myUniqueCreatedAndOwnedTokenIds.map(
       mapCreatedAndOwnedTokenIdsAsMarketItems(marketplaceContract, nftContract, account)
     ))
+    const endTime = new Date()
+    const diff1 = endTime - endTime0
+    console.log('my-nfts', myNfts, 'time elapsed', diff1)
     myNfts.sort(function (a, b) { const ai = parseInt(a.price); const bi = parseInt(b.price); return ai < bi ? 1 : (ai === bi ? 0 : -1) })
     const filteredItems = []
     let i = 0

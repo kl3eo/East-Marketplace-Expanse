@@ -7,7 +7,7 @@ import NFTCard from '../molecules/NFTCard'
 import NFTCardCreation from '../molecules/NFTCardCreation'
 import { ethers } from 'ethers'
 import { Web3Context } from '../providers/Web3Provider'
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { mapCreatedAndOwnedTokenIdsAsMarketItems } from '../../utils/nft'
 
 const useStyles = makeStyles((theme) => ({
@@ -24,10 +24,20 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
+export default function NFTCardList ({ nfts, setNfts, filteredItems, withCreateNFT }) {
   const classes = useStyles()
   const { account, marketplaceContract, nftContract } = useContext(Web3Context)
 
+  useEffect(() => {
+    window.addEventListener('scroll', relo)
+  }, [])
+  function relo () {
+    if (window.pageYOffset > 300) {
+      window.removeEventListener('scroll', relo)
+      setNfts(filteredItems)
+      console.log('set nfts to filtered!', filteredItems)
+    }
+  }
   async function updateNFT (index, tokenId) {
     const updatedNFt = await mapCreatedAndOwnedTokenIdsAsMarketItems(marketplaceContract, nftContract, account)(tokenId)
     setNfts(prevNfts => {

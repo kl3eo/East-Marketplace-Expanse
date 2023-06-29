@@ -148,7 +148,8 @@ export default function Web3Provider ({ children }) {
         initializeWeb3,
         hasWeb3,
         searchStr,
-        setSearchStr
+        setSearchStr,
+        hasInit
       }}
     >
       {children}

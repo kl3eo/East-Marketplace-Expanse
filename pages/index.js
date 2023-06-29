@@ -6,6 +6,7 @@ import UnsupportedChain from '../src/components/molecules/UnsupportedChain'
 import { mapAvailableMarketItems } from '../src/utils/nft'
 import { useDispatch } from 'react-redux'
 import { getData } from '../store/actions/dataAction'
+import { store } from '../store/store'
 
 export default function Home () {
   const [nfts, setNfts] = useState([])
@@ -22,7 +23,9 @@ export default function Home () {
     if (!isReady) return
     const startTime = new Date()
     const data = await marketplaceContract.fetchAvailableMarketItems()
-
+    const state = store.getState()
+    const storedFilteredItemsList = state.storedFilteredItemsList
+    const { storedFilteredItems } = storedFilteredItemsList
     // why this doesn't work? could sort the raw data now and avoid sorting later
     // data.forEach(element => { console.log('element6:', parseInt(element[6]._hex, 16)) })
     // data.sort(function (a, b) { const ai = parseInt(a[6]._hex, 16); const bi = parseInt(b[6]._hex, 16); return ai < bi ? 1 : (ai === bi ? 0 : -1) })
@@ -44,9 +47,9 @@ export default function Home () {
     let j = 0
     const fItems = []
     for (i = 0; i < items.length; i++) { const r = new RegExp(searchStr, 'gi'); if (searchStr.length === 0 || (items[i].name && items[i].name.length && r.test(items[i].name)) || (items[i].description && items[i].description.length && r.test(items[i].description)) || (items[i].tags && items[i].tags.length && r.test(items[i].tags))) { fItems[j] = items[i]; j++ } }
-    setNfts(fItems)
-    setFilteredItems(fItems)
-
+    const changer = storedFilteredItems.length === 0 || searchStr.length ? fItems : storedFilteredItems
+    setNfts(changer)
+    setFilteredItems(changer)
     // now if we cheated earlier, do async mapping the rest and save results to store
     if (searchStr.length === 0 && data.length >= nDisp) {
       setItems(data, fItems)

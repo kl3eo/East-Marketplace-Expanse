@@ -49,7 +49,7 @@ export default function Home () {
 
     // now if we cheated earlier, do async mapping the rest and save results to store
     if (searchStr.length === 0 && data.length >= nDisp) {
-      setItems(data, items)
+      setItems(data, fItems)
     }
     setIsLoading(false)
   }

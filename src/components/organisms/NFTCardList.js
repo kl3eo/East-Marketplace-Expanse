@@ -28,12 +28,16 @@ const useStyles = makeStyles((theme) => ({
 
 export default function NFTCardList ({ nfts, setNfts, filteredItems, withCreateNFT }) {
   const classes = useStyles()
-  const { account, marketplaceContract, nftContract } = useContext(Web3Context)
+  const { account, marketplaceContract, nftContract, searchStr } = useContext(Web3Context)
   // const storedFilteredItemsList = useSelector(state => state.storedFilteredItemsList)
   useEffect(() => {
     window.addEventListener('scroll', relo)
   }, [])
   function relo () {
+    if (withCreateNFT || searchStr.length) {
+      window.removeEventListener('scroll', relo)
+      return
+    }
     if (window.pageYOffset > 450) {
       const state = store.getState()
       const storedFilteredItemsList = state.storedFilteredItemsList

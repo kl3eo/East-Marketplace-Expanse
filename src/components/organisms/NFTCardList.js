@@ -9,6 +9,8 @@ import { ethers } from 'ethers'
 import { Web3Context } from '../providers/Web3Provider'
 import { useContext, useEffect } from 'react'
 import { mapCreatedAndOwnedTokenIdsAsMarketItems } from '../../utils/nft'
+// import { useSelector } from 'react-redux'
+import { store } from '../../../store/store'
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -27,15 +29,26 @@ const useStyles = makeStyles((theme) => ({
 export default function NFTCardList ({ nfts, setNfts, filteredItems, withCreateNFT }) {
   const classes = useStyles()
   const { account, marketplaceContract, nftContract } = useContext(Web3Context)
-
+  // const storedFilteredItemsList = useSelector(state => state.storedFilteredItemsList)
   useEffect(() => {
     window.addEventListener('scroll', relo)
   }, [])
   function relo () {
-    if (window.pageYOffset > 300) {
-      window.removeEventListener('scroll', relo)
-      setNfts(filteredItems)
-      console.log('set nfts to filtered!', filteredItems)
+    if (window.pageYOffset > 450) {
+      const state = store.getState()
+      const storedFilteredItemsList = state.storedFilteredItemsList
+      const { storedFilteredItems } = storedFilteredItemsList
+      if (storedFilteredItems.length) {
+        window.removeEventListener('scroll', relo)
+        setNfts(storedFilteredItems)
+        console.log('set nfts to stored!', storedFilteredItems.length)
+      }
+      // else if (filteredItems.length) {
+      // setNfts(filteredItems)
+      // console.log('set nfts to filtered!', filteredItems.length)
+      // } else {
+      // console.log('no change')
+      // }
     }
   }
   async function updateNFT (index, tokenId) {

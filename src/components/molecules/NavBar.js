@@ -24,7 +24,7 @@ const pages = [
 ]
 
 const NavBar = () => {
-  const { account, setSearchStr, searchStr } = useContext(Web3Context)
+  const { account, setSearchStr, searchStr, isReady } = useContext(Web3Context)
   const logo = isMobile ? '' : ''
   const navText = isMobile ? '➡' : 'Show'
   const { pathname } = useRouter()
@@ -45,9 +45,9 @@ const NavBar = () => {
           <Box sx={{ flexGrow: 1, display: 'flex' }}>
             {pages.map(({ title, href }) => <NavItem title={title} href={href} key={title} style={{ maxWidth: isMobile ? '30px' : '120px' }}/>)}
           </Box>
-          <SearchTextField value={searchStr} onChange={e => setSearchStr(e.target.value)}/>
-          <NavItem title={navText} href={navLink} key={navText}/>
-          {account ? <ConnectedAccountAddress account={account}/> : <ConnectButton/>}
+          {isReady && <SearchTextField value={searchStr} onChange={e => setSearchStr(e.target.value)}/>}
+          {isReady && <NavItem title={navText} href={navLink} key={navText}/>}
+          {account ? <ConnectedAccountAddress account={account}/> : isReady && <ConnectButton/>}
         </Toolbar>
       </Container>
     </AppBar>

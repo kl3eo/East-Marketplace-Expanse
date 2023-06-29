@@ -9,6 +9,8 @@ import createEmotionCache from '../src/createEmotionCache'
 import Web3Provider from '../src/components/providers/Web3Provider'
 import { StylesProvider, createGenerateClassName } from '@mui/styles'
 import BaseLayout from '../src/components/layout/Base'
+import { wrapper, store } from '../store/store'
+import { Provider } from 'react-redux'
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache()
@@ -17,10 +19,13 @@ const generateClassName = createGenerateClassName({
   productionPrefix: 'c'
 })
 
-export default function MyApp (props) {
-  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
+function MyApp (props) {
+  // const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
+  const { Component, ...rest } = props
+  const { emotionCache = clientSideEmotionCache, pageProps } = wrapper.useWrappedStore(rest)
 
   return (
+  <Provider store={store}>
     <StylesProvider generateClassName={generateClassName}>
       <Web3Provider>
         <CacheProvider value={emotionCache}>
@@ -37,6 +42,7 @@ export default function MyApp (props) {
         </CacheProvider>
       </Web3Provider>
     </StylesProvider>
+  </Provider>
   )
 }
 
@@ -45,3 +51,5 @@ MyApp.propTypes = {
   emotionCache: PropTypes.object,
   pageProps: PropTypes.object.isRequired
 }
+// export default wrapper.withRedux(MyApp)
+export default MyApp

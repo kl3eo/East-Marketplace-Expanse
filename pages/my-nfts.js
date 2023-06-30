@@ -6,13 +6,15 @@ import { Web3Context } from '../src/components/providers/Web3Provider'
 import { mapCreatedAndOwnedTokenIdsAsMarketItems, getUniqueOwnedAndCreatedTokenIds } from '../src/utils/nft'
 import UnsupportedChain from '../src/components/molecules/UnsupportedChain'
 import ConnectWalletMessage from '../src/components/molecules/ConnectWalletMessage'
+import { useDispatch } from 'react-redux'
+import { setCurrentDisp } from '../store/actions/dataAction'
 
 export default function CreatorDashboard () {
   const [nfts, setNfts] = useState([])
   const { account, marketplaceContract, nftContract, isReady, hasWeb3, network, searchStr } = useContext(Web3Context)
   const [isLoading, setIsLoading] = useState(true)
   const [hasWindowEthereum, setHasWindowEthereum] = useState(false)
-
+  const dispatch = useDispatch()
   useEffect(() => {
     setHasWindowEthereum(window.ethereum)
   }, [])
@@ -40,6 +42,7 @@ export default function CreatorDashboard () {
     let j = 0
     for (i = 0; i < myNfts.length; i++) { const r = new RegExp(searchStr, 'gi'); if (searchStr.length === 0 || (myNfts[i].name && myNfts[i].name.length && r.test(myNfts[i].name)) || (myNfts[i].description && myNfts[i].description.length && r.test(myNfts[i].description)) || (myNfts[i].tags && myNfts[i].tags.length && r.test(myNfts[i].tags))) { filteredItems[j] = myNfts[i]; j++ } }
     setNfts(filteredItems)
+    dispatch(setCurrentDisp(0))
     setIsLoading(false)
   }
 

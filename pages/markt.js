@@ -22,7 +22,9 @@ export default function Markt () {
     if (!isReady) { console.log('return not ready'); return }
     const startTime = new Date()
     const data = await marketplaceContract.fetchAvailableMarketItems()
-    const { storedFilteredItems } = storedFilteredItemsList
+    const { storedFilteredItems, currentDisp } = storedFilteredItemsList
+    console.log('got current disp', currentDisp)
+
     // why this doesn't work? could sort the raw data now and avoid sorting later
     // data.forEach(element => { console.log('element6:', parseInt(element[6]._hex, 16)) })
     // data.sort(function (a, b) { const ai = parseInt(a[6]._hex, 16); const bi = parseInt(b[6]._hex, 16); return ai < bi ? 1 : (ai === bi ? 0 : -1) })
@@ -45,11 +47,12 @@ export default function Markt () {
     const fItems = []
     for (i = 0; i < items.length; i++) { const r = new RegExp(searchStr, 'gi'); if (searchStr.length === 0 || (items[i].name && items[i].name.length && r.test(items[i].name)) || (items[i].description && items[i].description.length && r.test(items[i].description)) || (items[i].tags && items[i].tags.length && r.test(items[i].tags))) { fItems[j] = items[i]; j++ } }
     console.log('Here stored', storedFilteredItems, 'searchStr', searchStr)
+
     let changer = ((storedFilteredItems && storedFilteredItems.length === 0) || (searchStr && searchStr.length)) ? fItems : storedFilteredItems
-    console.log('Here changer', changer)
+    console.log('Here changer', changer, 'current', currentDisp)
     if (typeof changer === 'undefined') changer = fItems
-    if ((storedFilteredItems && storedFilteredItems.length === 0) || (searchStr && searchStr.length) || changer.length) { setNfts(changer); dispatch(setCurrentDisp(changer.length)) }
-    // if ((storedFilteredItems && storedFilteredItems.length === 0) || (searchStr && searchStr.length) || changer.length) setFilteredItems(changer)
+    if ((storedFilteredItems && storedFilteredItems.length === 0) || (searchStr && searchStr.length) || (changer.length && currentDisp !== data.length)) { setNfts(changer); dispatch(setCurrentDisp(changer.length)); console.log('set nfts to changer!', changer.length) }
+
     // now if we cheated earlier, do async mapping the rest and save results to store
     if (searchStr.length === 0 && data.length >= nDisp) {
       setItems(data, fItems)
@@ -64,8 +67,7 @@ export default function Markt () {
     totalItems.sort(function (a, b) { const ai = parseInt(a.price); const bi = parseInt(b.price); return ai < bi ? 1 : (ai === bi ? 0 : -1) })
     const totalFilteredItems = []
     for (i = 0; i < totalItems.length; i++) { const r = new RegExp(searchStr, 'gi'); if (searchStr.length === 0 || (totalItems[i].name && totalItems[i].name.length && r.test(totalItems[i].name)) || (totalItems[i].description && totalItems[i].description.length && r.test(totalItems[i].description)) || (totalItems[i].tags && totalItems[i].tags.length && r.test(totalItems[i].tags))) { totalFilteredItems[j] = totalItems[i]; j++ } }
-    // if you await setItems, it's good
-    // setFilteredItems(totalFilteredItems)
+
     // save to store
     dispatch(getData(totalFilteredItems))
     console.log('totalFiltered', totalFilteredItems.length)

@@ -23,8 +23,8 @@ const useStyles = makeStyles({
   }
 })
 
-// const defaultFileUrl = 'https://miro.medium.com/max/250/1*DSNfSDcOe33E2Aup1Sww2w.jpeg'
-const defaultFileUrl = 'https://club.room-house.com/img/logo_rh_250.png'
+const defaultFileUrl = 'https://club.room-house.com/img/nft_rh_250.png'
+const defaultVideoFileUrl = 'https://club.room-house.com/img/nft_video_250.png'
 
 export default function NFTCardCreation ({ addNFTToList }) {
   const [file, setFile] = useState(null)
@@ -61,7 +61,7 @@ export default function NFTCardCreation ({ addNFTToList }) {
   async function onFileChange (event) {
     if (!event.target.files[0]) return
     setFile(event.target.files[0])
-    setFileUrl(URL.createObjectURL(event.target.files[0]))
+    event.target.files[0].name.match(/\.(mp4|MP4|webm|WEBM)$/ig) ? setFileUrl(defaultVideoFileUrl) : setFileUrl(URL.createObjectURL(event.target.files[0]))
   }
 
   async function onSubmit ({ name, description }) {
@@ -96,6 +96,7 @@ export default function NFTCardCreation ({ addNFTToList }) {
           type="file"
           name="file"
           id="file-input"
+          accept="image/png, image/jpeg, video/mp4, video/webm"
           onChange={onFileChange}
         />
       <CardContent sx={{ paddingBottom: 0 }}>

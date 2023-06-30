@@ -11,6 +11,15 @@ export async function getTokenMetadataByTokenId (nftContract, tokenId) {
   }
 }
 
+export async function getTokenOwnerByTokenId (nftContract, tokenId) {
+  try {
+    const tokenOwner = await nftContract.ownerOf(tokenId)
+    return tokenOwner
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export function mapAvailableMarketItems (nftContract) {
   return async (marketItem) => {
     const metadata = await getTokenMetadataByTokenId(nftContract, marketItem.tokenId)
@@ -49,7 +58,9 @@ export function mapMarketItem (marketItem, metadata, tokenId, account, hasMarket
 
 export async function getUniqueOwnedAndCreatedTokenIds (nftContract) {
   const nftIdsCreatedByMe = await nftContract.getTokensCreatedByMe()
-  const nftIdsOwnedByMe = await nftContract.getTokensOwnedByMe()
+  // const nftIdsOwnedByMe = await nftContract.getTokensOwnedByMe()
+  let nftIdsOwnedByMe = []
+  try { nftIdsOwnedByMe = await nftContract.getTokensOwnedByMe()} catch (error) { console.log(error) }
   const myNftIds = [...nftIdsCreatedByMe, ...nftIdsOwnedByMe]
   return [...new Map(myNftIds.map((item) => [item._hex, item])).values()]
 }

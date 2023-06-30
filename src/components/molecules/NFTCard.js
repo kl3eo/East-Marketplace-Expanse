@@ -69,7 +69,9 @@ export default function NFTCard ({ nft, action, updateNFT }) {
   const [newPrice, setPrice] = useState(0)
   const classes = useStyles()
   const { name, description, image } = nft
-
+  // const r = new RegExp(/\.(mp4|MP4)$/, 'gi')
+  // const isVideo = r.test(image)
+  const isVideo = image.match(/\.(mp4|MP4|webm|WEBM)$/ig)
   useEffect(() => {
     getAndSetListingFee(marketplaceContract, setListingFee)
   }, [])
@@ -138,6 +140,9 @@ export default function NFTCard ({ nft, action, updateNFT }) {
     setIsModalOpen(true)
   }
 
+  function handleCardVideoClick (e) {
+    e.preventDefault()
+  }
   async function onClick (nft) {
     try {
       setIsLoading(true)
@@ -156,12 +161,7 @@ export default function NFTCard ({ nft, action, updateNFT }) {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       >
-      <CardMedia
-        className={classes.media}
-        alt={name}
-        image={image}
-        component="a" onClick={handleCardImageClick}
-      />
+      {isVideo ? <CardMedia className="MuiCardMedia-root MuiCardMedia-media" alt={name} image={image} component="video" controls onClick={handleCardVideoClick} sx={{ width: '345px', height: '195px' }} /> : <CardMedia className={classes.media} alt={name} image={image} component="a" onClick={handleCardImageClick} />}
 
       <CardContent className={classes.cardContent} >
         <NFTName name={name}/>

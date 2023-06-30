@@ -9,13 +9,15 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 contract NFT is ERC721URIStorage {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
+    Counters.Counter private _burnedIds;
 
     address private marketplaceAddress;
     mapping(uint256 => address) private _creators;
+    mapping(uint256 => uint256) private _burned;
 
     event TokenMinted(uint256 indexed tokenId, string tokenURI, address marketplaceAddress);
 
-    constructor(address _marketplaceAddress) ERC721("EastToken", "EST") {
+    constructor(address _marketplaceAddress) ERC721("R-HToken", "RHT") {
         marketplaceAddress = _marketplaceAddress;
     }
 
@@ -34,14 +36,15 @@ contract NFT is ERC721URIStorage {
     }
 
     function getTokensOwnedByMe() public view returns (uint256[] memory) {
-        uint256 numberOfExistingTokens = _tokenIds.current();
+        uint256 numberOfExistingTokens = _tokenIds.current() + _burnedIds.current();
         uint256 numberOfTokensOwned = balanceOf(msg.sender);
         uint256[] memory ownedTokenIds = new uint256[](numberOfTokensOwned);
 
         uint256 currentIndex = 0;
         for (uint256 i = 0; i < numberOfExistingTokens; i++) {
             uint256 tokenId = i + 1;
-            if (ownerOf(tokenId) != msg.sender) continue;
+            if (isBurned(tokenId) continue;
+	    if (ownerOf(tokenId) != msg.sender) continue;
             ownedTokenIds[currentIndex] = tokenId;
             currentIndex += 1;
         }
@@ -54,11 +57,12 @@ contract NFT is ERC721URIStorage {
     }
 
     function getTokensCreatedByMe() public view returns (uint256[] memory) {
-        uint256 numberOfExistingTokens = _tokenIds.current();
+        uint256 numberOfExistingTokens = _tokenIds.current() + _burnedIds.current();
         uint256 numberOfTokensCreated = 0;
 
         for (uint256 i = 0; i < numberOfExistingTokens; i++) {
             uint256 tokenId = i + 1;
+	    if (isBurned(tokenId) continue;
             if (_creators[tokenId] != msg.sender) continue;
             numberOfTokensCreated += 1;
         }
@@ -67,6 +71,7 @@ contract NFT is ERC721URIStorage {
         uint256 currentIndex = 0;
         for (uint256 i = 0; i < numberOfExistingTokens; i++) {
             uint256 tokenId = i + 1;
+	    if (isBurned(tokenId) continue;
             if (_creators[tokenId] != msg.sender) continue;
             createdTokenIds[currentIndex] = tokenId;
             currentIndex += 1;
@@ -84,11 +89,28 @@ contract NFT is ERC721URIStorage {
         if (from != address(0) && to == address(0)) { // burning
             address owner = ownerOf(tokenId);
             require(owner == msg.sender, "Only the owner of NFT can burn it");
+	    // require(tokenId == _tokenIds.current(), "Only the last one can be burned!");
         }
     }
 
-    function burn(uint256 tokenId) public {
+    function burner(uint256 tokenId) public {
         super._burn(tokenId);
 	_tokenIds.decrement();
+	uint256 newBurnedId = _burnedIds.current();
+	_burnedIds.increment();
+	_burned[newBurnedId] = tokenId;
+    }
+
+    function isBurned(uint256 tokenId) public view returns (boolean) {
+        uint256 numberOfBurnedTokens = _burnedIds.current();
+	for (uint256 i = 0; i < numberOfBurnedTokens; i++) {
+            if (_burned[i] == tokenId) return true;
+        }
+	return false;
+    }
+
+    function numberOfTokens(uint256 typeId) public view returns (uint256) {
+        uint256 num_tokens = typeId == 0 ? _tokenIds.current() : _burnedIds.current();
+        return num_tokens;
     }
 }

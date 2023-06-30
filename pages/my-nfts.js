@@ -44,7 +44,7 @@ export default function CreatorDashboard () {
     setIsLoading(false)
   }
 
-  if (!hasWindowEthereum) return <InstallMetamask/>
+  if (!hasWindowEthereum && isReady)) return <InstallMetamask/>
   if (!hasWeb3) return <ConnectWalletMessage/>
   if (!network) return <UnsupportedChain/>
   if (isLoading) return <LinearProgress/>

@@ -47,12 +47,6 @@ export default function NFTCardList ({ nfts, setNfts, filteredItems, withCreateN
         setNfts(storedFilteredItems)
         console.log('set nfts to stored!', storedFilteredItems.length)
       }
-      // else if (filteredItems.length) {
-      // setNfts(filteredItems)
-      // console.log('set nfts to filtered!', filteredItems.length)
-      // } else {
-      // console.log('no change')
-      // }
     }
   }
   async function updateNFT (index, tokenId) {

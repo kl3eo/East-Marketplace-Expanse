@@ -1,3 +1,4 @@
+import { isMobile } from 'react-device-detect'
 import { ethers } from 'ethers'
 import { useContext, useEffect, useState } from 'react'
 import { makeStyles } from '@mui/styles'
@@ -53,6 +54,7 @@ const useStyles = makeStyles({
   }
 })
 
+const videoW = isMobile ? '330px' : '345px'
 async function getAndSetListingFee (marketplaceContract, setListingFee) {
   if (!marketplaceContract) return
   const listingFee = await marketplaceContract.getListingFee()
@@ -161,7 +163,7 @@ export default function NFTCard ({ nft, action, updateNFT }) {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       >
-      {isVideo ? <CardMedia className="MuiCardMedia-root MuiCardMedia-media" alt={name} image={image} component="video" controls onClick={handleCardVideoClick} sx={{ width: '345px', height: '195px' }} /> : <CardMedia className={classes.media} alt={name} image={image} component="a" onClick={handleCardImageClick} />}
+      {isVideo ? <CardMedia className="MuiCardMedia-root MuiCardMedia-media" alt={name} image={image} component="video" controls onClick={handleCardVideoClick} sx={{ width: { videoW }, height: '195px' }} /> : <CardMedia className={classes.media} alt={name} image={image} component="a" onClick={handleCardImageClick} />}
 
       <CardContent className={classes.cardContent} >
         <NFTName name={name}/>

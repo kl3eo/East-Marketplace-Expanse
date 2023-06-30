@@ -6,12 +6,15 @@ import { Web3Context } from '../src/components/providers/Web3Provider'
 import { mapCreatedAndOwnedTokenIdsAsMarketItems, getUniqueOwnedAndCreatedTokenIds } from '../src/utils/nft'
 import UnsupportedChain from '../src/components/molecules/UnsupportedChain'
 import ConnectWalletMessage from '../src/components/molecules/ConnectWalletMessage'
+import { useDispatch } from 'react-redux'
+import { setData } from '../store/actions/dataAction'
 
 export default function OwnDashboard () {
   const [nfts, setNfts] = useState([])
   const { account, marketplaceContract, nftContract, isReady, hasWeb3, network, searchStr } = useContext(Web3Context)
   const [isLoading, setIsLoading] = useState(true)
   const [hasWindowEthereum, setHasWindowEthereum] = useState(false)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     setHasWindowEthereum(window.ethereum)
@@ -36,6 +39,7 @@ export default function OwnDashboard () {
     setNfts(filteredItems)
     // setNfts(myNfts)
     setIsLoading(false)
+    dispatch(setData(false))
   }
 
   if (!hasWindowEthereum && isReady) return <InstallMetamask/>

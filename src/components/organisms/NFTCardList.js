@@ -10,6 +10,8 @@ import { Web3Context } from '../providers/Web3Provider'
 import { useContext, useEffect } from 'react'
 import { mapCreatedAndOwnedTokenIdsAsMarketItems } from '../../utils/nft'
 // import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
+import { setData } from '../../../store/actions/dataAction'
 import { store } from '../../../store/store'
 
 const useStyles = makeStyles((theme) => ({
@@ -33,6 +35,7 @@ export default function NFTCardList ({ nfts, setNfts, filteredItems, withCreateN
   useEffect(() => {
     window.addEventListener('scroll', relo)
   }, [])
+  const dispatch = useDispatch()
   function relo () {
     if (withCreateNFT || searchStr.length) {
       window.removeEventListener('scroll', relo)
@@ -41,10 +44,11 @@ export default function NFTCardList ({ nfts, setNfts, filteredItems, withCreateN
     if (window.pageYOffset > 450) {
       const state = store.getState()
       const storedFilteredItemsList = state.storedFilteredItemsList
-      const { storedFilteredItems } = storedFilteredItemsList
-      if (storedFilteredItems.length) {
+      const { storedFilteredItems, setdata } = storedFilteredItemsList
+      if (storedFilteredItems && storedFilteredItems.length && !setdata) {
         window.removeEventListener('scroll', relo)
         setNfts(storedFilteredItems)
+        dispatch(setData(true))
         console.log('set nfts to stored!', storedFilteredItems.length)
       }
     }

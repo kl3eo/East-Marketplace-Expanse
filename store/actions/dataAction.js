@@ -15,3 +15,20 @@ export const getData = (data) => async dispatch => {
     }
 
 }
+
+export const setData = () => async dispatch => {
+    
+    try{
+        dispatch( {
+            type: SET_DATA,
+            payload: 'lol'
+        })
+    }
+    catch(error){
+        dispatch( {
+            type: DATA_ERROR,
+            payload: error,
+        })
+    }
+
+}

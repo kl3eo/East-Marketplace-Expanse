@@ -25,7 +25,7 @@ export default function Home () {
     const data = await marketplaceContract.fetchAvailableMarketItems()
     const state = store.getState()
     const storedFilteredItemsList = state.storedFilteredItemsList
-    const { storedFilteredItems } = storedFilteredItemsList
+    const { storedFilteredItems, setdata } = storedFilteredItemsList
     // why this doesn't work? could sort the raw data now and avoid sorting later
     // data.forEach(element => { console.log('element6:', parseInt(element[6]._hex, 16)) })
     // data.sort(function (a, b) { const ai = parseInt(a[6]._hex, 16); const bi = parseInt(b[6]._hex, 16); return ai < bi ? 1 : (ai === bi ? 0 : -1) })
@@ -47,9 +47,11 @@ export default function Home () {
     let j = 0
     const fItems = []
     for (i = 0; i < items.length; i++) { const r = new RegExp(searchStr, 'gi'); if (searchStr.length === 0 || (items[i].name && items[i].name.length && r.test(items[i].name)) || (items[i].description && items[i].description.length && r.test(items[i].description)) || (items[i].tags && items[i].tags.length && r.test(items[i].tags))) { fItems[j] = items[i]; j++ } }
-    const changer = storedFilteredItems.length === 0 || searchStr.length ? fItems : storedFilteredItems
-    setNfts(changer)
-    setFilteredItems(changer)
+    // console.log('Here stored', storedFilteredItems, 'searchStr', searchStr)
+    const changer = ((storedFilteredItems && storedFilteredItems.length === 0) || (searchStr && searchStr.length) || !setdata) ? fItems : storedFilteredItems
+    // console.log('Here changer', changer, 'setdata', setdata)
+    if ((storedFilteredItems && storedFilteredItems.length === 0) || (searchStr && searchStr.length) || !setdata) setNfts(changer)
+    if ((storedFilteredItems && storedFilteredItems.length === 0) || (searchStr && searchStr.length) || !setdata) setFilteredItems(changer)
     // now if we cheated earlier, do async mapping the rest and save results to store
     if (searchStr.length === 0 && data.length >= nDisp) {
       setItems(data, fItems)
@@ -65,7 +67,7 @@ export default function Home () {
     const totalFilteredItems = []
     for (i = 0; i < totalItems.length; i++) { const r = new RegExp(searchStr, 'gi'); if (searchStr.length === 0 || (totalItems[i].name && totalItems[i].name.length && r.test(totalItems[i].name)) || (totalItems[i].description && totalItems[i].description.length && r.test(totalItems[i].description)) || (totalItems[i].tags && totalItems[i].tags.length && r.test(totalItems[i].tags))) { totalFilteredItems[j] = totalItems[i]; j++ } }
     // if you await setItems, it's good
-    setFilteredItems(totalFilteredItems)
+    // setFilteredItems(totalFilteredItems)
     // save to store
     dispatch(getData(totalFilteredItems))
     console.log('totalFiltered', totalFilteredItems.length)

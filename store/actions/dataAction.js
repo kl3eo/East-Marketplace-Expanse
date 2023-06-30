@@ -1,4 +1,4 @@
-import {GET_DATA, DATA_ERROR} from '../types'
+import {GET_DATA, DATA_ERROR, SET_CURRENT_DISP} from '../types'
 export const getData = (data) => async dispatch => {
     
     try{
@@ -16,12 +16,12 @@ export const getData = (data) => async dispatch => {
 
 }
 
-export const setData = () => async dispatch => {
+export const setCurrentDisp = (data) => async dispatch => {
     
     try{
         dispatch( {
-            type: SET_DATA,
-            payload: 'lol'
+            type: SET_CURRENT_DISP,
+            payload: data
         })
     }
     catch(error){

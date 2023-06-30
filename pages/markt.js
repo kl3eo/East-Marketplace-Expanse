@@ -4,28 +4,25 @@ import { Web3Context } from '../src/components/providers/Web3Provider'
 import { LinearProgress } from '@mui/material'
 import UnsupportedChain from '../src/components/molecules/UnsupportedChain'
 import { mapAvailableMarketItems } from '../src/utils/nft'
-import { useDispatch } from 'react-redux'
-import { getData } from '../store/actions/dataAction'
-import { store } from '../store/store'
+import { useDispatch, useSelector } from 'react-redux'
+import { getData, setCurrentDisp } from '../store/actions/dataAction'
 
 export default function Markt () {
   const [nfts, setNfts] = useState([])
-  const [filteredItems, setFilteredItems] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const { marketplaceContract, nftContract, isReady, network, searchStr } = useContext(Web3Context)
   const nDisp = 60
+  const storedFilteredItemsList = useSelector(state => state.storedFilteredItemsList)
   const dispatch = useDispatch()
 
   useEffect(() => {
     loadNFTs()
   }, [isReady])
   async function loadNFTs () {
-    if (!isReady) return
+    if (!isReady) { console.log('return not ready'); return }
     const startTime = new Date()
     const data = await marketplaceContract.fetchAvailableMarketItems()
-    const state = store.getState()
-    const storedFilteredItemsList = state.storedFilteredItemsList
-    const { storedFilteredItems, setdata } = storedFilteredItemsList
+    const { storedFilteredItems } = storedFilteredItemsList
     // why this doesn't work? could sort the raw data now and avoid sorting later
     // data.forEach(element => { console.log('element6:', parseInt(element[6]._hex, 16)) })
     // data.sort(function (a, b) { const ai = parseInt(a[6]._hex, 16); const bi = parseInt(b[6]._hex, 16); return ai < bi ? 1 : (ai === bi ? 0 : -1) })
@@ -47,10 +44,12 @@ export default function Markt () {
     let j = 0
     const fItems = []
     for (i = 0; i < items.length; i++) { const r = new RegExp(searchStr, 'gi'); if (searchStr.length === 0 || (items[i].name && items[i].name.length && r.test(items[i].name)) || (items[i].description && items[i].description.length && r.test(items[i].description)) || (items[i].tags && items[i].tags.length && r.test(items[i].tags))) { fItems[j] = items[i]; j++ } }
-    const changer = ((storedFilteredItems && storedFilteredItems.length === 0) || (searchStr && searchStr.length) || !setdata) ? fItems : storedFilteredItems
-    // console.log('Here changer', changer, 'setdata', setdata)
-    if ((storedFilteredItems && storedFilteredItems.length === 0) || (searchStr && searchStr.length) || !setdata) setNfts(changer)
-    if ((storedFilteredItems && storedFilteredItems.length === 0) || (searchStr && searchStr.length) || !setdata) setFilteredItems(changer)
+    console.log('Here stored', storedFilteredItems, 'searchStr', searchStr)
+    let changer = ((storedFilteredItems && storedFilteredItems.length === 0) || (searchStr && searchStr.length)) ? fItems : storedFilteredItems
+    console.log('Here changer', changer)
+    if (typeof changer === 'undefined') changer = fItems
+    if ((storedFilteredItems && storedFilteredItems.length === 0) || (searchStr && searchStr.length) || changer.length) { setNfts(changer); dispatch(setCurrentDisp(changer.length)) }
+    // if ((storedFilteredItems && storedFilteredItems.length === 0) || (searchStr && searchStr.length) || changer.length) setFilteredItems(changer)
     // now if we cheated earlier, do async mapping the rest and save results to store
     if (searchStr.length === 0 && data.length >= nDisp) {
       setItems(data, fItems)
@@ -80,6 +79,6 @@ export default function Markt () {
   if (isLoading) return <LinearProgress/>
   if (!isLoading && !nfts.length) return <h1>No NFTs for sale</h1>
   return (
-    <NFTCardList nfts={nfts} setNfts={setNfts} filteredItems={filteredItems} withCreateNFT={false}/>
+    <NFTCardList nfts={nfts} setNfts={setNfts} withCreateNFT={false}/>
   )
 }

@@ -1,4 +1,4 @@
-import {GET_DATA, SET_CURRENT_DISP, DATA_ERROR} from '../types'
+import {GET_DATA, SET_CURRENT_DISP, SET_LOADING, DATA_ERROR} from '../types'
 
 const initialState = {
     storedFilteredItems:[],
@@ -13,13 +13,17 @@ export default function(state = initialState, action){
         case GET_DATA:
         return {
             ...state,
-            storedFilteredItems:action.payload,
-            loading:false
+            storedFilteredItems:action.payload
         }
         case SET_CURRENT_DISP:
         return {
             ...state,
             currentDisp:action.payload
+        }
+        case SET_LOADING:
+        return {
+            ...state,
+            loading:action.payload
         }
         case DATA_ERROR:
             return{

@@ -10,6 +10,7 @@ import NFTPrice from '../atoms/NFTPrice'
 import NFTName from '../atoms/NFTName'
 import CardAddresses from './CardAddresses'
 import PriceTextField from '../atoms/PriceTextField'
+import { useSelector } from 'react-redux'
 
 const useStyles = makeStyles({
   root: {
@@ -69,11 +70,17 @@ export default function NFTCard ({ nft, action, updateNFT }) {
   const [listingFee, setListingFee] = useState('')
   const [priceError, setPriceError] = useState(false)
   const [newPrice, setPrice] = useState(0)
+  const storedFilteredItemsList = useSelector(state => state.storedFilteredItemsList)
+  const { loading } = storedFilteredItemsList
   const classes = useStyles()
   const { name, description, image } = nft
-  // const r = new RegExp(/\.(mp4|MP4)$/, 'gi')
-  // const isVideo = r.test(image)
+  let img = image
   const isVideo = image.match(/\.(mp4|MP4|webm|WEBM)$/ig)
+  const loadingUrl = '/loading.png'
+  const isWebRTC = image.match(/_screen_/g)
+  img = image.match(/blue_screen_/g) ? 'https://cine.room-house.com/#BLUEHALL' : img
+  img = image.match(/red_screen_/g) ? 'https://cine.room-house.com/#REDHALL' : img
+  img = image.match(/green_screen_/g) ? 'https://cine.room-house.com/#GREENHALL' : img
   useEffect(() => {
     getAndSetListingFee(marketplaceContract, setListingFee)
   }, [])
@@ -163,7 +170,7 @@ export default function NFTCard ({ nft, action, updateNFT }) {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       >
-      {isVideo ? <CardMedia className="MuiCardMedia-root MuiCardMedia-media" alt={name} image={image} component="video" controls onClick={handleCardVideoClick} sx={{ width: { videoW }, height: '195px' }} /> : <CardMedia className={classes.media} alt={name} image={image} component="a" onClick={handleCardImageClick} />}
+      {isVideo && !loading ? <CardMedia className="MuiCardMedia-root MuiCardMedia-media" alt={name} image={image} component="video" controls onClick={handleCardVideoClick} sx={{ width: { videoW }, height: '195px' }} /> : isVideo && loading ? <CardMedia className={classes.media} alt={name} image={loadingUrl} component="a" onClick={handleCardImageClick} /> : isWebRTC && !loading ? <iframe src={img} style={{ height: '430px', width: isMobile ? '330px' : '345px', position: isMobile ? 'relative' : 'absolute', top: isMobile ? '0px' : '70px' }}></iframe> : isWebRTC && loading ? <CardMedia className={classes.media} alt={name} image={image} component="a" onClick={handleCardImageClick} /> : <CardMedia className={classes.media} alt={name} image={image} component="a" onClick={handleCardImageClick} />}
 
       <CardContent className={classes.cardContent} >
         <NFTName name={name}/>

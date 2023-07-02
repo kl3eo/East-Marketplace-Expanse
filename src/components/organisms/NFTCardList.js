@@ -10,8 +10,8 @@ import { Web3Context } from '../providers/Web3Provider'
 import { useContext, useEffect } from 'react'
 import { mapCreatedAndOwnedTokenIdsAsMarketItems } from '../../utils/nft'
 import { store } from '../../../store/store'
-import { useDispatch } from 'react-redux'
-import { setCurrentDisp } from '../../../store/actions/dataAction'
+import { useDispatch, useSelector } from 'react-redux'
+import { setCurrentDisp, setLoading } from '../../../store/actions/dataAction'
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -30,9 +30,12 @@ const useStyles = makeStyles((theme) => ({
 export default function NFTCardList ({ nfts, setNfts, filteredItems, withCreateNFT }) {
   const classes = useStyles()
   const { account, marketplaceContract, nftContract, searchStr } = useContext(Web3Context)
-  // const storedFilteredItemsList = useSelector(state => state.storedFilteredItemsList)
+  const storedFilteredItemsList0 = useSelector(state => state.storedFilteredItemsList)
+  const { storedFilteredItems } = storedFilteredItemsList0
+  const timeLoader = storedFilteredItems && storedFilteredItems.length ? 10000 : 20000
   useEffect(() => {
     window.addEventListener('scroll', relo)
+    setTimeout(() => { dispatch(setLoading(false)) }, timeLoader)
   }, [])
   const dispatch = useDispatch()
   function relo () {
@@ -89,7 +92,7 @@ export default function NFTCardList ({ nfts, setNfts, filteredItems, withCreateN
 
     return <NFTCard nft={nft} action="none"/>
   }
-
+  console.log('point3')
   return (
     <InfiniteScroll
       dataLength={nfts.length}

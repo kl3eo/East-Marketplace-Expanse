@@ -23,6 +23,10 @@ const pages = [
   }
 ]
 
+const onCli = (e) => {
+  e.preventDefault()
+  e.target.value = ''
+}
 const NavBar = () => {
   const { account, isReady, hasInit } = useContext(Web3Context)
   const logo = isMobile ? '' : ''
@@ -48,10 +52,10 @@ const NavBar = () => {
             {logo}
           </Typography>
           <Box sx={{ flexGrow: 1, display: 'flex' }}>
-            {pages.map(({ title, href }) => <NavItem title={title} href={href} key={title} style={{ maxWidth: isMobile ? '36px' : '120px', fontSize: isMobile ? '30px' : '16px' }}/>)}
+            {pages.map(({ title, href }) => <NavItem title={title} href={href} key={title} style={{ maxWidth: isMobile ? '36px' : '120px' }}/>)}
           </Box>
           <form onSubmit={clickerHandler}>
-          {(isReady || hasInit) && <input id="searchInput" name="searchInput" placeholder="🔍" type="text" style={{ maxWidth: isMobile ? '96px' : '120px' }}/>}
+          {(isReady || hasInit) && <input id="searchInput" name="searchInput" placeholder="🔍" type="text" onClick={onCli} style={{ maxWidth: isMobile ? '72px' : '120px', marginRight: '10px', fontSize: '24px' }}/>}
           {(isReady || hasInit) && <button type="submit" style={{ maxWidth: isMobile ? '36px' : '96px' }}>{buttonText}</button>}
           </form>
           {account ? <ConnectedAccountAddress account={account}/> : (isReady || hasInit) && <ConnectButton/>}

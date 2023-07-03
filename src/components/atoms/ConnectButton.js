@@ -25,5 +25,5 @@ export default function ConnectButton () {
       return initializeWeb3()
     }
   }
-  return <Button color="inherit" ref={inputRef} onClick={onClick}>{buttonText}</Button>
+  return <Button color="inherit" ref={inputRef} onClick={onClick} style={{ fontSize: '24px' }}>{buttonText}</Button>
 }

@@ -1,3 +1,4 @@
+import { isMobile } from 'react-device-detect'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import Grid from '@mui/material/Grid'
 import LinearProgress from '@mui/material/LinearProgress'
@@ -33,7 +34,7 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
   const { account, marketplaceContract, nftContract } = useContext(Web3Context)
   const storedFilteredItemsList = useSelector(state => state.storedFilteredItemsList)
   const { lookupStr, loading } = storedFilteredItemsList
-  const timeLoader = 5000
+  const timeLoader = isMobile ? 10000 : 5000
 
   useEffect(() => {
     window.addEventListener('scroll', relo)
@@ -42,14 +43,14 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
 
   const dispatch = useDispatch()
   function relo () {
+    const state = store.getState()
+    const storedFilteredItemsList = state.storedFilteredItemsList
+    const { storedFilteredItems, currentDisp, lookupStr } = storedFilteredItemsList
     if (withCreateNFT || lookupStr.length) {
       window.removeEventListener('scroll', relo)
       return
     }
     if (window.pageYOffset > 450) {
-      const state = store.getState()
-      const storedFilteredItemsList = state.storedFilteredItemsList
-      const { storedFilteredItems, currentDisp } = storedFilteredItemsList
       if (storedFilteredItems && storedFilteredItems.length) {
         window.removeEventListener('scroll', relo)
         if (storedFilteredItems.length > currentDisp) { setNfts(storedFilteredItems); dispatch(setCurrentDisp(storedFilteredItems.length)); console.log('set nfts to stored!', storedFilteredItems.length) }

@@ -4,24 +4,28 @@ import { Web3Context } from '../src/components/providers/Web3Provider'
 import { LinearProgress } from '@mui/material'
 import UnsupportedChain from '../src/components/molecules/UnsupportedChain'
 import { mapAvailableMarketItems } from '../src/utils/nft'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { getData, setCurrentDisp } from '../store/actions/dataAction'
+import { store } from '../store/store'
 
 export default function Home () {
   const [nfts, setNfts] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const { marketplaceContract, nftContract, isReady, network, searchStr } = useContext(Web3Context)
   const nDisp = 60
-  const storedFilteredItemsList = useSelector(state => state.storedFilteredItemsList)
+  // const storedFilteredItemsList = useSelector(state => state.storedFilteredItemsList)
   const dispatch = useDispatch()
 
   useEffect(() => {
     loadNFTs()
   }, [isReady])
   async function loadNFTs () {
+    console.log('point1')
     if (!isReady) { console.log('return not ready'); return }
     const startTime = new Date()
     const data = await marketplaceContract.fetchAvailableMarketItems()
+    const state = store.getState()
+    const storedFilteredItemsList = state.storedFilteredItemsList
     const { storedFilteredItems, currentDisp } = storedFilteredItemsList
     console.log('got current disp', currentDisp)
 
@@ -133,6 +137,7 @@ export default function Home () {
   if (!network) return <UnsupportedChain/>
   if (isLoading) return <LinearProgress/>
   if (!isLoading && !nfts.length) return <h1>No NFTs for sale</h1>
+  console.log('point2')
   return (
     <NFTCardList nfts={nfts} setNfts={setNfts} withCreateNFT={false}/>
   )

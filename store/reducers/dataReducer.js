@@ -1,15 +1,14 @@
-import {GET_DATA, SET_CURRENT_DISP, SET_LOADING, DATA_ERROR} from '../types'
+import {GET_DATA, SET_CURRENT_DISP, SET_LOADING, SET_LOOKUP, DATA_ERROR} from '../types'
 
 const initialState = {
     storedFilteredItems:[],
     loading:true,
-    currentDisp:0
+    currentDisp:0,
+    lookupStr:''
 }
 
 export default function(state = initialState, action){
-
     switch(action.type){
-
         case GET_DATA:
         return {
             ...state,
@@ -25,6 +24,11 @@ export default function(state = initialState, action){
             ...state,
             loading:action.payload
         }
+        case SET_LOOKUP:
+        return {
+            ...state,
+            lookupStr:action.payload
+        }
         case DATA_ERROR:
             return{
                 loading: false, 
@@ -32,5 +36,4 @@ export default function(state = initialState, action){
             }
         default: return state
     }
-
 }

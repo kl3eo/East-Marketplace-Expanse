@@ -43,6 +43,7 @@ export default function Web3Provider ({ children }) {
   }, [])
 
   async function checkConnection () {
+    setHasInit(true)
     return window.ethereum.request({ method: 'eth_accounts' })
   }
 
@@ -59,8 +60,8 @@ export default function Web3Provider ({ children }) {
   async function initializeWeb3 () {
     try {
       // console.log('here ethereum', window.ethereum)
-      const accs = await checkConnection()
-      if (!window.ethereum || (window.ethereum && !accs.length && !hasInit)) {
+      const accs = hasInit ? ['a'] : await checkConnection()
+      if (!window.ethereum || (window.ethereum && !accs.length)) {
         await initializeWeb3WithoutSigner()
         return
       }
@@ -70,7 +71,6 @@ export default function Web3Provider ({ children }) {
       const connection = await web3Modal.connect()
       setHasWeb3(true)
       setHasInit(true)
-      // setSearchStr('')
       const myProvider = new ethers.providers.Web3Provider(connection, 'any')
       await getAndSetWeb3ContextWithSigner(myProvider)
 

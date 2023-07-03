@@ -43,7 +43,7 @@ const NavBar = () => {
             {logo}
           </Typography>
           <Box sx={{ flexGrow: 1, display: 'flex' }}>
-            {pages.map(({ title, href }) => <NavItem title={title} href={href} key={title} style={{ maxWidth: isMobile ? '30px' : '120px' }}/>)}
+            {pages.map(({ title, href }) => <NavItem title={title} href={href} key={title} style={{ maxWidth: isMobile ? '30px' : '120px', fontSize: isMobile ? '24px' : '16px' }}/>)}
           </Box>
           {(isReady || hasInit) && <SearchTextField value={searchStr} onChange={e => setSearchStr(e.target.value)}/>}
           {(isReady || hasInit) && <NavItem title={navText} href={navLink} key={navText}/>}

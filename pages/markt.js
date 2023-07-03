@@ -13,7 +13,6 @@ export default function Markt () {
   const [isLoading, setIsLoading] = useState(true)
   const { marketplaceContract, nftContract, isReady, network, searchStr } = useContext(Web3Context)
   const nDisp = 60
-  // const storedFilteredItemsList = useSelector(state => state.storedFilteredItemsList)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -81,6 +80,7 @@ export default function Markt () {
     const Result = await Promise.all(slicedArray.map(mapAvailableMarketItems(nftContract)))
     return Result
   }
+  // return useMemo(() => {
   if (!network) return <UnsupportedChain/>
   if (isLoading) return <LinearProgress/>
   if (!isLoading && !nfts.length) return <h1>No NFTs for sale</h1>
@@ -88,4 +88,5 @@ export default function Markt () {
   return (
     <NFTCardList nfts={nfts} setNfts={setNfts} withCreateNFT={false}/>
   )
+  // }, [isReady])
 }

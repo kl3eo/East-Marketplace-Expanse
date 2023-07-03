@@ -1,6 +1,5 @@
 import { isMobile } from 'react-device-detect'
 import { useContext } from 'react'
-import { useRouter } from 'next/router'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
@@ -10,7 +9,8 @@ import { Web3Context } from '../providers/Web3Provider'
 import NavItem from '../atoms/NavItem'
 import ConnectedAccountAddress from '../atoms/ConnectedAccountAddress'
 import ConnectButton from '../atoms/ConnectButton'
-import SearchTextField from '../atoms/SearchTextField'
+import { useDispatch } from 'react-redux'
+import { setLookup, setLoading } from '../../../store/actions/dataAction'
 
 const pages = [
   {
@@ -24,12 +24,17 @@ const pages = [
 ]
 
 const NavBar = () => {
-  const { account, setSearchStr, searchStr, isReady, hasInit } = useContext(Web3Context)
+  const { account, isReady, hasInit } = useContext(Web3Context)
   const logo = isMobile ? '' : ''
-  const navText = isMobile ? '➡' : 'Show'
-  const { pathname } = useRouter()
-
-  const navLink = pathname === '/' ? '/markt' : pathname === '/markt' ? '/' : pathname === '/my-nfts' ? '/own' : pathname === '/own' ? '/my-nfts' : '/markt'
+  const buttonText = isMobile ? '➡' : 'Show'
+  const dispatch = useDispatch()
+  const clickerHandler = (e) => {
+    e.preventDefault()
+    const { searchInput } = e.target
+    // console.log('searchInput', searchInput.value, 'lookup', lookupStr)
+    dispatch(setLookup(searchInput.value))
+    dispatch(setLoading(true))
+  }
   return (
     <AppBar position="static" sx={{ marginBottom: '12px' }}>
       <Container maxWidth="100%" sx={{ backgroundColor: '#001122' }}>
@@ -43,10 +48,12 @@ const NavBar = () => {
             {logo}
           </Typography>
           <Box sx={{ flexGrow: 1, display: 'flex' }}>
-            {pages.map(({ title, href }) => <NavItem title={title} href={href} key={title} style={{ maxWidth: isMobile ? '30px' : '120px', fontSize: isMobile ? '24px' : '16px' }}/>)}
+            {pages.map(({ title, href }) => <NavItem title={title} href={href} key={title} style={{ maxWidth: isMobile ? '36px' : '120px', fontSize: isMobile ? '30px' : '16px' }}/>)}
           </Box>
-          {(isReady || hasInit) && <SearchTextField value={searchStr} onChange={e => setSearchStr(e.target.value)}/>}
-          {(isReady || hasInit) && <NavItem title={navText} href={navLink} key={navText}/>}
+          <form onSubmit={clickerHandler}>
+          {(isReady || hasInit) && <input id="searchInput" name="searchInput" placeholder="🔍" type="text" style={{ maxWidth: isMobile ? '96px' : '120px' }}/>}
+          {(isReady || hasInit) && <button type="submit" style={{ maxWidth: isMobile ? '36px' : '96px' }}>{buttonText}</button>}
+          </form>
           {account ? <ConnectedAccountAddress account={account}/> : (isReady || hasInit) && <ConnectButton/>}
         </Toolbar>
       </Container>

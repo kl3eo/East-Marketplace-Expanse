@@ -4,20 +4,22 @@ import { Web3Context } from '../src/components/providers/Web3Provider'
 import { LinearProgress } from '@mui/material'
 import UnsupportedChain from '../src/components/molecules/UnsupportedChain'
 import { mapAvailableMarketItems } from '../src/utils/nft'
-import { useDispatch } from 'react-redux'
-import { getData, setCurrentDisp } from '../store/actions/dataAction'
+import { useDispatch, useSelector } from 'react-redux'
+import { getData, setCurrentDisp, setLoading } from '../store/actions/dataAction'
 import { store } from '../store/store'
 
 export default function Home () {
   const [nfts, setNfts] = useState([])
   const [isLoading, setIsLoading] = useState(true)
-  const { marketplaceContract, nftContract, isReady, network, searchStr } = useContext(Web3Context)
+  const { marketplaceContract, nftContract, isReady, network } = useContext(Web3Context)
   const nDisp = 60
   const dispatch = useDispatch()
-
+  const storedFilteredItemsList = useSelector(state => state.storedFilteredItemsList)
+  const { lookupStr } = storedFilteredItemsList
   useEffect(() => {
     loadNFTs()
-  }, [isReady])
+  }, [isReady, lookupStr])
+
   async function loadNFTs () {
     console.log('point1')
     if (!isReady) { console.log('return not ready'); return }
@@ -25,8 +27,8 @@ export default function Home () {
     const data = await marketplaceContract.fetchAvailableMarketItems()
     const state = store.getState()
     const storedFilteredItemsList = state.storedFilteredItemsList
-    const { storedFilteredItems, currentDisp } = storedFilteredItemsList
-    console.log('got current disp', currentDisp)
+    const { storedFilteredItems, currentDisp, lookupStr } = storedFilteredItemsList
+    console.log('got current disp', currentDisp, 'lookup', lookupStr)
 
     // why this doesn't work? could sort the raw data now and avoid sorting later
     // data.forEach(element => { console.log('element6:', parseInt(element[6]._hex, 16)) })
@@ -38,7 +40,7 @@ export default function Home () {
     // some tests
     // const Data = [...data, ...data, ...data, ...data]
     // check if we need to cheat
-    const items = searchStr.length || data.length < nDisp ? await Promise.all(data.map(mapAvailableMarketItems(nftContract))) : await getItems(data, 0, nDisp)
+    const items = lookupStr.length || data.length < nDisp ? await Promise.all(data.map(mapAvailableMarketItems(nftContract))) : await getItems(data, 0, nDisp)
     const endTime = new Date()
     const diff1 = endTime - endTime0
     console.log('items', items.length, 'time elapsed', diff1)
@@ -48,20 +50,22 @@ export default function Home () {
     let i = 0
     let j = 0
     const fItems = []
-    for (i = 0; i < items.length; i++) { const r = new RegExp(searchStr, 'gi'); if (searchStr.length === 0 || (items[i].name && items[i].name.length && r.test(items[i].name)) || (items[i].description && items[i].description.length && r.test(items[i].description)) || (items[i].tags && items[i].tags.length && r.test(items[i].tags))) { fItems[j] = items[i]; j++ } }
-    console.log('Here stored', storedFilteredItems, 'searchStr', searchStr)
+    for (i = 0; i < items.length; i++) { const r = new RegExp(lookupStr, 'gi'); if (lookupStr.length === 0 || (items[i].name && items[i].name.length && r.test(items[i].name)) || (items[i].description && items[i].description.length && r.test(items[i].description)) || (items[i].tags && items[i].tags.length && r.test(items[i].tags))) { fItems[j] = items[i]; j++ } }
+    console.log('Here stored', storedFilteredItems, 'lookupStr', lookupStr)
 
-    let changer = ((storedFilteredItems && storedFilteredItems.length === 0) || (searchStr && searchStr.length)) ? fItems : storedFilteredItems
+    let changer = ((storedFilteredItems && storedFilteredItems.length === 0) || (lookupStr && lookupStr.length)) ? fItems : storedFilteredItems
     console.log('Here changer', changer, 'current', currentDisp)
     if (typeof changer === 'undefined') changer = fItems
-    if ((storedFilteredItems && storedFilteredItems.length === 0) || (searchStr && searchStr.length) || (changer.length && currentDisp !== data.length)) { setNfts(changer); dispatch(setCurrentDisp(changer.length)); console.log('set nfts to changer!', changer.length) }
+    if ((storedFilteredItems && storedFilteredItems.length === 0) || (lookupStr && lookupStr.length) || (changer.length && currentDisp !== data.length)) { setNfts(changer); dispatch(setCurrentDisp(changer.length)); console.log('set nfts to changer!', changer.length, 'lookup is', lookupStr) }
 
     // now if we cheated earlier, do async mapping the rest and save results to store
-    if (searchStr.length === 0 && data.length >= nDisp) {
+    if (lookupStr.length === 0 && data.length >= nDisp) {
       setItems(data, fItems)
     }
     setIsLoading(false)
+    if (lookupStr && lookupStr.length > 0) dispatch(setLoading(false))
   }
+
   async function setItems (data, items) {
     let i = 0
     let j = 0
@@ -69,12 +73,14 @@ export default function Home () {
     const totalItems = [...items, ...restItems]
     totalItems.sort(function (a, b) { const ai = parseInt(a.price); const bi = parseInt(b.price); return ai < bi ? 1 : (ai === bi ? 0 : -1) })
     const totalFilteredItems = []
-    for (i = 0; i < totalItems.length; i++) { const r = new RegExp(searchStr, 'gi'); if (searchStr.length === 0 || (totalItems[i].name && totalItems[i].name.length && r.test(totalItems[i].name)) || (totalItems[i].description && totalItems[i].description.length && r.test(totalItems[i].description)) || (totalItems[i].tags && totalItems[i].tags.length && r.test(totalItems[i].tags))) { totalFilteredItems[j] = totalItems[i]; j++ } }
+    for (i = 0; i < totalItems.length; i++) { const r = new RegExp(lookupStr, 'gi'); if (lookupStr.length === 0 || (totalItems[i].name && totalItems[i].name.length && r.test(totalItems[i].name)) || (totalItems[i].description && totalItems[i].description.length && r.test(totalItems[i].description)) || (totalItems[i].tags && totalItems[i].tags.length && r.test(totalItems[i].tags))) { totalFilteredItems[j] = totalItems[i]; j++ } }
 
     // save to store
     dispatch(getData(totalFilteredItems))
+    dispatch(setLoading(false))
     console.log('totalFiltered', totalFilteredItems.length)
   }
+
   async function getItems (data, start, n) {
     const slicedArray = await data.slice(start, n)
     const Result = await Promise.all(slicedArray.map(mapAvailableMarketItems(nftContract)))

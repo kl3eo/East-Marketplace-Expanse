@@ -10,8 +10,8 @@ import { Web3Context } from '../providers/Web3Provider'
 import { useContext, useEffect } from 'react'
 import { mapCreatedAndOwnedTokenIdsAsMarketItems } from '../../utils/nft'
 import { store } from '../../../store/store'
-// import { useDispatch, useSelector } from 'react-redux'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+// import { useDispatch } from 'react-redux'
 import { setCurrentDisp, setLoading } from '../../../store/actions/dataAction'
 
 const useStyles = makeStyles((theme) => ({
@@ -28,17 +28,21 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-export default function NFTCardList ({ nfts, setNfts, filteredItems, withCreateNFT }) {
+export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
   const classes = useStyles()
-  const { account, marketplaceContract, nftContract, searchStr } = useContext(Web3Context)
+  const { account, marketplaceContract, nftContract } = useContext(Web3Context)
+  const storedFilteredItemsList = useSelector(state => state.storedFilteredItemsList)
+  const { lookupStr, loading } = storedFilteredItemsList
   const timeLoader = 5000
+
   useEffect(() => {
     window.addEventListener('scroll', relo)
     setTimeout(() => { dispatch(setLoading(false)) }, timeLoader)
   }, [])
+
   const dispatch = useDispatch()
   function relo () {
-    if (withCreateNFT || searchStr.length) {
+    if (withCreateNFT || lookupStr.length) {
       window.removeEventListener('scroll', relo)
       return
     }
@@ -91,6 +95,7 @@ export default function NFTCardList ({ nfts, setNfts, filteredItems, withCreateN
 
     return <NFTCard nft={nft} action="none"/>
   }
+  // if (loading) return (<div style={{ width: '100%', height: '100%', textAlign: 'center', margin: '0 auto', fontSize: '48px' }}>..loading..</div>)
   console.log('point3')
   return (
     <InfiniteScroll
@@ -103,7 +108,7 @@ export default function NFTCardList ({ nfts, setNfts, filteredItems, withCreateN
         </Grid>}
         {nfts.map((nft, i) =>
           <Fade in={true} key={i}>
-            <Grid item xs={12} sm={6} md={3} className={classes.gridItem} >
+            <Grid item xs={12} sm={6} md={3} className={classes.gridItem} style={{ opacity: loading && lookupStr && lookupStr.length > 0 ? '0.5' : '1' }}>
                 <NFT nft={nft} index={i} />
             </Grid>
           </Fade>

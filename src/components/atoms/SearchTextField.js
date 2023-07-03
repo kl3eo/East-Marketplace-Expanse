@@ -4,7 +4,7 @@ import { isMobile } from 'react-device-detect'
 export default function SearchTextField ({ onChange }) {
   return (
     <TextField
-      id="search-input"
+      id="searchInput"
       label=""
       name="search"
       placeholder="🔍"

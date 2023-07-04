@@ -22,7 +22,7 @@ export default function Home () {
 
   async function loadNFTs () {
     console.log('point1')
-    if (!isReady) { console.log('return not ready'); return }
+    if (!isReady) { console.log('return not ready'); dispatch(setLoading(true)); return }
     const startTime = new Date()
     const data = await marketplaceContract.fetchAvailableMarketItems()
     const state = store.getState()

@@ -4,6 +4,9 @@ import { ethers } from 'ethers'
 import NFT from '../../../artifacts/contracts/NFT.sol/NFT.json'
 import Market from '../../../artifacts/contracts/Marketplace.sol/Marketplace.json'
 import axios from 'axios'
+import { store } from '../../../store/store'
+import { useDispatch } from 'react-redux'
+import { setLoading } from '../../../store/actions/dataAction'
 
 const contextDefaultValues = {
   account: '',
@@ -35,8 +38,10 @@ export default function Web3Provider ({ children }) {
   const [nftContract, setNFTContract] = useState(contextDefaultValues.nftContract)
   const [isReady, setIsReady] = useState(contextDefaultValues.isReady)
   const [hasInit, setHasInit] = useState(contextDefaultValues.hasInit)
+  const dispatch = useDispatch()
 
   useEffect(() => {
+    console.log('calling initializeWeb3 with useEffect')
     initializeWeb3()
   }, [])
 
@@ -56,7 +61,7 @@ export default function Web3Provider ({ children }) {
 
   async function initializeWeb3 () {
     try {
-      // console.log('here ethereum', window.ethereum)
+      console.log('in initializeWeb3 called, ethereum', window.ethereum)
       const accs = hasInit ? ['a'] : await checkConnection()
       if (!window.ethereum || (window.ethereum && !accs.length)) {
         await initializeWeb3WithoutSigner()
@@ -69,6 +74,7 @@ export default function Web3Provider ({ children }) {
       setHasWeb3(true)
       setHasInit(true)
       const myProvider = new ethers.providers.Web3Provider(connection, 'any')
+      console.log('calling withsigner!?')
       await getAndSetWeb3ContextWithSigner(myProvider)
 
       function onAccountsChanged (accounts) {
@@ -80,8 +86,12 @@ export default function Web3Provider ({ children }) {
         return getAndSetAccountAndBalance(myProvider, changedAddress)
       }
 
+      function onChainChanged () {
+        dispatch(setLoading(true))
+        return initializeWeb3()
+      }
       connection.on('accountsChanged', onAccountsChanged)
-      connection.on('chainChanged', initializeWeb3)
+      connection.on('chainChanged', onChainChanged)
     } catch (error) {
       initializeWeb3WithoutSigner()
       console.log(error)
@@ -89,21 +99,26 @@ export default function Web3Provider ({ children }) {
   }
 
   async function getAndSetWeb3ContextWithSigner (provider) {
-    // setIsReady(false)
-    console.log('with signer, isready false')
+    const state = store.getState()
+    const storedFilteredItemsList = state.storedFilteredItemsList
+    const { storedFilteredItems, currentDisp, loading } = storedFilteredItemsList
+    if (loading) setIsReady(false)
+    console.log('with signer, isready false, stored', storedFilteredItems, 'disp', currentDisp, 'loading', loading)
     const signer = provider.getSigner()
     const signerAddress = await signer.getAddress()
     await getAndSetAccountAndBalance(provider, signerAddress)
     const networkName = await getAndSetNetwork(provider)
     const success = await setupContracts(signer, networkName)
-    // setIsReady(success)
+    if (loading) setIsReady(success)
     console.log('with signer, isready?', success)
   }
 
   async function getAndSetWeb3ContextWithoutSigner (provider) {
     setIsReady(false)
     const networkName = await getAndSetNetwork(provider)
+    console.log('1: network', networkName)
     const success = await setupContracts(provider, networkName)
+    console.log('2: setupContracts', success)
     setIsReady(success)
   }
 

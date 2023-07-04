@@ -31,3 +31,5 @@ yarn run start
 ..search 'tags' of metadata
 ..replace 'approval' with new sell
 ..auto click 'Connect' button in 3 sec
+..added Redux to share all stuff
+..async loading all while display first 60

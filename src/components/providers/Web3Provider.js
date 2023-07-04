@@ -89,13 +89,15 @@ export default function Web3Provider ({ children }) {
   }
 
   async function getAndSetWeb3ContextWithSigner (provider) {
-    setIsReady(false)
+    // setIsReady(false)
+    console.log('with signer, isready false')
     const signer = provider.getSigner()
     const signerAddress = await signer.getAddress()
     await getAndSetAccountAndBalance(provider, signerAddress)
     const networkName = await getAndSetNetwork(provider)
     const success = await setupContracts(signer, networkName)
-    setIsReady(success)
+    // setIsReady(success)
+    console.log('with signer, isready?', success)
   }
 
   async function getAndSetWeb3ContextWithoutSigner (provider) {

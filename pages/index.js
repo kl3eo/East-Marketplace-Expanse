@@ -63,6 +63,8 @@ export default function Home () {
     if (lookupStr.length === 0 && data.length >= nDisp && changer.length < data.length) {
       console.log('calling setItems, lookup', lookupStr, 'data length', data.length, 'currDisp', currentDisp)
       setItems(data, fItems)
+    } else {
+      // setTimeout(() => { dispatch(setLoading(false)) }, 5000)
     }
     setIsLoading(false)
     if (lookupStr && lookupStr.length > 0) dispatch(setLoading(false))

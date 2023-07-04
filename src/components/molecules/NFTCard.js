@@ -55,7 +55,7 @@ const useStyles = makeStyles({
   }
 })
 
-const videoW = isMobile ? '320px' : '345px'
+const videoW = '100%'
 async function getAndSetListingFee (marketplaceContract, setListingFee) {
   if (!marketplaceContract) return
   const listingFee = await marketplaceContract.getListingFee()
@@ -170,7 +170,7 @@ export default function NFTCard ({ nft, action, updateNFT }) {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       >
-      {isVideo && !loading ? <CardMedia className="MuiCardMedia-root MuiCardMedia-media" alt={name} image={image} component="video" controls onClick={handleCardVideoClick} sx={{ width: { videoW }, height: '195px' }} /> : isVideo && loading ? <CardMedia className={classes.media} alt={name} image={loadingUrl} component="a" onClick={handleCardImageClick} /> : isWebRTC && !loading ? <div style={{ backgroundColor: '#112', height: isMobile ? '270px' : '390px', width: isMobile ? '310px' : '345px', position: isMobile ? 'relative' : 'absolute', top: isMobile ? '0px' : '70px' }}><iframe src={img} style={{ height: isMobile ? '270px' : '430px', width: isMobile ? '310px' : '345px', position: isMobile ? 'relative' : 'absolute', top: isMobile ? '0px' : '0px' }}></iframe></div> : isWebRTC && loading ? <CardMedia className={classes.media} alt={name} image={image} component="a" onClick={handleCardImageClick} /> : <CardMedia className={classes.media} alt={name} image={image} component="a" onClick={handleCardImageClick} />}
+      {isVideo && !loading ? <CardMedia className="MuiCardMedia-root MuiCardMedia-media" alt={name} image={image} component="video" controls onClick={handleCardVideoClick} sx={{ width: { videoW }, height: '195px' }} /> : isVideo && loading ? <CardMedia className={classes.media} alt={name} image={loadingUrl} component="a" onClick={handleCardImageClick} /> : isWebRTC && !loading ? <div style={{ backgroundColor: '#112', height: isMobile ? '270px' : '390px', width: '100%', position: 'relative', top: '0px' }}><iframe src={img} style={{ height: isMobile ? '270px' : '430px', width: '100%', position: 'relative', top: '0px' }}></iframe></div> : isWebRTC && loading ? <CardMedia className={classes.media} alt={name} image={image} component="a" onClick={handleCardImageClick} /> : <CardMedia className={classes.media} alt={name} image={image} component="a" onClick={handleCardImageClick} />}
 
       <CardContent className={classes.cardContent} >
         <NFTName name={name}/>

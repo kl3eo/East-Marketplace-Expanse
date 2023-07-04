@@ -15,7 +15,7 @@ export default function Home () {
   const nDisp = 60
   const dispatch = useDispatch()
   const storedFilteredItemsList = useSelector(state => state.storedFilteredItemsList)
-  const { lookupStr } = storedFilteredItemsList
+  const { lookupStr, currentDisp } = storedFilteredItemsList
   useEffect(() => {
     loadNFTs()
   }, [isReady, lookupStr])
@@ -25,6 +25,7 @@ export default function Home () {
     if (!isReady) { console.log('return not ready'); dispatch(setLoading(true)); return }
     const startTime = new Date()
     const data = await marketplaceContract.fetchAvailableMarketItems()
+    console.log('got data length', data.length)
     const state = store.getState()
     const storedFilteredItemsList = state.storedFilteredItemsList
     const { storedFilteredItems, currentDisp, lookupStr } = storedFilteredItemsList
@@ -59,7 +60,8 @@ export default function Home () {
     if ((storedFilteredItems && storedFilteredItems.length === 0) || (lookupStr && lookupStr.length) || (changer.length && currentDisp !== data.length)) { setNfts(changer); dispatch(setCurrentDisp(changer.length)); console.log('set nfts to changer!', changer.length, 'lookup is', lookupStr) }
 
     // now if we cheated earlier, do async mapping the rest and save results to store
-    if (lookupStr.length === 0 && data.length >= nDisp) {
+    if (lookupStr.length === 0 && data.length >= nDisp && changer.length < data.length) {
+      console.log('calling setItems, lookup', lookupStr, 'data length', data.length, 'currDisp', currentDisp)
       setItems(data, fItems)
     }
     setIsLoading(false)
@@ -143,7 +145,7 @@ export default function Home () {
   if (!network) return <UnsupportedChain/>
   if (isLoading) return <LinearProgress/>
   if (!isLoading && !nfts.length) return <h1>No NFTs for sale</h1>
-  console.log('point2')
+  console.log('point2, nfts length', nfts.length, 'currDisp', currentDisp)
   return (
     <NFTCardList nfts={nfts} setNfts={setNfts} withCreateNFT={false}/>
   )

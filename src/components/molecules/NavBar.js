@@ -3,7 +3,7 @@ import { useContext } from 'react'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
-import Typography from '@mui/material/Typography'
+// import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import { Web3Context } from '../providers/Web3Provider'
 import NavItem from '../atoms/NavItem'
@@ -29,14 +29,15 @@ const onCli = (e) => {
 }
 const NavBar = () => {
   const { account, isReady, hasInit } = useContext(Web3Context)
-  const logo = isMobile ? '' : ''
-  const buttonText = isMobile ? '➡' : 'Show'
+  // const logo = isMobile ? '' : ''
+  const buttonText = isMobile ? '➡' : 'SHOW'
   const dispatch = useDispatch()
   const storedFilteredItemsList = useSelector(state => state.storedFilteredItemsList)
   const { lookupStr } = storedFilteredItemsList
   const clickerHandler = (e) => {
     e.preventDefault()
     const { searchInput } = e.target
+    if (searchInput.value === lookupStr) return
     dispatch(setLookup(searchInput.value))
     dispatch(setLoading(true))
     // this hack is required when user hits 'show' button with no value while lookup has also not been set; or the list will stay dimmed for good; and if timeout is for a shorter value than 20sec, the search workflow breaks
@@ -46,20 +47,12 @@ const NavBar = () => {
     <AppBar position="static" sx={{ marginBottom: '12px' }}>
       <Container maxWidth="100%" sx={{ backgroundColor: '#001122' }}>
         <Toolbar disableGutters sx={{ backgroundColor: '#001122' }}>
-          <Typography
-            variant="h2"
-            noWrap
-            component="div"
-            sx={{ p: '10px', flexGrow: { xs: 1, md: 0 }, display: 'flex' }}
-          >
-            {logo}
-          </Typography>
           <Box sx={{ flexGrow: 1, display: 'flex' }}>
             {pages.map(({ title, href }) => <NavItem title={title} href={href} key={title} style={{ maxWidth: isMobile ? '36px' : '120px' }}/>)}
           </Box>
           <form onSubmit={clickerHandler}>
-          {(isReady || hasInit) && <input id="searchInput" name="searchInput" placeholder="🔍" type="text" onClick={onCli} style={{ maxWidth: isMobile ? '72px' : '120px', marginRight: '10px', fontSize: '24px' }}/>}
-          {(isReady || hasInit) && <button type="submit" style={{ maxWidth: isMobile ? '36px' : '96px' }}>{buttonText}</button>}
+          {(isReady || hasInit) && <input id="searchInput" name="searchInput" placeholder="🔍" type="text" onClick={onCli} style={{ maxWidth: isMobile ? '102px' : '120px', marginRight: isMobile ? '0px' : '8px', fontSize: '20px' }}/>}
+          {(isReady || hasInit) && <button type="submit" style={{ maxWidth: isMobile ? '36px' : '96px', fontSize: isMobile ? '16px' : '20px', background: 'transparent', border: '0px', color: '#fff', cursor: 'pointer' }}>{buttonText}</button>}
           </form>
           {account ? <ConnectedAccountAddress account={account}/> : (isReady || hasInit) && <ConnectButton/>}
         </Toolbar>

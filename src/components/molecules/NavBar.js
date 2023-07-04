@@ -9,7 +9,7 @@ import { Web3Context } from '../providers/Web3Provider'
 import NavItem from '../atoms/NavItem'
 import ConnectedAccountAddress from '../atoms/ConnectedAccountAddress'
 import ConnectButton from '../atoms/ConnectButton'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setLookup, setLoading } from '../../../store/actions/dataAction'
 
 const pages = [
@@ -32,12 +32,15 @@ const NavBar = () => {
   const logo = isMobile ? '' : ''
   const buttonText = isMobile ? '➡' : 'Show'
   const dispatch = useDispatch()
+  const storedFilteredItemsList = useSelector(state => state.storedFilteredItemsList)
+  const { lookupStr } = storedFilteredItemsList
   const clickerHandler = (e) => {
     e.preventDefault()
     const { searchInput } = e.target
-    // console.log('searchInput', searchInput.value, 'lookup', lookupStr)
     dispatch(setLookup(searchInput.value))
     dispatch(setLoading(true))
+    // this hack is required when user hits 'show' button with no value while lookup has also not been set; or the list will stay dimmed for good; and if timeout is for a shorter value than 20sec, the search workflow breaks
+    if (lookupStr.length === 0) setTimeout(() => { dispatch(setLoading(false)) }, 30000)
   }
   return (
     <AppBar position="static" sx={{ marginBottom: '12px' }}>

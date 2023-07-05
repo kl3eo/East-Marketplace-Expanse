@@ -75,10 +75,8 @@ export default function Web3Provider ({ children }) {
       setHasInit(true)
       const myProvider = new ethers.providers.Web3Provider(connection, 'any')
       console.log('calling withsigner!?')
-      dispatch(setLoading(true))
       await getAndSetWeb3ContextWithSigner(myProvider)
-      console.log('returned from withsigner')
-      dispatch(setLoading(false))
+
       function onAccountsChanged (accounts) {
         // Workaround to accountsChanged metamask mobile bug
         if (onAccountsChangedCooldown) return
@@ -104,19 +102,15 @@ export default function Web3Provider ({ children }) {
     const state = store.getState()
     const storedFilteredItemsList = state.storedFilteredItemsList
     const { loading } = storedFilteredItemsList
-    if (loading) {
-      // setIsReady(false)
-      console.log('with signer, set isready false, loading', loading)
-    }
+    if (loading) setIsReady(false)
+    console.log('with signer, isready false, loading', loading)
     const signer = provider.getSigner()
     const signerAddress = await signer.getAddress()
     await getAndSetAccountAndBalance(provider, signerAddress)
-    if (loading) {
-      const networkName = await getAndSetNetwork(provider)
-      const success = await setupContracts(signer, networkName)
-      // setIsReady(success)
-      console.log('with signer, isready?', success)
-    }
+    const networkName = await getAndSetNetwork(provider)
+    const success = await setupContracts(signer, networkName)
+    if (loading) setIsReady(success)
+    console.log('with signer, isready?', success)
   }
 
   async function getAndSetWeb3ContextWithoutSigner (provider) {

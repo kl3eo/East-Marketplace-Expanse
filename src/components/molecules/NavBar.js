@@ -39,7 +39,7 @@ const NavBar = () => {
     dispatch(setLookup(searchInput.value))
     dispatch(setLoading(true))
     // this hack is required or the list may stuck dimmed for good
-    if (lookupStr.length === 0) setTimeout(() => { dispatch(setLoading(false)) }, 30000)
+    if (searchInput.value.length === 0) setTimeout(() => { dispatch(setLoading(false)) }, 12000)
   }
   return (
     <AppBar position="static" sx={{ marginBottom: '12px' }}>

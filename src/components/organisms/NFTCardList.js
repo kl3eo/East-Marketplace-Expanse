@@ -1,4 +1,3 @@
-// import { isMobile } from 'react-device-detect'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import Grid from '@mui/material/Grid'
 import LinearProgress from '@mui/material/LinearProgress'
@@ -12,7 +11,6 @@ import { useContext, useEffect } from 'react'
 import { mapCreatedAndOwnedTokenIdsAsMarketItems } from '../../utils/nft'
 import { store } from '../../../store/store'
 import { useDispatch, useSelector } from 'react-redux'
-// import { useDispatch } from 'react-redux'
 import { setCurrentDisp } from '../../../store/actions/dataAction'
 
 const useStyles = makeStyles((theme) => ({
@@ -34,7 +32,7 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
   const { account, marketplaceContract, nftContract } = useContext(Web3Context)
   const storedFilteredItemsList = useSelector(state => state.storedFilteredItemsList)
   const { lookupStr, loading, currentDisp } = storedFilteredItemsList
-  // const timeLoader = isMobile ? 10000 : 10000
+  // const timeLoader = 10000
 
   useEffect(() => {
     window.addEventListener('scroll', relo)

@@ -141,7 +141,6 @@ export default function Home () {
     const Result8 = await Promise8
     return [...Result1, ...Result2, ...Result3, ...Result4, ...Result5, ...Result6, ...Result7, ...Result8]
   } */
-  // return useMemo(() => {
   if (!network) return <UnsupportedChain/>
   if (isLoading) return <LinearProgress/>
   if (!isLoading && !nfts.length) return <h1>No NFTs for sale</h1>
@@ -149,5 +148,4 @@ export default function Home () {
   return (
     <NFTCardList nfts={nfts} setNfts={setNfts} withCreateNFT={false}/>
   )
-  // }, [isReady])
 }

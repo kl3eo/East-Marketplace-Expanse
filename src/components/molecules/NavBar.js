@@ -3,7 +3,6 @@ import { useContext } from 'react'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
-// import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import { Web3Context } from '../providers/Web3Provider'
 import NavItem from '../atoms/NavItem'
@@ -29,7 +28,6 @@ const onCli = (e) => {
 }
 const NavBar = () => {
   const { account, isReady, hasInit } = useContext(Web3Context)
-  // const logo = isMobile ? '' : ''
   const buttonText = isMobile ? '➡' : 'SHOW'
   const dispatch = useDispatch()
   const storedFilteredItemsList = useSelector(state => state.storedFilteredItemsList)
@@ -40,7 +38,7 @@ const NavBar = () => {
     if (searchInput.value === lookupStr) return
     dispatch(setLookup(searchInput.value))
     dispatch(setLoading(true))
-    // this hack is required when user hits 'show' button with no value while lookup has also not been set; or the list will stay dimmed for good; and if timeout is for a shorter value than 20sec, the search workflow breaks
+    // this hack is required or the list may stuck dimmed for good
     if (lookupStr.length === 0) setTimeout(() => { dispatch(setLoading(false)) }, 30000)
   }
   return (

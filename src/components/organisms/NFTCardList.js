@@ -32,11 +32,9 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
   const { account, marketplaceContract, nftContract } = useContext(Web3Context)
   const storedFilteredItemsList = useSelector(state => state.storedFilteredItemsList)
   const { lookupStr, loading, currentDisp } = storedFilteredItemsList
-  // const timeLoader = 10000
 
   useEffect(() => {
     window.addEventListener('scroll', relo)
-    // setTimeout(() => { dispatch(setLoading(false)); console.log('timeout', timeLoader) }, timeLoader)
   }, [])
 
   const dispatch = useDispatch()

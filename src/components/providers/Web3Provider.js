@@ -53,10 +53,13 @@ export default function Web3Provider ({ children }) {
   async function initializeWeb3WithoutSigner () {
     const providerURL = 'https://node.expanse.tech'
     // const providerURL = 'https://cube.room-house.com:8470'
+    console.log('w/o signer, req provider')
     const myProvider = ethers.getDefaultProvider(providerURL)
+    console.log('w/o signer, got provider', myProvider)
     setHasInit(true)
     setHasWeb3(false)
     await getAndSetWeb3ContextWithoutSigner(myProvider)
+    console.log('w/o signer, after set Context')
   }
 
   async function initializeWeb3 () {
@@ -64,12 +67,18 @@ export default function Web3Provider ({ children }) {
       console.log('in initializeWeb3 called, ethereum', window.ethereum)
       const accs = hasInit ? ['a'] : await checkConnection()
       if (!window.ethereum || (window.ethereum && !accs.length)) {
+        console.log('going to init w/o signer')
         await initializeWeb3WithoutSigner()
         return
+      } else {
+        console.log('going to init with signer')
       }
 
       let onAccountsChangedCooldown = false
       const web3Modal = new Web3Modal()
+      console.log('start web3modal.connect')
+      await web3Modal.clearCachedProvider()
+      console.log('cleared cache')
       const connection = await web3Modal.connect()
       setHasWeb3(true)
       setHasInit(true)
@@ -93,6 +102,7 @@ export default function Web3Provider ({ children }) {
       connection.on('accountsChanged', onAccountsChanged)
       connection.on('chainChanged', onChainChanged)
     } catch (error) {
+      console.log('2: going to init w/o signer')
       initializeWeb3WithoutSigner()
       console.log(error)
     }

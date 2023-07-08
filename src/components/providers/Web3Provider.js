@@ -46,7 +46,8 @@ export default function Web3Provider ({ children }) {
   }, [])
 
   async function checkConnection () {
-    setHasInit(true)
+    // setHasInit(true)
+    // console.log('set hasInit1')
     return window.ethereum.request({ method: 'eth_accounts' })
   }
 
@@ -57,6 +58,7 @@ export default function Web3Provider ({ children }) {
     const myProvider = ethers.getDefaultProvider(providerURL)
     console.log('w/o signer, got provider', myProvider)
     setHasInit(true)
+    console.log('set hasInit3')
     setHasWeb3(false)
     await getAndSetWeb3ContextWithoutSigner(myProvider)
     console.log('w/o signer, after set Context')
@@ -66,12 +68,13 @@ export default function Web3Provider ({ children }) {
     try {
       console.log('in initializeWeb3 called, ethereum', window.ethereum)
       const accs = hasInit ? ['a'] : await checkConnection()
+      // const accs = await checkConnection()
       if (!window.ethereum || (window.ethereum && !accs.length)) {
         console.log('going to init w/o signer')
         await initializeWeb3WithoutSigner()
         return
       } else {
-        console.log('going to init with signer')
+        console.log('going to init with signer, accs', accs, 'ethereum', window.ethereum)
       }
 
       let onAccountsChangedCooldown = false
@@ -82,6 +85,7 @@ export default function Web3Provider ({ children }) {
       const connection = await web3Modal.connect()
       setHasWeb3(true)
       setHasInit(true)
+      console.log('set hasInit2')
       const myProvider = new ethers.providers.Web3Provider(connection, 'any')
       console.log('calling withsigner!?')
       await getAndSetWeb3ContextWithSigner(myProvider)

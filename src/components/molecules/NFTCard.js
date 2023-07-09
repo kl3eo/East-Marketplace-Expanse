@@ -71,7 +71,7 @@ export default function NFTCard ({ nft, action, updateNFT }) {
   const [priceError, setPriceError] = useState(false)
   const [newPrice, setPrice] = useState(0)
   const storedFilteredItemsList = useSelector(state => state.storedFilteredItemsList)
-  const { loading } = storedFilteredItemsList
+  const { loading, fullyLoaded } = storedFilteredItemsList
   const classes = useStyles()
   const { name, description, image } = nft
   let img = image
@@ -84,7 +84,8 @@ export default function NFTCard ({ nft, action, updateNFT }) {
   useEffect(() => {
     getAndSetListingFee(marketplaceContract, setListingFee)
   }, [])
-
+  const Memoized = isVideo && !loading && fullyLoaded ? <CardMedia className="MuiCardMedia-root MuiCardMedia-media" alt={name} image={image} component="video" controls onClick={handleCardVideoClick} sx={{ width: { videoW }, height: '195px' }} /> : isVideo && (loading || !fullyLoaded) ? <CardMedia className={classes.media} alt={name} image={loadingUrl} component="a" onClick={handleCardImageClick} /> : isWebRTC && !loading && fullyLoaded ? <div style={{ backgroundColor: '#112', height: isMobile ? '270px' : '380px', width: '100%', position: 'relative', top: '0px' }}><iframe src={img} style={{ height: isMobile ? '270px' : '435px', width: '100%', position: 'relative', top: '0px', border: '0px' }}></iframe></div> : isWebRTC && (loading || !fullyLoaded) ? <CardMedia className={classes.media} alt={name} image={image} component="a" onClick={handleCardImageClick} /> : <CardMedia className={classes.media} alt={name} image={image} component="a" onClick={handleCardImageClick} />
+  // useMemo(() => Memoized, [])
   const actions = {
     buy: {
       text: 'buy',
@@ -170,7 +171,7 @@ export default function NFTCard ({ nft, action, updateNFT }) {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       >
-      {isVideo && !loading ? <CardMedia className="MuiCardMedia-root MuiCardMedia-media" alt={name} image={image} component="video" controls onClick={handleCardVideoClick} sx={{ width: { videoW }, height: '195px' }} /> : isVideo && loading ? <CardMedia className={classes.media} alt={name} image={loadingUrl} component="a" onClick={handleCardImageClick} /> : isWebRTC && !loading ? <div style={{ backgroundColor: '#112', height: isMobile ? '270px' : '380px', width: '100%', position: 'relative', top: '0px' }}><iframe src={img} style={{ height: isMobile ? '270px' : '435px', width: '100%', position: 'relative', top: '0px', border: '0px' }}></iframe></div> : isWebRTC && loading ? <CardMedia className={classes.media} alt={name} image={image} component="a" onClick={handleCardImageClick} /> : <CardMedia className={classes.media} alt={name} image={image} component="a" onClick={handleCardImageClick} />}
+      {Memoized}
 
       <CardContent className={classes.cardContent} >
         <NFTName name={name}/>
@@ -200,3 +201,5 @@ export default function NFTCard ({ nft, action, updateNFT }) {
     </Card>
   )
 }
+
+/*       {useMemo(() => { isVideo && !loading ? <CardMedia className="MuiCardMedia-root MuiCardMedia-media" alt={name} image={image} component="video" controls onClick={handleCardVideoClick} sx={{ width: { videoW }, height: '195px' }} /> : isVideo && loading ? <CardMedia className={classes.media} alt={name} image={loadingUrl} component="a" onClick={handleCardImageClick} /> : isWebRTC && !loading ? <div style={{ backgroundColor: '#112', height: isMobile ? '270px' : '380px', width: '100%', position: 'relative', top: '0px' }}><iframe src={img} style={{ height: isMobile ? '270px' : '435px', width: '100%', position: 'relative', top: '0px', border: '0px' }}></iframe></div> : isWebRTC && loading ? <CardMedia className={classes.media} alt={name} image={image} component="a" onClick={handleCardImageClick} /> : <CardMedia className={classes.media} alt={name} image={image} component="a" onClick={handleCardImageClick} /> }, [])} */

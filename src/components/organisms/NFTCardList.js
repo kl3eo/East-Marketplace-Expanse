@@ -31,7 +31,7 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
   const classes = useStyles()
   const { account, marketplaceContract, nftContract } = useContext(Web3Context)
   const storedFilteredItemsList = useSelector(state => state.storedFilteredItemsList)
-  const { lookupStr, loading, currentDisp } = storedFilteredItemsList
+  const { lookupStr, loading, fullyLoaded, currentDisp } = storedFilteredItemsList
 
   useEffect(() => {
     window.addEventListener('scroll', relo)
@@ -105,7 +105,7 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
         </Grid>}
         {nfts.map((nft, i) =>
           <Fade in={true} key={i}>
-            <Grid item xs={12} sm={6} md={3} className={classes.gridItem} style={{ opacity: loading && ((lookupStr && lookupStr.length > 0) || currentDisp) ? '0.5' : '1' }}>
+            <Grid item xs={12} sm={6} md={3} className={classes.gridItem} style={{ opacity: (loading || !fullyLoaded) && ((lookupStr && lookupStr.length > 0) || currentDisp) ? '0.5' : '1' }}>
                 <NFT nft={nft} index={i} />
             </Grid>
           </Fade>

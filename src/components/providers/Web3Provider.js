@@ -6,7 +6,7 @@ import Market from '../../../artifacts/contracts/Marketplace.sol/Marketplace.jso
 import axios from 'axios'
 import { store } from '../../../store/store'
 import { useDispatch } from 'react-redux'
-import { setLoading } from '../../../store/actions/dataAction'
+import { setLoading, setFullyLoaded } from '../../../store/actions/dataAction'
 
 const contextDefaultValues = {
   account: '',
@@ -75,6 +75,7 @@ export default function Web3Provider ({ children }) {
         return
       } else {
         console.log('going to init with signer, accs', accs, 'ethereum', window.ethereum)
+        dispatch(setFullyLoaded(false))
       }
 
       let onAccountsChangedCooldown = false
@@ -125,6 +126,7 @@ export default function Web3Provider ({ children }) {
     const success = await setupContracts(signer, networkName)
     if (loading) setIsReady(success)
     console.log('with signer, isready?', success)
+    dispatch(setFullyLoaded(true))
   }
 
   async function getAndSetWeb3ContextWithoutSigner (provider) {
@@ -134,6 +136,7 @@ export default function Web3Provider ({ children }) {
     const success = await setupContracts(provider, networkName)
     console.log('2: setupContracts', success)
     setIsReady(success)
+    dispatch(setFullyLoaded(true))
   }
 
   async function getAndSetAccountAndBalance (provider, address) {

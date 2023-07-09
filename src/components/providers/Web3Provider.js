@@ -46,19 +46,15 @@ export default function Web3Provider ({ children }) {
   }, [])
 
   async function checkConnection () {
-    // setHasInit(true)
-    // console.log('set hasInit1')
     return window.ethereum.request({ method: 'eth_accounts' })
   }
 
   async function initializeWeb3WithoutSigner () {
     const providerURL = 'https://node.expanse.tech'
     // const providerURL = 'https://cube.room-house.com:8470'
-    console.log('w/o signer, req provider')
+    // console.log('w/o signer, req provider')
     const myProvider = ethers.getDefaultProvider(providerURL)
-    console.log('w/o signer, got provider', myProvider)
-    setHasInit(true)
-    console.log('set hasInit3')
+    // console.log('w/o signer, got provider', myProvider)
     setHasWeb3(false)
     await getAndSetWeb3ContextWithoutSigner(myProvider)
     console.log('w/o signer, after set Context')
@@ -70,11 +66,11 @@ export default function Web3Provider ({ children }) {
       const accs = hasInit ? ['a'] : await checkConnection()
       // const accs = await checkConnection()
       if (!window.ethereum || (window.ethereum && !accs.length)) {
-        console.log('going to init w/o signer')
+        // console.log('going to init w/o signer')
         await initializeWeb3WithoutSigner()
         return
       } else {
-        console.log('going to init with signer, accs', accs, 'ethereum', window.ethereum)
+        // console.log('going to init with signer, accs', accs, 'ethereum', window.ethereum)
         dispatch(setFullyLoaded(false))
       }
 
@@ -82,13 +78,13 @@ export default function Web3Provider ({ children }) {
       const web3Modal = new Web3Modal()
       console.log('start web3modal.connect')
       await web3Modal.clearCachedProvider()
-      console.log('cleared cache')
+      // console.log('cleared cache')
       const connection = await web3Modal.connect()
       setHasWeb3(true)
       setHasInit(true)
-      console.log('set hasInit2')
+      // console.log('set hasInit2')
       const myProvider = new ethers.providers.Web3Provider(connection, 'any')
-      console.log('calling withsigner!?')
+      // console.log('calling withsigner!?')
       await getAndSetWeb3ContextWithSigner(myProvider)
 
       function onAccountsChanged (accounts) {
@@ -107,7 +103,7 @@ export default function Web3Provider ({ children }) {
       connection.on('accountsChanged', onAccountsChanged)
       connection.on('chainChanged', onChainChanged)
     } catch (error) {
-      console.log('2: going to init w/o signer')
+      // console.log('2: going to init w/o signer')
       initializeWeb3WithoutSigner()
       console.log(error)
     }
@@ -118,25 +114,27 @@ export default function Web3Provider ({ children }) {
     const storedFilteredItemsList = state.storedFilteredItemsList
     const { loading } = storedFilteredItemsList
     if (loading) setIsReady(false)
-    console.log('with signer, isready false, loading', loading)
+    // console.log('with signer, setting isready false, loading', loading)
     const signer = provider.getSigner()
     const signerAddress = await signer.getAddress()
     await getAndSetAccountAndBalance(provider, signerAddress)
     const networkName = await getAndSetNetwork(provider)
     const success = await setupContracts(signer, networkName)
     if (loading) setIsReady(success)
-    console.log('with signer, isready?', success)
+    // console.log('with signer, isready?', success)
     dispatch(setFullyLoaded(true))
   }
 
   async function getAndSetWeb3ContextWithoutSigner (provider) {
-    setIsReady(false)
+    // console.log('w/o signer, setting isready false, hasInit', hasInit)
+    if (!hasInit) setIsReady(false)
     const networkName = await getAndSetNetwork(provider)
     console.log('1: network', networkName)
     const success = await setupContracts(provider, networkName)
     console.log('2: setupContracts', success)
-    setIsReady(success)
+    if (!hasInit) setIsReady(success)
     dispatch(setFullyLoaded(true))
+    setHasInit(true)
   }
 
   async function getAndSetAccountAndBalance (provider, address) {

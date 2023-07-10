@@ -24,16 +24,17 @@ export default function Home () {
     console.log('point1')
     if (!isReady) { console.log('return not ready'); dispatch(setLoading(true)); return }
     const startTime = new Date()
-    const data = await marketplaceContract.fetchAvailableMarketItems()
+    let data = await marketplaceContract.fetchAvailableMarketItems()
     console.log('got data length', data.length)
     const state = store.getState()
     const storedFilteredItemsList = state.storedFilteredItemsList
     const { storedFilteredItems, currentDisp, lookupStr } = storedFilteredItemsList
     console.log('got current disp', currentDisp, 'lookup', lookupStr)
 
-    // why this doesn't work? could sort the raw data now and avoid sorting later
-    // data.forEach(element => { console.log('element6:', parseInt(element[6]._hex, 16)) })
-    // data.sort(function (a, b) { const ai = parseInt(a[6]._hex, 16); const bi = parseInt(b[6]._hex, 16); return ai < bi ? 1 : (ai === bi ? 0 : -1) })
+    // data.forEach(element => { console.log('element6:', parseInt(element[6]._hex, 16) / 1000000000000000000) })
+    const arrayForSort = [...data]
+    arrayForSort.sort(function (a, b) { const ai = parseInt(a[6]._hex, 16) / 1000000000000000000; const bi = parseInt(b[6]._hex, 16) / 1000000000000000000; return ai < bi ? 1 : (ai === bi ? 0 : -1) })
+    data = arrayForSort
 
     const endTime0 = new Date()
     const diff = endTime0 - startTime
@@ -46,8 +47,8 @@ export default function Home () {
     const diff1 = endTime - endTime0
     console.log('items', items.length, 'time elapsed', diff1)
 
-    // filter, sort items here
-    items.sort(function (a, b) { const ai = parseInt(a.price); const bi = parseInt(b.price); return ai < bi ? 1 : (ai === bi ? 0 : -1) })
+    // filter, sort items here -- UPDATE: sorted already while receiving data
+    // items.sort(function (a, b) { const ai = parseInt(a.price); const bi = parseInt(b.price); return ai < bi ? 1 : (ai === bi ? 0 : -1) })
     let i = 0
     let j = 0
     const fItems = []
@@ -73,7 +74,7 @@ export default function Home () {
     let j = 0
     const restItems = await getItems(data, nDisp, data.length)
     const totalItems = [...items, ...restItems]
-    totalItems.sort(function (a, b) { const ai = parseInt(a.price); const bi = parseInt(b.price); return ai < bi ? 1 : (ai === bi ? 0 : -1) })
+    // totalItems.sort(function (a, b) { const ai = parseInt(a.price); const bi = parseInt(b.price); return ai < bi ? 1 : (ai === bi ? 0 : -1) })
     const totalFilteredItems = []
     for (i = 0; i < totalItems.length; i++) { const r = new RegExp(lookupStr, 'gi'); if (lookupStr.length === 0 || (totalItems[i].name && totalItems[i].name.length && r.test(totalItems[i].name)) || (totalItems[i].description && totalItems[i].description.length && r.test(totalItems[i].description)) || (totalItems[i].tags && totalItems[i].tags.length && r.test(totalItems[i].tags))) { totalFilteredItems[j] = totalItems[i]; j++ } }
 

@@ -54,6 +54,8 @@ if ($type eq 'j') {
 	
 	$name =~ s/\"/\'/g; 
  	$desc =~ s/\"/\'/g;
+        $tname =~ s/\"/\'/g;
+        $file =~ s/\"//g;
 
 	open(LOCAL, "> $base/$dir/$name") or die 'error';
 	print LOCAL "{\"name\":\"".$tname."\",\"description\":\"".$desc."\",\"image\":\"".$file."\"}";

@@ -54,7 +54,9 @@ if ($type eq 'j') {
 	
 	$name =~ s/\"/\'/g; 
  	$desc =~ s/\"/\'/g;
+	$desc =~ s/(\n|\r)/\|/g;
         $tname =~ s/\"/\'/g;
+	$tname =~ s/(\n|\r)/\|/g;
         $file =~ s/\"//g;
 
 	open(LOCAL, "> $base/$dir/$name") or die 'error';

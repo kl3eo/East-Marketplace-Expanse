@@ -28,8 +28,8 @@ export default function Home () {
     console.log('got data length', data.length)
     const state = store.getState()
     const storedFilteredItemsList = state.storedFilteredItemsList
-    const { storedFilteredItems, currentDisp, lookupStr } = storedFilteredItemsList
-    console.log('got current disp', currentDisp, 'lookup', lookupStr)
+    const { storedFilteredItems, currentDisp, lookupStr, currentSlice } = storedFilteredItemsList
+    console.log('got current disp', currentDisp, 'lookup', lookupStr, 'slice', currentSlice)
 
     // data.forEach(element => { console.log('element6:', parseInt(element[6]._hex, 16) / 1000000000000000000) })
     const arrayForSort = [...data]
@@ -54,8 +54,12 @@ export default function Home () {
     const fItems = []
     for (i = 0; i < items.length; i++) { const r = new RegExp(lookupStr, 'gi'); if (lookupStr.length === 0 || (items[i].name && items[i].name.length && r.test(items[i].name)) || (items[i].description && items[i].description.length && r.test(items[i].description)) || (items[i].tags && items[i].tags.length && r.test(items[i].tags))) { fItems[j] = items[i]; j++ } }
     console.log('Here stored', storedFilteredItems, 'lookupStr', lookupStr)
-
-    let changer = ((storedFilteredItems && storedFilteredItems.length === 0) || (lookupStr && lookupStr.length)) ? fItems : storedFilteredItems
+    // const sliceStart = currentSlice < 2 ? 0 : 60 * (currentSlice - 1)
+    const sliceStart = 0
+    const sliceEnd = storedFilteredItems.length - (60 + 60 * currentSlice) < 60 ? storedFilteredItems.length : 60 + 60 * currentSlice
+    const slicedStoredFilteredItems = storedFilteredItems.slice(sliceStart, sliceEnd)
+    let changer = ((storedFilteredItems && storedFilteredItems.length === 0) || (lookupStr && lookupStr.length)) ? fItems : slicedStoredFilteredItems
+    // let changer = ((storedFilteredItems && storedFilteredItems.length === 0) || (lookupStr && lookupStr.length)) ? fItems : storedFilteredItems
     console.log('Here changer', changer, 'current', currentDisp)
     if (typeof changer === 'undefined') changer = fItems
     if ((storedFilteredItems && storedFilteredItems.length === 0) || (lookupStr && lookupStr.length) || (changer.length && currentDisp !== data.length)) { setNfts(changer); dispatch(setCurrentDisp(changer.length)); console.log('set nfts to changer!', changer.length, 'lookup is', lookupStr) }

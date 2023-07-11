@@ -11,7 +11,8 @@ import { useContext, useEffect } from 'react'
 import { mapCreatedAndOwnedTokenIdsAsMarketItems } from '../../utils/nft'
 import { store } from '../../../store/store'
 import { useDispatch, useSelector } from 'react-redux'
-import { setCurrentDisp } from '../../../store/actions/dataAction'
+import { setCurrentDisp, setCurrentSlice } from '../../../store/actions/dataAction'
+// import { setCurrentDisp } from '../../../store/actions/dataAction'
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -41,15 +42,40 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
   function relo () {
     const state = store.getState()
     const storedFilteredItemsList = state.storedFilteredItemsList
-    const { storedFilteredItems, currentDisp, lookupStr } = storedFilteredItemsList
+    const { storedFilteredItems, currentDisp, lookupStr, currentSlice } = storedFilteredItemsList
+    // const { storedFilteredItems, currentDisp, lookupStr } = storedFilteredItemsList
     if (withCreateNFT || lookupStr.length) {
       window.removeEventListener('scroll', relo)
       return
     }
-    if (window.pageYOffset > 450) {
+    if (window.pageYOffset < 0) {
+    // if (window.pageYOffset > 450) {
       if (storedFilteredItems && storedFilteredItems.length) {
         window.removeEventListener('scroll', relo)
         if (storedFilteredItems.length > currentDisp) { setNfts(storedFilteredItems); dispatch(setCurrentDisp(storedFilteredItems.length)); console.log('set nfts to stored!', storedFilteredItems.length) }
+      }
+    // }
+    } else {
+      console.log('pageOffset is', window.pageYOffset)
+      if (window.pageYOffset <= 6000 && currentSlice < 0) {
+        const slicedStoredFilteredItems = storedFilteredItems.slice(0, 60)
+        setNfts(slicedStoredFilteredItems)
+        dispatch(setCurrentDisp(slicedStoredFilteredItems.length))
+        dispatch(setCurrentSlice(0))
+      }
+      // if (window.pageYOffset > 6000 && window.pageYOffset <= 12000 && currentSlice !== 1) {
+      if (window.pageYOffset > 3000 && currentSlice < 1) {
+        const slicedStoredFilteredItems = storedFilteredItems.slice(0, 120)
+        setNfts(slicedStoredFilteredItems)
+        dispatch(setCurrentDisp(slicedStoredFilteredItems.length))
+        dispatch(setCurrentSlice(1))
+      }
+      // if (window.pageYOffset > 12000 && window.pageYOffset <= 18000 && currentSlice !== 2) {
+      if (window.pageYOffset > 9000 && currentSlice < 2) {
+        const slicedStoredFilteredItems = storedFilteredItems.slice(0, storedFilteredItems.length)
+        setNfts(slicedStoredFilteredItems)
+        dispatch(setCurrentDisp(slicedStoredFilteredItems.length))
+        dispatch(setCurrentSlice(2))
       }
     }
   }

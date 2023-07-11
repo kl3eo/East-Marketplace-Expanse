@@ -1,3 +1,4 @@
+import { isMobile } from 'react-device-detect'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import Grid from '@mui/material/Grid'
 import LinearProgress from '@mui/material/LinearProgress'
@@ -57,21 +58,22 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
     // }
     } else {
       console.log('pageOffset is', window.pageYOffset)
-      if (window.pageYOffset <= 6000 && currentSlice < 0) {
+      const step = isMobile ? 6000 : 3000
+      if (window.pageYOffset <= step && currentSlice < 0) {
         const slicedStoredFilteredItems = storedFilteredItems.slice(0, 60)
         setNfts(slicedStoredFilteredItems)
         dispatch(setCurrentDisp(slicedStoredFilteredItems.length))
         dispatch(setCurrentSlice(0))
       }
       // if (window.pageYOffset > 6000 && window.pageYOffset <= 12000 && currentSlice !== 1) {
-      if (window.pageYOffset > 3000 && currentSlice < 1) {
+      if (window.pageYOffset > step && currentSlice < 1) {
         const slicedStoredFilteredItems = storedFilteredItems.slice(0, 120)
         setNfts(slicedStoredFilteredItems)
         dispatch(setCurrentDisp(slicedStoredFilteredItems.length))
         dispatch(setCurrentSlice(1))
       }
       // if (window.pageYOffset > 12000 && window.pageYOffset <= 18000 && currentSlice !== 2) {
-      if (window.pageYOffset > 9000 && currentSlice < 2) {
+      if (window.pageYOffset > 3 * step && currentSlice < 2) {
         const slicedStoredFilteredItems = storedFilteredItems.slice(0, storedFilteredItems.length)
         setNfts(slicedStoredFilteredItems)
         dispatch(setCurrentDisp(slicedStoredFilteredItems.length))

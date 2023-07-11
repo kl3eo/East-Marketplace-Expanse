@@ -9,7 +9,7 @@ import NavItem from '../atoms/NavItem'
 import ConnectedAccountAddress from '../atoms/ConnectedAccountAddress'
 import ConnectButton from '../atoms/ConnectButton'
 import { useDispatch, useSelector } from 'react-redux'
-import { setLookup, setLoading } from '../../../store/actions/dataAction'
+import { setLookup, setLoading, setCurrentSlice } from '../../../store/actions/dataAction'
 
 const pages = [
   {
@@ -28,7 +28,8 @@ const onCli = (e) => {
 }
 const NavBar = () => {
   const { account, isReady, hasInit } = useContext(Web3Context)
-  const buttonText = isMobile ? '➡' : 'SHOW'
+  // const buttonText = isMobile ? '➡' : 'SHOW'
+  const buttonText = isMobile ? '' : ''
   const dispatch = useDispatch()
   const storedFilteredItemsList = useSelector(state => state.storedFilteredItemsList)
   const { lookupStr } = storedFilteredItemsList
@@ -39,7 +40,7 @@ const NavBar = () => {
     dispatch(setLookup(searchInput.value))
     dispatch(setLoading(true))
     // this hack is required or the list may stuck dimmed for good
-    if (searchInput.value.length === 0) setTimeout(() => { dispatch(setLoading(false)) }, 9000)
+    if (searchInput.value.length === 0) { dispatch(setCurrentSlice(0)); setTimeout(() => { dispatch(setLoading(false)) }, 9000) }
   }
   return (
     <AppBar position="static" sx={{ marginBottom: '12px' }}>

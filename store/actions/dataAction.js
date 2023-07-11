@@ -1,4 +1,4 @@
-import {GET_DATA, DATA_ERROR, SET_CURRENT_DISP, SET_CURRENT_SLICE, SET_LOADING, SET_FULLY_LOADED, SET_LOOKUP} from '../types'
+import {GET_DATA, DATA_ERROR, SET_CURRENT_DISP, SET_RELO, SET_CURRENT_SLICE, SET_LOADING, SET_FULLY_LOADED, SET_LOOKUP} from '../types'
 export const getData = (data) => async dispatch => {
     
     try{
@@ -72,6 +72,23 @@ export const setFullyLoaded = (data) => async dispatch => {
     try{
         dispatch( {
             type: SET_FULLY_LOADED,
+            payload: data
+        })
+    }
+    catch(error){
+        dispatch( {
+            type: DATA_ERROR,
+            payload: error,
+        })
+    }
+
+}
+
+export const setRelo = (data) => async dispatch => {
+    
+    try{
+        dispatch( {
+            type: SET_RELO,
             payload: data
         })
     }

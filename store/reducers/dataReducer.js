@@ -1,4 +1,4 @@
-import {GET_DATA, SET_CURRENT_DISP, SET_CURRENT_SLICE, SET_LOADING, SET_LOOKUP, SET_FULLY_LOADED, DATA_ERROR} from '../types'
+import {GET_DATA, SET_CURRENT_DISP, SET_CURRENT_SLICE, SET_RELO, SET_LOADING, SET_LOOKUP, SET_FULLY_LOADED, DATA_ERROR} from '../types'
 
 const initialState = {
     storedFilteredItems:[],
@@ -6,6 +6,7 @@ const initialState = {
     fullyLoaded: false,
     currentDisp:0,
     currentSlice:0,
+    relo: false,
     lookupStr:''
 }
 
@@ -25,6 +26,11 @@ export default function(state = initialState, action){
         return {
             ...state,
             currentSlice:action.payload
+        }
+        case SET_RELO:
+        return {
+            ...state,
+            relo:action.payload
         }
         case SET_LOADING:
         return {

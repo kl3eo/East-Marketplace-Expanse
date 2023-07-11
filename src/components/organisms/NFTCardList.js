@@ -1,4 +1,4 @@
-import { isMobile } from 'react-device-detect'
+// import { isMobile } from 'react-device-detect'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import Grid from '@mui/material/Grid'
 import LinearProgress from '@mui/material/LinearProgress'
@@ -12,8 +12,8 @@ import { useContext, useEffect } from 'react'
 import { mapCreatedAndOwnedTokenIdsAsMarketItems } from '../../utils/nft'
 import { store } from '../../../store/store'
 import { useDispatch, useSelector } from 'react-redux'
-import { setCurrentDisp, setCurrentSlice } from '../../../store/actions/dataAction'
-// import { setCurrentDisp } from '../../../store/actions/dataAction'
+// import { setCurrentDisp, setCurrentSlice, getData, setRelo } from '../../../store/actions/dataAction'
+import { setCurrentDisp, setRelo, getData } from '../../../store/actions/dataAction'
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -33,56 +33,77 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
   const classes = useStyles()
   const { account, marketplaceContract, nftContract } = useContext(Web3Context)
   const storedFilteredItemsList = useSelector(state => state.storedFilteredItemsList)
-  const { lookupStr, loading, fullyLoaded, currentDisp } = storedFilteredItemsList
+  const { lookupStr, loading, fullyLoaded, currentDisp, relo } = storedFilteredItemsList
 
   useEffect(() => {
-    window.addEventListener('scroll', relo)
+    if (!relo) {
+      window.addEventListener('scroll', withRelo)
+      console.log('ADDED relo')
+      dispatch(setRelo(true))
+    }
+    // dispatch(setCurrentSlice(0))
   }, [])
 
   const dispatch = useDispatch()
-  function relo () {
+  function withRelo () {
     const state = store.getState()
     const storedFilteredItemsList = state.storedFilteredItemsList
-    const { storedFilteredItems, currentDisp, lookupStr, currentSlice } = storedFilteredItemsList
-    // const { storedFilteredItems, currentDisp, lookupStr } = storedFilteredItemsList
+    // const { storedFilteredItems, currentDisp, lookupStr, currentSlice, relo } = storedFilteredItemsList
+    const { storedFilteredItems, currentDisp, lookupStr, relo } = storedFilteredItemsList
+
     if (withCreateNFT || lookupStr.length) {
-      window.removeEventListener('scroll', relo)
+      if (relo) {
+        window.removeEventListener('scroll', withRelo)
+        dispatch(setRelo(false))
+        console.log('REMOVED relo1')
+      }
+      // dispatch(setCurrentSlice(0))
       return
     }
-    if (window.pageYOffset < 0) {
-    // if (window.pageYOffset > 450) {
+
+    // if (window.pageYOffset < 0) {
+    if (window.pageYOffset > 450) {
       if (storedFilteredItems && storedFilteredItems.length) {
-        window.removeEventListener('scroll', relo)
+        window.removeEventListener('scroll', withRelo)
+        dispatch(setRelo(false))
+        console.log('REMOVED relo2')
         if (storedFilteredItems.length > currentDisp) { setNfts(storedFilteredItems); dispatch(setCurrentDisp(storedFilteredItems.length)); console.log('set nfts to stored!', storedFilteredItems.length) }
       }
-    // }
-    } else {
-      console.log('pageOffset is', window.pageYOffset)
+    }
+    /* } else {
+      // console.log('pageOffset is', window.pageYOffset)
       const step = isMobile ? 6000 : 3000
-      if (window.pageYOffset <= step && currentSlice < 0) {
+      if (window.pageYOffset <= step && currentSlice < 0 && storedFilteredItems.length) {
         const slicedStoredFilteredItems = storedFilteredItems.slice(0, 60)
         setNfts(slicedStoredFilteredItems)
         dispatch(setCurrentDisp(slicedStoredFilteredItems.length))
         dispatch(setCurrentSlice(0))
       }
       // if (window.pageYOffset > 6000 && window.pageYOffset <= 12000 && currentSlice !== 1) {
-      if (window.pageYOffset > step && currentSlice < 1) {
+      console.log('pageOffset is', window.pageYOffset, 'step is', step, 'length is', storedFilteredItems.length, 'slice is', currentSlice)
+      if (window.pageYOffset > step && currentSlice < 1 && storedFilteredItems.length && storedFilteredItems.length > currentDisp) {
         const slicedStoredFilteredItems = storedFilteredItems.slice(0, 120)
         setNfts(slicedStoredFilteredItems)
+        console.log('SET NFTS1')
         dispatch(setCurrentDisp(slicedStoredFilteredItems.length))
         dispatch(setCurrentSlice(1))
       }
       // if (window.pageYOffset > 12000 && window.pageYOffset <= 18000 && currentSlice !== 2) {
-      if (window.pageYOffset > 3 * step && currentSlice < 2) {
+      if (window.pageYOffset > 2 * step && currentSlice < 2 && storedFilteredItems.length && storedFilteredItems.length > currentDisp) {
         const slicedStoredFilteredItems = storedFilteredItems.slice(0, storedFilteredItems.length)
         setNfts(slicedStoredFilteredItems)
+        console.log('SET NFTS2')
         dispatch(setCurrentDisp(slicedStoredFilteredItems.length))
         dispatch(setCurrentSlice(2))
       }
-    }
+    } */
   }
   async function updateNFT (index, tokenId) {
     const updatedNFt = await mapCreatedAndOwnedTokenIdsAsMarketItems(marketplaceContract, nftContract, account)(tokenId)
+    dispatch(getData([]))
+    dispatch(setRelo(false))
+    dispatch(setCurrentDisp(0))
+    // dispatch(setCurrentSlice(0))
     setNfts(prevNfts => {
       const updatedNfts = [...prevNfts]
       updatedNfts[index] = updatedNFt

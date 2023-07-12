@@ -1,11 +1,12 @@
 import { useContext, useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 import NFTCardList from '../src/components/organisms/NFTCardList'
 import { Web3Context } from '../src/components/providers/Web3Provider'
 import { LinearProgress } from '@mui/material'
 import UnsupportedChain from '../src/components/molecules/UnsupportedChain'
 import { mapAvailableMarketItems } from '../src/utils/nft'
 import { useDispatch, useSelector } from 'react-redux'
-import { getData, setCurrentDisp, setLoading } from '../store/actions/dataAction'
+import { getData, setCurrentDisp, setLoading, setLookup } from '../store/actions/dataAction'
 import { store } from '../store/store'
 
 export default function Home () {
@@ -16,6 +17,15 @@ export default function Home () {
   const dispatch = useDispatch()
   const storedFilteredItemsList = useSelector(state => state.storedFilteredItemsList)
   const { lookupStr, currentDisp } = storedFilteredItemsList
+  const { asPath } = useRouter()
+  useEffect(() => {
+    console.log('pathname', asPath)
+    const paths = asPath.split('?')
+    if (paths[1] && paths[1].length) {
+      console.log('path', paths[1])
+      dispatch(setLookup(paths[1]))
+    }
+  }, [])
   useEffect(() => {
     loadNFTs()
   }, [isReady, lookupStr])
@@ -152,6 +162,7 @@ export default function Home () {
     const Result8 = await Promise8
     return [...Result1, ...Result2, ...Result3, ...Result4, ...Result5, ...Result6, ...Result7, ...Result8]
   } */
+
   if (!network) return <UnsupportedChain/>
   if (isLoading) return <LinearProgress/>
   if (!isLoading && !nfts.length) return <h1>No NFTs for sale</h1>

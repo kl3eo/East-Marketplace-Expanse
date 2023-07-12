@@ -61,7 +61,7 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
       return
     }
 
-    const yOffset = isMobile ? 18000 : 2150
+    const yOffset = isMobile ? 18000 : 450
     // if (window.pageYOffset < 0) {
     if (window.pageYOffset > yOffset) { // trigger fill of result from setItems
       if (storedFilteredItems && storedFilteredItems.length) {

@@ -1,4 +1,4 @@
-// import { isMobile } from 'react-device-detect'
+import { isMobile } from 'react-device-detect'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import Grid from '@mui/material/Grid'
 import LinearProgress from '@mui/material/LinearProgress'
@@ -61,8 +61,9 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
       return
     }
 
+    const yOffset = isMobile ? 18000 : 2150
     // if (window.pageYOffset < 0) {
-    if (window.pageYOffset > 450) {
+    if (window.pageYOffset > yOffset) { // trigger fill of result from setItems
       if (storedFilteredItems && storedFilteredItems.length) {
         window.removeEventListener('scroll', withRelo)
         dispatch(setRelo(false))
@@ -70,6 +71,7 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
         if (storedFilteredItems.length > currentDisp) { setNfts(storedFilteredItems); dispatch(setCurrentDisp(storedFilteredItems.length)); console.log('set nfts to stored!', storedFilteredItems.length) }
       }
     }
+    // NB: small palette with slice of 3-4 rows; on each ~111px scroll-y, skip +1 in slice
     /* } else {
       // console.log('pageOffset is', window.pageYOffset)
       const step = isMobile ? 6000 : 3000
@@ -141,13 +143,13 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
 
     return <NFTCard nft={nft} action="none"/>
   }
-  // if (loading) return (<div style={{ width: '100%', height: '100%', textAlign: 'center', margin: '0 auto', fontSize: '48px' }}>..loading..</div>)
   console.log('point3')
   return (
     <InfiniteScroll
       dataLength={nfts.length}
       loader={<LinearProgress />}
     >
+      <div style={{ width: '100%', height: '100%', textAlign: 'center', margin: '0 auto', fontSize: '30px', color: '#ccc', position: 'fixed', top: isMobile ? '45px' : '1%', opacity: '0.5', display: loading ? 'block' : 'none' }}>..loading..</div>
       <Grid container className={classes.grid} id="grid">
         {withCreateNFT && <Grid item xs={12} sm={6} md={3} className={classes.gridItem}>
           <NFTCardCreation addNFTToList={addNFTToList}/>

@@ -3,8 +3,18 @@ import { ethers } from 'ethers'
 
 export async function getTokenMetadataByTokenId (nftContract, tokenId) {
   try {
-    const tokenUri = await nftContract.tokenURI(tokenId)
+    let tokenUri = await nftContract.tokenURI(tokenId)
+    const l = new RegExp('ipfs','ig')
+    // if (l.test(tokenUri)) console.log('uri', tokenUri)
+    // GREENHALL
+    let r = new RegExp('QmRnRTeGjh6oSxgatFq5nmENAYJ7SF9vw19v717ZBBrNUX', 'gi')
+    if (r.test(tokenUri)) tokenUri = 'https://aspen.room-house.com/store/metadata/QmRnRTeGjh6oSxgatFq5nmENAYJ7SF9vw19v717ZBBrNUX'
+    // greenhall-m
+    r = new RegExp('QmfWY1Yt5wBEaZdPqDBvck6X3fQ33soUoc2wDZnVk8z6WE', 'gi')
+    if (r.test(tokenUri)) tokenUri = 'https://aspen.room-house.com/store/metadata/QmfWY1Yt5wBEaZdPqDBvck6X3fQ33soUoc2wDZnVk8z6WE'
+    
     const { data: metadata } = await axios.get(tokenUri)
+    // if (l.test(tokenUri)) console.log('metadata', metadata)
     return metadata
   } catch (error) {
     console.log(error)

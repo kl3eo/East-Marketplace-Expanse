@@ -33,8 +33,9 @@ export default function Home () {
 
     // data.forEach(element => { console.log('element6:', parseInt(element[6]._hex, 16) / 1000000000000000000) })
     const arrayForSort = [...data]
-    arrayForSort.sort(function (a, b) { const ai = parseInt(a[6]._hex, 16) / 1000000000000000000; const bi = parseInt(b[6]._hex, 16) / 1000000000000000000; return ai < bi ? 1 : (ai === bi ? 0 : -1) })
-    data = arrayForSort
+    // arrayForSort.sort(function (a, b) { const ai = parseInt(a[6]._hex, 16) / 1000000000000000000; const bi = parseInt(b[6]._hex, 16) / 1000000000000000000; return ai < bi ? 1 : (ai === bi ? 0 : -1) })
+    // data = arrayForSort.sort().reverse()
+    data = arrayForSort.reverse()
 
     const endTime0 = new Date()
     const diff = endTime0 - startTime
@@ -45,7 +46,8 @@ export default function Home () {
     const items = lookupStr.length || data.length < nDisp ? await Promise.all(data.map(mapAvailableMarketItems(nftContract))) : await getItems(data, 0, nDisp)
     const endTime = new Date()
     const diff1 = endTime - endTime0
-    console.log('items', items.length, 'time elapsed', diff1)
+    // console.log('items', items.length, 'time elapsed', diff1)
+    console.log('items', items, 'time elapsed', diff1)
 
     // filter, sort items here -- UPDATE: sorted already while receiving data
     // items.sort(function (a, b) { const ai = parseInt(a.price); const bi = parseInt(b.price); return ai < bi ? 1 : (ai === bi ? 0 : -1) })
@@ -68,6 +70,7 @@ export default function Home () {
     // if (lookupStr.length === 0 && data.length >= nDisp && changer.length < data.length) {
     if (lookupStr.length === 0 && data.length >= nDisp && storedFilteredItems.length < data.length) {
       console.log('calling setItems, lookup', lookupStr, 'data length', data.length, 'currDisp', currentDisp)
+      // not too slow, but iframes reload a couple times
       // dispatch(setLoading(false))
       setItems(data, fItems)
     }
@@ -86,6 +89,7 @@ export default function Home () {
 
     // save to store
     dispatch(getData(totalFilteredItems))
+    // too slow?
     dispatch(setLoading(false))
     console.log('totalFiltered', totalFilteredItems.length)
   }

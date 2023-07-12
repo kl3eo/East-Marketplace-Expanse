@@ -11,6 +11,7 @@ import ConnectButton from '../atoms/ConnectButton'
 import { useDispatch, useSelector } from 'react-redux'
 import { setLookup, setLoading, setCurrentSlice } from '../../../store/actions/dataAction'
 
+/*
 const pages = [
   {
     title: isMobile ? '🚀' : 'Market',
@@ -18,6 +19,17 @@ const pages = [
   },
   {
     title: isMobile ? 'Ⓜ' : 'My NFTs',
+    href: '/my-nfts'
+  }
+]
+*/
+const pages = [
+  {
+    title: isMobile ? 'M' : 'Market',
+    href: '/'
+  },
+  {
+    title: isMobile ? 'M' : 'My NFTs',
     href: '/my-nfts'
   }
 ]
@@ -40,18 +52,18 @@ const NavBar = () => {
     dispatch(setLookup(searchInput.value))
     dispatch(setLoading(true))
     // this hack is required or the list may stuck dimmed for good
-    if (searchInput.value.length === 0) { dispatch(setCurrentSlice(0)); setTimeout(() => { dispatch(setLoading(false)) }, 9000) }
+    if (searchInput.value.length === 0) { dispatch(setCurrentSlice(0)); setTimeout(() => { dispatch(setLoading(false)) }, 5000) }
   }
   return (
     <AppBar position="static" sx={{ marginBottom: '12px' }}>
       <Container maxWidth="100%" sx={{ backgroundColor: '#001122' }}>
         <Toolbar disableGutters sx={{ backgroundColor: '#001122' }}>
           <Box sx={{ flexGrow: 1, display: 'flex' }}>
-            {pages.map(({ title, href }) => <NavItem title={title} href={href} key={title} style={{ maxWidth: isMobile ? '36px' : '120px' }}/>)}
+            {pages.map(({ title, href }) => <NavItem title={title} href={href} key={title} style={{ maxWidth: isMobile ? '36px' : '120px', fontSize: isMobile ? '48px' : '16px' }}/>)}
           </Box>
           <form onSubmit={clickerHandler}>
-          {(isReady || hasInit) && <input id="searchInput" name="searchInput" placeholder="🔍" type="text" onClick={onCli} style={{ maxWidth: isMobile ? '102px' : '120px', marginRight: isMobile ? '0px' : '8px', fontSize: '20px' }}/>}
-          {(isReady || hasInit) && <button type="submit" style={{ maxWidth: isMobile ? '36px' : '96px', fontSize: isMobile ? '16px' : '20px', background: 'transparent', border: '0px', color: '#fff', cursor: 'pointer' }}>{buttonText}</button>}
+          {<input id="searchInput" name="searchInput" placeholder="🔍" type="text" onClick={onCli} style={{ maxWidth: isMobile ? '102px' : '120px', marginRight: isMobile ? '0px' : '8px', fontSize: '20px' }}/>}
+          {(isReady || hasInit) && <button type="submit" style={{ maxWidth: isMobile ? '36px' : '96px', fontSize: isMobile ? '16px' : '20px', background: 'transparent', border: '0px', color: '#fff', cursor: 'pointer', display: 'none' }}>{buttonText}</button>}
           </form>
           {account ? <ConnectedAccountAddress account={account}/> : (isReady || hasInit) && <ConnectButton/>}
         </Toolbar>

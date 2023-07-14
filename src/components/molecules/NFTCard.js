@@ -1,6 +1,6 @@
 import { isMobile } from 'react-device-detect'
 import { ethers } from 'ethers'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState, useMemo } from 'react'
 import { makeStyles } from '@mui/styles'
 import { Card, CardActions, CardContent, CardMedia, Button, Divider, Box, CircularProgress } from '@mui/material'
 import { NFTModalContext } from '../providers/NFTModalProvider'
@@ -84,8 +84,9 @@ export default function NFTCard ({ nft, action, updateNFT }) {
   useEffect(() => {
     getAndSetListingFee(marketplaceContract, setListingFee)
   }, [])
-  const Memoized = isVideo && !loading && fullyLoaded ? <CardMedia className="MuiCardMedia-root MuiCardMedia-media" alt={name} image={image} component="video" controls onClick={handleCardVideoClick} sx={{ width: { videoW }, height: '195px' }} /> : isVideo && (loading || !fullyLoaded) ? <CardMedia className={classes.media} alt={name} image={loadingUrl} component="a" onClick={handleCardImageClick} /> : isWebRTC && !loading && fullyLoaded ? <div style={{ backgroundColor: '#112', height: isMobile ? '270px' : '380px', width: '100%', position: 'relative', top: '0px' }}><iframe src={img} style={{ height: isMobile ? '270px' : '435px', width: '100%', position: 'relative', top: '0px', border: '0px' }}></iframe></div> : isWebRTC && (loading || !fullyLoaded) ? <CardMedia className={classes.media} alt={name} image={image} component="a" onClick={handleCardImageClick} /> : <CardMedia className={classes.media} alt={name} image={image} component="a" onClick={handleCardImageClick} />
-  // useMemo(() => Memoized, [])
+  const ifrMemo = <div style={{ backgroundColor: '#112', height: isMobile ? '270px' : '380px', width: '100%', position: 'relative', top: '0px', opacity: fullyLoaded ? '1' : '0.5' }}><iframe src={img} style={{ height: isMobile ? '270px' : '380px', width: '100%', position: 'relative', top: '0px', border: '0px' }}></iframe></div>
+  const Memoized = isVideo && !loading && fullyLoaded ? <CardMedia className="MuiCardMedia-root MuiCardMedia-media" alt={name} image={image} component="video" controls onClick={handleCardVideoClick} sx={{ width: { videoW }, height: '195px' }} /> : isVideo && (loading || !fullyLoaded) ? <CardMedia className={classes.media} alt={name} image={loadingUrl} component="a" onClick={handleCardImageClick} /> : isWebRTC && !loading && fullyLoaded ? ifrMemo : isWebRTC && (loading || !fullyLoaded) ? <CardMedia className={classes.media} alt={name} image={image} component="a" onClick={handleCardImageClick} style={{ opacity: fullyLoaded ? '1' : '0.5' }}/> : <CardMedia className={classes.media} alt={name} image={image} component="a" onClick={handleCardImageClick} />
+  useMemo(() => ifrMemo, [nft])
   const actions = {
     buy: {
       text: 'buy',

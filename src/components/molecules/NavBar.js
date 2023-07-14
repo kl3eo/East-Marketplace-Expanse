@@ -26,11 +26,11 @@ const pages = [
 */
 const pages = [
   {
-    title: isMobile ? 'M' : 'Market',
+    title: isMobile ? 'Market' : 'Market',
     href: '/'
   },
   {
-    title: isMobile ? 'M' : 'My NFTs',
+    title: isMobile ? 'My' : 'My NFTs',
     href: '/my-nfts'
   }
 ]

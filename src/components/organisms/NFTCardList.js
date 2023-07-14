@@ -34,7 +34,7 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
   const [dimmed, setDimmed] = useState(false)
   const { account, marketplaceContract, nftContract } = useContext(Web3Context)
   const storedFilteredItemsList = useSelector(state => state.storedFilteredItemsList)
-  const { lookupStr, loading, fullyLoaded, currentDisp, relo } = storedFilteredItemsList
+  const { lookupStr, loading, currentDisp, relo } = storedFilteredItemsList
 
   useEffect(() => {
     if (!relo) {
@@ -83,7 +83,7 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
       }
     // }
     } else {
-      const step = isMobile ? 6000 : 3000
+      const step = isMobile ? 12000 : 3000
       // const step = 3000
       const approxRows = currentSlice < 1 ? parseInt((document.body.offsetHeight - window.innerHeight) / 60) : parseInt((document.body.offsetHeight - window.innerHeight) / 120)
       const itemsInRow = approxRows < 200 ? 4 : approxRows < 400 ? 2 : 1
@@ -117,7 +117,7 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
         console.log('SET NFTS2, offset is', window.pageYOffset, 'diff is', diff)
         dispatch(setCurrentDisp(slicedStoredFilteredItems.length))
         dispatch(setCurrentSlice(2 + diff))
-        setTimeout(() => { diff += 1; setDimmed(false); window.scrollTo({ top: window.pageYOffset - 1, behavior: 'smooth' }) }, 3000)
+        setTimeout(() => { diff += 1; setDimmed(false); window.scrollTo({ top: window.pageYOffset - 1, behavior: 'smooth' }) }, 2000)
       }
     }
   }
@@ -171,14 +171,14 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
       dataLength={nfts.length}
       loader={<LinearProgress />}
     >
-      <div style={{ width: '100%', height: '100%', textAlign: 'center', margin: '0 auto', fontSize: '30px', color: '#ccc', position: 'fixed', top: isMobile ? '45px' : '1%', opacity: '0.5', display: loading ? 'block' : 'none' }}>..loading..</div>
+      <div style={{ width: '100%', height: '100%', textAlign: 'center', margin: '0 auto', fontSize: '30px', color: '#ccc', position: 'fixed', top: isMobile ? '45px' : '1%', opacity: '0.5', display: loading && !isMobile ? 'block' : 'none' }}>..loading..</div>
       <Grid container className={classes.grid} id="grid">
         {withCreateNFT && <Grid item xs={12} sm={6} md={3} className={classes.gridItem}>
           <NFTCardCreation addNFTToList={addNFTToList}/>
         </Grid>}
         {nfts.map((nft, i) =>
           <Fade in={true} key={i}>
-            <Grid item xs={12} sm={6} md={3} className={classes.gridItem} style={{ opacity: (dimmed || loading || !fullyLoaded) && ((lookupStr && lookupStr.length > 0) || currentDisp) ? '0.5' : '1' }}>
+            <Grid item xs={12} sm={6} md={3} className={classes.gridItem} style={{ opacity: (dimmed || loading) && ((lookupStr && lookupStr.length > 0) || currentDisp) ? '0.5' : '1' }}>
                 <NFT nft={nft} index={i} />
             </Grid>
           </Fade>

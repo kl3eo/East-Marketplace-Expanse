@@ -19,6 +19,7 @@ export default function ConnectButton () {
     return () => { clearTimeout(timer) }
   }, [])
   const buttonText = hasWindowEthereum ? isMobile ? '🦊' : 'Connect' : isMobile ? '🦊' : 'Install Metamask'
+  // const buttonText = hasWindowEthereum ? isMobile ? 'Connect' : 'Connect' : isMobile ? 'Metamask' : 'Install Metamask'
   const onClick = () => {
     if (!already) {
       setAlready(true)

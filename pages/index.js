@@ -91,6 +91,7 @@ export default function Home () {
   async function setItems (data, items) {
     let i = 0
     let j = 0
+    setTimeout(() => { dispatch(setLoading(false)) }, 2000)
     const restItems = await getItems(data, nDisp, data.length)
     const totalItems = [...items, ...restItems]
     // totalItems.sort(function (a, b) { const ai = parseInt(a.price); const bi = parseInt(b.price); return ai < bi ? 1 : (ai === bi ? 0 : -1) })

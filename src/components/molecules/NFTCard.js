@@ -22,7 +22,7 @@ const useStyles = makeStyles({
   },
   media: {
     height: 0,
-    paddingTop: '56.25%', // 16:9
+    paddingTop: '84%', // 16:9
     cursor: 'pointer'
   },
   cardContent: {

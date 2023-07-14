@@ -18,7 +18,7 @@ export default function NavItem ({ title, href, openNewTab }) {
             display: 'block',
             textDecoration: isActive && 'underline',
             textAlign: 'center',
-            fontSize: isMobile ? '48px' : '16px',
+            fontSize: isMobile ? '16px' : '16px',
             '&:hover': {
               backgroundColor: '#fff',
               color: '#3c52b2'

@@ -13,7 +13,7 @@ export default function Home () {
   const [nfts, setNfts] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const { marketplaceContract, nftContract, isReady, network } = useContext(Web3Context)
-  const nDisp = 60
+  const nDisp = 32
   const dispatch = useDispatch()
   const storedFilteredItemsList = useSelector(state => state.storedFilteredItemsList)
   const { lookupStr, currentDisp } = storedFilteredItemsList

@@ -90,7 +90,7 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
       console.log('pageOffset is', window.pageYOffset, 'step is', step, 'length is', storedFilteredItems.length, 'slice is', currentSlice, 'height is', document.body.offsetHeight, 'inH', window.innerHeight, 'diff is', diff)
       if (window.pageYOffset <= step && currentSlice > 0 && storedFilteredItems.length) {
         setDimmed(true)
-        const slicedStoredFilteredItems = storedFilteredItems.slice(0, 60)
+        const slicedStoredFilteredItems = storedFilteredItems.slice(0, 32)
         console.log('SET NFTS0')
         setNfts(slicedStoredFilteredItems)
         dispatch(setCurrentDisp(slicedStoredFilteredItems.length))
@@ -99,22 +99,22 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
         setDimmed(false)
       }
       if (window.pageYOffset > step && currentSlice < 1 && storedFilteredItems.length && storedFilteredItems.length > currentDisp) {
-        const slicedStoredFilteredItems = storedFilteredItems.slice(0, 120)
+        const slicedStoredFilteredItems = storedFilteredItems.slice(0, 64)
         setNfts(slicedStoredFilteredItems)
         console.log('SET NFTS1, offset is', window.pageYOffset, 'window inner height is', window.innerHeight)
         dispatch(setCurrentDisp(slicedStoredFilteredItems.length))
         dispatch(setCurrentSlice(1))
       }
-      if (window.pageYOffset > document.body.offsetHeight - window.innerHeight - 300 && currentSlice < (2 + diff) && storedFilteredItems.length && storedFilteredItems.length > 120 + itemsInRow * diff && !alreadyDimmed) {
+      if (window.pageYOffset > document.body.offsetHeight - window.innerHeight - 300 && currentSlice < (2 + diff) && storedFilteredItems.length && storedFilteredItems.length > 64 + itemsInRow * diff && !alreadyDimmed) {
         // setDimmed(true)
         alreadyDimmed = true
       }
       // manual ll
-      // if (window.pageYOffset > document.body.offsetHeight - window.innerHeight - 1 && currentSlice < (2 + diff) && storedFilteredItems.length && storedFilteredItems.length > 120 + itemsInRow * diff) {
+      // if (window.pageYOffset > document.body.offsetHeight - window.innerHeight - 1 && currentSlice < (2 + diff) && storedFilteredItems.length && storedFilteredItems.length > 64 + itemsInRow * diff) {
       /// automatic lazy loading
-      if (window.pageYOffset > document.body.offsetHeight - window.innerHeight - 360 && currentSlice < (2 + diff) && storedFilteredItems.length && storedFilteredItems.length > 120 + itemsInRow * diff) {
-        if (!dimmed) setDimmed(true)
-        const slicedStoredFilteredItems = storedFilteredItems.slice(itemsInRow + itemsInRow * diff, 120 + itemsInRow + itemsInRow * diff)
+      if (window.pageYOffset > document.body.offsetHeight - window.innerHeight - 360 && currentSlice < (2 + diff) && storedFilteredItems.length && storedFilteredItems.length > 64 + itemsInRow * diff) {
+        // if (!dimmed) setDimmed(true)
+        const slicedStoredFilteredItems = storedFilteredItems.slice(itemsInRow + itemsInRow * diff, 64 + itemsInRow + itemsInRow * diff)
         // window.scrollTo({ top: document.body.offsetHeight - window.innerHeight - 180, behavior: 'smooth' })
         // console.log('scrolled back to', window.pageYOffset)
         setNfts(slicedStoredFilteredItems)

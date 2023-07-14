@@ -6,7 +6,7 @@ import { LinearProgress } from '@mui/material'
 import UnsupportedChain from '../src/components/molecules/UnsupportedChain'
 import { mapAvailableMarketItems } from '../src/utils/nft'
 import { useDispatch, useSelector } from 'react-redux'
-import { getData, setCurrentDisp, setLoading, setLookup } from '../store/actions/dataAction'
+import { getData, setCurrentDisp, setLoading, setFullyLoaded, setLookup } from '../store/actions/dataAction'
 import { store } from '../store/store'
 
 export default function Home () {
@@ -46,6 +46,7 @@ export default function Home () {
     // arrayForSort.sort(function (a, b) { const ai = parseInt(a[6]._hex, 16) / 1000000000000000000; const bi = parseInt(b[6]._hex, 16) / 1000000000000000000; return ai < bi ? 1 : (ai === bi ? 0 : -1) })
     // data = arrayForSort.sort().reverse()
     data = arrayForSort.reverse()
+    // data = arrayForSort
 
     const endTime0 = new Date()
     const diff = endTime0 - startTime
@@ -82,6 +83,7 @@ export default function Home () {
       console.log('calling setItems, lookup', lookupStr, 'data length', data.length, 'currDisp', currentDisp)
       // not too slow, but iframes reload a couple times
       // dispatch(setLoading(false))
+      dispatch(setFullyLoaded(false))
       setItems(data, fItems)
     }
     setIsLoading(false)
@@ -102,6 +104,7 @@ export default function Home () {
     dispatch(getData(totalFilteredItems))
     // too slow?
     dispatch(setLoading(false))
+    dispatch(setFullyLoaded(true))
     console.log('totalFiltered', totalFilteredItems.length)
   }
 

@@ -13,7 +13,6 @@ import { mapCreatedAndOwnedTokenIdsAsMarketItems } from '../../utils/nft'
 import { store } from '../../../store/store'
 import { useDispatch, useSelector } from 'react-redux'
 import { setCurrentDisp, setCurrentSlice, getData, setRelo } from '../../../store/actions/dataAction'
-// import { setCurrentDisp, setRelo, getData } from '../../../store/actions/dataAction'
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -72,9 +71,7 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
       return
     }
 
-    // const ygrekOffset = isMobile ? 18000 : 450
     if (window.pageYOffset < 0) {
-    // if (window.pageYOffset > ygrekOffset) { // trigger fill of result from setItems
       if (storedFilteredItems && storedFilteredItems.length) {
         window.removeEventListener('scroll', withRelo)
         dispatch(setRelo(false))
@@ -85,7 +82,7 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
     } else {
       const step = isMobile ? 12000 : 3000
       // const step = 3000
-      const approxRows = currentSlice < 1 ? parseInt((document.body.offsetHeight - window.innerHeight) / 60) : parseInt((document.body.offsetHeight - window.innerHeight) / 120)
+      const approxRows = currentSlice < 1 ? parseInt((document.body.offsetHeight - window.innerHeight) / 32) : parseInt((document.body.offsetHeight - window.innerHeight) / 64)
       const itemsInRow = approxRows < 200 ? 4 : approxRows < 400 ? 2 : 1
       console.log('pageOffset is', window.pageYOffset, 'step is', step, 'length is', storedFilteredItems.length, 'slice is', currentSlice, 'height is', document.body.offsetHeight, 'inH', window.innerHeight, 'diff is', diff)
       if (window.pageYOffset <= step && currentSlice > 0 && storedFilteredItems.length) {

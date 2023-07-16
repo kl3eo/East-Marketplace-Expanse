@@ -83,7 +83,7 @@ export default function Home () {
       setItems(data, fItems)
     }
     setIsLoading(false)
-    if (lookupStr && lookupStr.length > 0) dispatch(setLoading(false))
+    if ((lookupStr && lookupStr.length > 0) || currentDisp < nDisp) dispatch(setLoading(false))
   }
 
   async function setItems (data, items) {

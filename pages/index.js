@@ -67,18 +67,14 @@ export default function Home () {
     const fItems = []
     for (i = 0; i < items.length; i++) { const r = new RegExp(lookupStr, 'gi'); if (lookupStr.length === 0 || (items[i].name && items[i].name.length && r.test(items[i].name)) || (items[i].description && items[i].description.length && r.test(items[i].description)) || (items[i].tags && items[i].tags.length && r.test(items[i].tags))) { fItems[j] = items[i]; j++ } }
     console.log('Here stored', storedFilteredItems, 'lookupStr', lookupStr)
-    // const sliceStart = currentSlice < 2 ? 0 : 60 * (currentSlice - 1)
-    // const sliceStart = 0
-    // const sliceEnd = storedFilteredItems.length - (60 + 60 * currentSlice) < 60 ? storedFilteredItems.length : 60 + 60 * currentSlice
-    // const slicedStoredFilteredItems = storedFilteredItems.slice(sliceStart, sliceEnd)
-    // let changer = ((storedFilteredItems && storedFilteredItems.length === 0) || (lookupStr && lookupStr.length)) ? fItems : slicedStoredFilteredItems
+
     let changer = ((storedFilteredItems && storedFilteredItems.length === 0) || (lookupStr && lookupStr.length)) ? fItems : storedFilteredItems
     console.log('Here changer', changer, 'current', currentDisp)
     if (typeof changer === 'undefined') changer = fItems
     if ((storedFilteredItems && storedFilteredItems.length === 0) || (lookupStr && lookupStr.length) || (changer.length && currentDisp !== data.length)) { setNfts(changer); dispatch(setCurrentDisp(changer.length)); console.log('set nfts to changer!', changer.length, 'lookup is', lookupStr) }
 
     // now if we cheated earlier, do async mapping the rest and save results to store
-    // if (lookupStr.length === 0 && data.length >= nDisp && changer.length < data.length) {
+
     if (lookupStr.length === 0 && data.length >= nDisp && storedFilteredItems.length < data.length) {
       console.log('calling setItems, lookup', lookupStr, 'data length', data.length, 'currDisp', currentDisp)
       // not too slow, but iframes reload a couple times
@@ -93,6 +89,7 @@ export default function Home () {
   async function setItems (data, items) {
     let i = 0
     let j = 0
+    // fake loading in 2 sec
     setTimeout(() => { dispatch(setLoading(false)) }, 2000)
     const restItems = await getItems(data, nDisp, data.length)
     const totalItems = [...items, ...restItems]

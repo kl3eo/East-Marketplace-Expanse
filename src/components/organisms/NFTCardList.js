@@ -117,7 +117,7 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
         console.log('SET NFTS2, offset is', window.pageYOffset, 'diff is', diff)
         dispatch(setCurrentDisp(slicedStoredFilteredItems.length))
         dispatch(setCurrentSlice(2 + diff))
-        setTimeout(() => { diff += 1; setDimmed(false); window.scrollTo({ top: window.pageYOffset - 1, behavior: 'smooth' }) }, 3000)
+        setTimeout(() => { diff += 1; /* setDimmed(false); */ if (window.pageYOffset > document.body.offsetHeight - window.innerHeight - 120) window.scrollTo({ top: window.pageYOffset - 1, behavior: 'smooth' }) }, 3000)
       }
       // back
       if (window.pageYOffset < 2 && diff >= 0 && (currentSlice === (2 + diff) || currentSlice === (1 + diff)) && storedFilteredItems.length && storedFilteredItems.length > 64 + itemsInRow * diff) {
@@ -126,8 +126,7 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
         console.log('SET NFTS2 back, offset is', window.pageYOffset, 'diff is', diff)
         dispatch(setCurrentDisp(slicedStoredFilteredItems.length))
         dispatch(setCurrentSlice(currentSlice - 1))
-        setTimeout(() => { if (diff) diff -= 1; window.scrollTo({ top: 1, behavior: 'smooth' }); console.log('TIMEOUT1, SCROLLED TO', window.pageYOffset) }, 2000)
-        // setTimeout(() => { window.scrollTo({ top: 1, behavior: 'smooth' }); console.log('TIMEOUT2, SCROLLED TO', window.pageYOffset) }, 2000)
+        setTimeout(() => { if (diff) diff -= 1; if (window.pageYOffset < 2) { window.scrollTo({ top: 1, behavior: 'smooth' }); console.log('TIMEOUT1, SCROLLED TO', window.pageYOffset) } }, 3000)
       }
     }
   }

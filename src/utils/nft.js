@@ -12,7 +12,9 @@ export async function getTokenMetadataByTokenId (nftContract, tokenId) {
     // greenhall-m
     r = new RegExp('QmfWY1Yt5wBEaZdPqDBvck6X3fQ33soUoc2wDZnVk8z6WE', 'gi')
     if (r.test(tokenUri)) tokenUri = 'https://aspen.room-house.com/store/metadata/QmfWY1Yt5wBEaZdPqDBvck6X3fQ33soUoc2wDZnVk8z6WE'
-    
+    // let result = tokenUri.replace(/aspen\.room-house\.com/g, 'iberia.room-house.com')
+    // console.log('TOKEN', tokenUri, 'RESULT', result)
+    // const { data: metadata } = await axios.get(result)
     const { data: metadata } = await axios.get(tokenUri)
     // if (l.test(tokenUri)) console.log('metadata', metadata)
     return metadata

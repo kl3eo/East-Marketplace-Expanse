@@ -23,7 +23,7 @@ export default function Home () {
     const paths = asPath.split('?')
     if (paths[1] && paths[1].length) {
       console.log('path', paths[1])
-      dispatch(setLookup(paths[1]))
+      dispatch(setLookup(decodeURIComponent(paths[1])))
     }
   }, [])
   useEffect(() => {

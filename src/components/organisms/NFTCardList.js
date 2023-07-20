@@ -48,6 +48,8 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
   let diff = 0
   let alreadyDimmed = false
   // let lastScrollTop = 0
+  // the more, the easier it catches (360 catches almost all), but the less, the easier to break free from it; as both things are important, some intermediate ~120
+  const lazyLoaderCatchParam = 120
 
   function withRelo () {
     const state = store.getState()
@@ -108,7 +110,7 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
       // manual ll
       // if (window.pageYOffset > document.body.offsetHeight - window.innerHeight - 1 && currentSlice < (2 + diff) && storedFilteredItems.length && storedFilteredItems.length > 64 + itemsInRow * diff) {
       /// automatic lazy loading
-      if (window.pageYOffset > document.body.offsetHeight - window.innerHeight - 120 && currentSlice < (2 + diff) && storedFilteredItems.length && storedFilteredItems.length > 64 + itemsInRow * diff) {
+      if (window.pageYOffset > document.body.offsetHeight - window.innerHeight - lazyLoaderCatchParam && currentSlice < (2 + diff) && storedFilteredItems.length && storedFilteredItems.length > 64 + itemsInRow * diff) {
         // if (!dimmed) setDimmed(true)
         const slicedStoredFilteredItems = storedFilteredItems.slice(itemsInRow + itemsInRow * diff, 64 + itemsInRow + itemsInRow * diff)
         // window.scrollTo({ top: document.body.offsetHeight - window.innerHeight - 180, behavior: 'smooth' })
@@ -117,16 +119,17 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
         console.log('SET NFTS2, offset is', window.pageYOffset, 'diff is', diff)
         dispatch(setCurrentDisp(slicedStoredFilteredItems.length))
         dispatch(setCurrentSlice(2 + diff))
-        setTimeout(() => { diff += 1; /* setDimmed(false); */ if (window.pageYOffset > document.body.offsetHeight - window.innerHeight - 120) window.scrollTo({ top: window.pageYOffset - 1, behavior: 'smooth' }) }, 3000)
+        setTimeout(() => { diff += 1; /* setDimmed(false); */ if (window.pageYOffset > document.body.offsetHeight - window.innerHeight - lazyLoaderCatchParam) window.scrollTo({ top: window.pageYOffset - 1, behavior: 'smooth' }) }, 3000)
       }
       // back
       if (window.pageYOffset < 2 && diff >= 0 && (currentSlice === (2 + diff) || currentSlice === (1 + diff)) && storedFilteredItems.length && storedFilteredItems.length > 64 + itemsInRow * diff) {
+        // if (!dimmed) { setDimmed(true); setTimeout(() => setDimmed(false), 500) }
         const slicedStoredFilteredItems = storedFilteredItems.slice(itemsInRow + itemsInRow * (diff - 1), 64 + itemsInRow + itemsInRow * (diff - 1))
         setNfts(slicedStoredFilteredItems)
         console.log('SET NFTS2 back, offset is', window.pageYOffset, 'diff is', diff)
         dispatch(setCurrentDisp(slicedStoredFilteredItems.length))
         dispatch(setCurrentSlice(currentSlice - 1))
-        setTimeout(() => { if (diff) diff -= 1; if (window.pageYOffset < 2) { window.scrollTo({ top: 1, behavior: 'smooth' }); console.log('TIMEOUT1, SCROLLED TO', window.pageYOffset) } }, 3000)
+        setTimeout(() => { if (diff) diff -= 1; if (window.pageYOffset < 2) { window.scrollTo({ top: 1, behavior: 'smooth' }); console.log('TIMEOUT1, SCROLLED TO', window.pageYOffset) } }, 1000)
       }
     }
   }
@@ -155,7 +158,7 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
       return <NFTCardCreation addNFTToList={addNFTToList}/>
     }
 
-    if (nft.owner === account && nft.marketItemId && !nft.hasMarketApproval) {
+    if (nft.owner === account && !nft.hasMarketApproval) {
       // return <NFTCard nft={nft} action="approve" updateNFT={() => updateNFT(index, nft.tokenId)}/>
       return <NFTCard nft={nft} action="sell" updateNFT={() => updateNFT(index, nft.tokenId)}/>
     }

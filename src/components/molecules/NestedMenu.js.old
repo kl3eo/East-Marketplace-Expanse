@@ -1,0 +1,90 @@
+import React, { useState } from 'react'
+import { Menu, MenuItem, Typography } from '@mui/material'
+// import NestedMenuItem from 'material-ui-nested-menu-item'
+import { NestedMenuItem } from 'mui-nested-menu'
+
+const items = [
+  {
+    component: 'Parent 1'
+  },
+  {
+    component: 'Parent 2'
+  },
+  {
+    component: 'Parent with child',
+    items: [
+      {
+        component: 'Child A'
+      }
+    ]
+  },
+  {
+    component: 'Parent with child 2',
+    items: [
+      {
+        component: 'Child B',
+        items: [
+          {
+            component: 'Child of Child B'
+          }
+        ]
+      }
+    ]
+  }
+]
+
+export const NestedMenu = () => {
+  const [menuPosition, setMenuPosition] = useState(null)
+  const handleRightClick = (event) => {
+    if (menuPosition) {
+      return
+    }
+    event.preventDefault()
+    setMenuPosition({
+      top: event.pageY,
+      left: event.pageX
+    })
+  }
+
+  const handleItemClick = (event) => {
+    setMenuPosition(null)
+  }
+
+  const customRender = items => {
+    return items.map((item, index) => {
+      if (item.items) {
+        return (
+          <NestedMenuItem
+            key={item.component}
+            label={item.component}
+            parentMenuOpen={!!menuPosition}
+            onClick={handleItemClick}
+          >
+            {customRender(item.items)}
+          </NestedMenuItem>
+        )
+      }
+      return (
+        <MenuItem key={index} onClick={handleItemClick}>
+          {item.component}
+        </MenuItem>
+      )
+    })
+  }
+
+  return (
+    <div onContextMenu={handleRightClick}>
+      <Typography>Right click to open menu</Typography>
+      <Menu
+        open={!!menuPosition}
+        onClose={() => setMenuPosition(null)}
+        anchorReference='anchorPosition'
+        anchorPosition={menuPosition}
+      >
+        {customRender(items)}
+      </Menu>
+    </div>
+  )
+}
+
+export default NestedMenu

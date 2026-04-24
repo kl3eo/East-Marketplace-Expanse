@@ -31,7 +31,7 @@ function MyApp (props) {
         <CacheProvider value={emotionCache}>
           <Head>
             <meta name="viewport" content="initial-scale=1, width=device-width" />
-            <title>Room-House NFT Marketplace</title>
+            <title>Room-House Token Gallery</title>
           </Head>
           <ThemeProvider theme={theme}>
               <CssBaseline />

@@ -1,4 +1,3 @@
-
 import { useContext, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { makeStyles } from '@mui/styles'
@@ -23,15 +22,16 @@ const useStyles = makeStyles({
   }
 })
 
-const defaultFileUrl = 'https://club.room-house.com/img/nft_rh_250.png'
-const defaultVideoFileUrl = 'https://club.room-house.com/img/nft_video_250.png'
+const defaultFileUrl = '/nft_rh_250.png'
+const defaultVideoFileUrl = '/nft_video_250.png'
+const defaultFileTypeUrl = '/filetype.png'
 
 export default function NFTCardCreation ({ addNFTToList }) {
   const [file, setFile] = useState(null)
   const [fileUrl, setFileUrl] = useState(defaultFileUrl)
   const classes = useStyles()
   const { register, handleSubmit, reset } = useForm()
-  const { nftContract } = useContext(Web3Context)
+  const { account, nftContract } = useContext(Web3Context)
   const [isLoading, setIsLoading] = useState(false)
 
   async function createNft (metadataUrl) {
@@ -42,11 +42,13 @@ export default function NFTCardCreation ({ addNFTToList }) {
     return tokenId
   }
 
-  function createNFTFormDataFile (name, description, file) {
+  function createNFTFormDataFile (name, description, file, account) {
     const formData = new FormData()
     formData.append('name', name)
     formData.append('description', description)
     formData.append('file', file)
+    formData.append('account', account)
+    console.log('using account', account)
     return formData
   }
 
@@ -61,15 +63,19 @@ export default function NFTCardCreation ({ addNFTToList }) {
   async function onFileChange (event) {
     if (!event.target.files[0]) return
     setFile(event.target.files[0])
-    event.target.files[0].name.match(/\.(mp4|MP4|webm|WEBM)$/ig) ? setFileUrl(defaultVideoFileUrl) : setFileUrl(URL.createObjectURL(event.target.files[0]))
+    event.target.files[0].name.match(/\.(mp4|MP4|webm|WEBM)$/ig) ? setFileUrl(defaultVideoFileUrl) : event.target.files[0].name.match(/\.(jpg|jpeg|png)$/ig) ? setFileUrl(URL.createObjectURL(event.target.files[0])) : setFileUrl(defaultFileTypeUrl)
+    document.getElementById('labelFileName').innerText = event.target.files[0].name
+    document.getElementById('labelFileName').style.display = event.target.files[0].name.match(/\.(jpg|jpeg|png|mp4|webm)$/ig) ? 'none' : 'block'
   }
 
   async function onSubmit ({ name, description }) {
     try {
       if (!file || isLoading) return
       setIsLoading(true)
-      const formData = createNFTFormDataFile(name, description, file)
+      const formData = createNFTFormDataFile(name, description, file, account)
       const metadataUrl = await uploadFileToIPFS(formData)
+      if (typeof metadataUrl === 'undefined') { alert('Error occurred. Check file size must be < 100M.'); return }
+      if (metadataUrl === 'null' || metadataUrl === null) { alert('Error occurred. Check file size must be < 100M.'); return }
       const tokenId = await createNft(metadataUrl)
       console.log('new token:', tokenId)
       addNFTToList(tokenId)
@@ -88,15 +94,15 @@ export default function NFTCardCreation ({ addNFTToList }) {
         <CardMedia
           className={classes.media}
           alt='Upload image'
-          image={fileUrl}
-        />
+          image={fileUrl} sx={{ position: 'relative' }}>
+          <div id="labelFileName" style={{ color: '#369', fontSize: '24px', position: 'absolute', top: '10px', left: '10px', display: 'none' }}></div>
+        </CardMedia>
       </label>
       <input
           style={{ display: 'none' }}
           type="file"
           name="file"
           id="file-input"
-          accept="image/png, image/jpeg, video/mp4, video/webm"
           onChange={onFileChange}
         />
       <CardContent sx={{ paddingBottom: 0 }}>

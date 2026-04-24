@@ -40,7 +40,8 @@ export const chains = {
     name: 'Expanse',
     chain: 'Expanse',
     rpc: [
-      'https://node.expanse.tech'
+      // 'https://node.expanse.tech'
+      'https://wien.room-house.com'
     ],
     faucets: [
     ],

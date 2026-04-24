@@ -2,6 +2,7 @@ import { Button } from '@mui/material'
 import { useContext, useEffect, useState, useRef } from 'react'
 import { Web3Context } from '../providers/Web3Provider'
 import { isMobile } from 'react-device-detect'
+import NavItem from './NavItem'
 
 export default function ConnectButton () {
   const { initializeWeb3 } = useContext(Web3Context)
@@ -13,7 +14,7 @@ export default function ConnectButton () {
   }, [])
   useEffect(() => {
     const timer = setTimeout(() => {
-      inputRef.current.click()
+      inputRef.current && inputRef.current.click()
       // console.log('inputref', inputRef)
     }, 3000)
     return () => { clearTimeout(timer) }
@@ -26,5 +27,6 @@ export default function ConnectButton () {
       return initializeWeb3()
     }
   }
-  return <Button color="inherit" ref={inputRef} onClick={onClick} style={{ fontSize: '24px' }}>{buttonText}</Button>
+  const url = 'https://metamask.io'
+  return buttonText === '🦊' || buttonText === 'Install Metamask' ? <NavItem title={buttonText} href={url} openNewTab={true}/> : <Button color="inherit" ref={inputRef} onClick={onClick} style={{ fontSize: '24px' }}>{buttonText}</Button>
 }

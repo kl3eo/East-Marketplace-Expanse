@@ -10,8 +10,12 @@
   border-radius: 36px;
   border: none;
   box-shadow: 0 5px 10px #ccc;
+  z-index: 1002;
 }
 
-.back_to_top:hover {
-  background: red;
+.noCursor:focus:not(:focus-visible) {
+  outline: 0;
+  box-shadow: none;
 }
+
+\!.back_to_top:hover { background: red; }

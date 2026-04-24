@@ -1,10 +1,10 @@
 import { Typography } from '@mui/material'
 
-export default function NFTName ({ name }) {
+export default function NFTName ({ name, variant }) {
   return (
     <Typography
       gutterBottom
-      variant="h5"
+      variant={variant}
       component="div"
       >
         {name}

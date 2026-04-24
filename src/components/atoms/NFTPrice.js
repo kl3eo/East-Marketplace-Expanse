@@ -1,23 +1,28 @@
-import { Popover, Typography } from '@mui/material'
+// import { Popover, Typography } from '@mui/material'
+import { Typography } from '@mui/material'
 import Image from 'next/image'
-import { useState } from 'react'
+// import { useState } from 'react'
 
 function getPriceText (nft) {
-  const { sold, canceled } = nft
+  const { sold, canceled, price } = nft
   if (sold) {
     return 'Sold for'
   }
 
   if (canceled) {
-    return 'Offered for'
+    return 'Owned for'
+  }
+
+  if (!price) {
+    return 'Wait a min..'
   }
 
   return 'Price'
 }
 
-export default function NFTPrice ({ nft }) {
+export default function NFTPrice ({ nft, variant }) {
   const priceText = getPriceText(nft)
-  const [anchorEl, setAnchorEl] = useState(null)
+  /* const [anchorEl, setAnchorEl] = useState(null)
 
   const handlePopoverOpen = (event) => {
     setAnchorEl(event.currentTarget)
@@ -32,14 +37,14 @@ export default function NFTPrice ({ nft }) {
     <div style={{ textAlign: 'center' }}>
 
       <Typography
-      variant="h6"
+      variant={variant}
       color="text.secondary"
       >
         {priceText}
       </Typography>
       <Typography
       gutterBottom
-      variant="h6"
+      variant={variant}
       color="text.secondary"
       >
         <span style={{ display: 'inline-block', transform: 'translateY(3px)' }}>
@@ -72,6 +77,33 @@ export default function NFTPrice ({ nft }) {
         >
           <Typography sx={{ p: 1 }}>EXP</Typography>
         </Popover>
+        {' '}{nft.price}
+      </Typography>
+    </div>
+  ) */
+  return (
+    <div style={{ textAlign: 'center' }}>
+
+      <Typography
+      variant={variant}
+      color="text.secondary"
+      >
+        {priceText}
+      </Typography>
+      <Typography
+      gutterBottom
+      variant={variant}
+      color="text.secondary"
+      >
+        <span style={{ display: 'inline-block', transform: 'translateY(3px)' }}>
+          <Image
+            alt='EXP'
+            title='EXP'
+            src='/exp.png'
+            width="20px"
+            height="20px"
+          />
+        </span>
         {' '}{nft.price}
       </Typography>
     </div>

@@ -1,0 +1,37 @@
+<html>
+<body>
+<div id="paymentContainer"></div>
+<script>
+  const URL = 'https://happydox.room-house.com/cgi/init.pl';
+  const INIT_PARAMS = { param: "John" };
+</script>
+<script
+  async
+  onload="onPaymentIntegrationLoad()"
+  src="https://integrationjs.tbank.ru/integration.js"
+></script>
+<script>
+
+  const initConfig = {
+    terminalKey: '1768820783046DEMO',
+    product: 'eacq',
+    features: {
+      payment: {
+        container: document.getElementById('paymentContainer'),                
+        paymentStartCallback: async () => {
+          const res = await new PaymentIntegration.Helpers().request(URL, 'POST', INIT_PARAMS);
+	  const parsedData = JSON.parse(res.result);
+          return parsedData.PaymentURL;
+        },
+      },
+    },
+  };
+
+  function onPaymentIntegrationLoad() {
+    PaymentIntegration.init(initConfig).then().catch();
+  }
+  
+</script>
+</body>
+</html>
+

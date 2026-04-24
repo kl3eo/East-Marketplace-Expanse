@@ -2,7 +2,6 @@ import PropTypes from 'prop-types'
 import Link from 'next/link'
 import { Button } from '@mui/material'
 import { useRouter } from 'next/router'
-import { isMobile } from 'react-device-detect'
 
 export default function NavItem ({ title, href, openNewTab }) {
   const { pathname } = useRouter()
@@ -18,7 +17,7 @@ export default function NavItem ({ title, href, openNewTab }) {
             display: 'block',
             textDecoration: isActive && 'underline',
             textAlign: 'center',
-            fontSize: isMobile ? '16px' : '16px',
+            fontSize: '16px',
             '&:hover': {
               backgroundColor: '#fff',
               color: '#3c52b2'

@@ -1,0 +1,15 @@
+<html>
+<body onload="checkScript('a')">
+
+<script>
+  const currentServer = 'aspen'
+  const currentServerPort = ''
+  async function checkScript (param) {
+    let res = ''
+    try { const fData = new FormData(); fData.append('param', param); res = await fetch('https://' + currentServer + '.room-house.com' + currentServerPort + '/cgi/check_script.pl', { body: fData, method: 'post', enctype: 'multipart/form-data' }).then((response) => response.json()).then((res) => { console.log('here res is', res); document.getElementById('resContainer').innerText  = res.result; return res }) } catch (e) { console.log('failed check script') }
+    return res
+  }
+</script>
+<div id="resContainer" style="width:100%;height:50vh;marginTop:25vh;font-size:36px;text-align:center;"></div>
+</body>
+</html>

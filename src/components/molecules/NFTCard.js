@@ -207,7 +207,7 @@ export default function NFTCard ({ nft, action, updateNFT, onCliCliCli }) {
   museoReal = Museo === 'currier' ? 'Currier MA, NH' : museoReal // open access
   museoReal = Museo === 'staedel' ? 'Staedel, Frankfurt' : museoReal // open access on PD
   museoReal = Museo === 'bruggea' ? 'Musea Brugge, Belgium' : museoReal // PD non-commercial and link to https://artinflanders.be/en
-  museoReal = Museo === 'harvardmuseum' ? 'Harvard Art Museums, MA' : museoReal // non-commercial&educational
+  museoReal = Museo === 'harvardmuseum' ? 'Harvard Art Museums, MA' : museoReal // non-commercial&educational https://harvardartmuseums.org/terms-of-use
   museoReal = Museo === 'ghentmuseum' ? 'Ghent Museum, Belgium' : museoReal
   museoReal = Museo === 'waltersmuseum' ? 'Walters Museum, Baltimore' : museoReal // cc0 for PD https://thewalters.org/about/policies/rights-reproductions/
   museoReal = Museo === 'princely' ? 'Liechtenstein Collections' : museoReal
@@ -247,7 +247,7 @@ export default function NFTCard ({ nft, action, updateNFT, onCliCliCli }) {
   museoReal = Museo === 'buffaloakg' ? 'Buffalo AKG Art Museum' : museoReal // free for PD; fair use for others https://buffaloakg.org/terms-use
   museoReal = Museo === 'albertina' ? 'Albertina Museum, Vienna' : museoReal // free on PD to 1200px
   museoReal = Museo === 'manchesterag' ? 'Art Gallery, Manchester' : museoReal // CC BY-SA 4.0
-  museoReal = Museo === 'victoria' ? 'National Gal. of Victoria, Melbourne' : museoReal // CC BY-SA 4.0
+  museoReal = Museo === 'victoria' ? 'National Gal. of Victoria, Melbourne' : museoReal // all 5 bought by 0x5F4B - lots of BAD stuff at https://www.ngv.vic.gov.au/about/reports-and-documents/copyright-and-reproductions/ 
   museoReal = Museo === 'guggenheim' ? 'Guggenheim, New York' : museoReal // fair use & educational non-commercial
   museoReal = Museo === 'buehrle' ? 'Emil Buehrle Collection, Zurich' : museoReal // no info at the site; asked on email; good qual images
   museoReal = Museo === 'vangoghmuseum' ? 'Van Gogh Museum, Amsterdam' : museoReal // low quality images but can be dnld; no comment on terms

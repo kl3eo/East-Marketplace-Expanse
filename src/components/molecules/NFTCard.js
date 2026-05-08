@@ -177,101 +177,105 @@ export default function NFTCard ({ nft, action, updateNFT, onCliCliCli }) {
 
   const museoHref = musee.length === 2 && musee[0] === 'museo' ? Museo === 'cmamuseum' ? 'https://www.clevelandart.org/art/' + permee[1] : Museo === 'ngamuseum' ? 'https://www.nga.gov/content/ngaweb/Collection/art-object-page.' + permee[1] + '.html' : Museo === 'altepinakothek' || Museo === 'neuepinakothek' || Museo === 'modernepinakothek' ? 'https://www.sammlung.pinakothek.de/en/artwork/' + permee[1] : Museo === 'metmuseum' ? 'https://www.metmuseum.org/art/collection/search/' + permee[1] : Museo === 'hmbgksthalle' ? 'https://online-sammlung.hamburger-kunsthalle.de/de/objekt/' + permee[1] : Museo === 'tmamuseum' ? 'https://emuseum.toledomuseum.org/objects/' + permee[1] : Museo === 'saam' ? 'https://americanart.si.edu/artwork/' + permee[1] : Museo === 'philamuseum' ? 'https://philamuseum.org/collection/object/' + permee[1] : Museo === 'mfamuseum' ? 'https://collections.mfa.org/objects/' + permee[1] : Museo === 'lacma' ? 'https://collections.lacma.org/' + permee[1] : Museo === 'slammuseum' ? 'https://www.slam.org/collection/objects/' + permee[1] : Museo === 'belvederemuseum' ? 'https://sammlung.belvedere.at/objects/' + permee[1] : Museo === 'kunstbasel' ? 'https://sammlungonline.kunstmuseumbasel.ch/eMP/eMuseumPlus?service=ExternalInterface&module=collection&objectId=' + permee[1] + '&viewType=detailView' : Museo === 'brooklynmuseum' ? 'https://www.brooklynmuseum.org/objects/' + permee[1] : Museo === 'mauritshuis' ? 'https://www.mauritshuis.nl/ontdek-collectie/kunstwerken/' + permee[1] : Museo === 'pradomuseum' ? 'https://www.museodelprado.es/en/the-collection/art-work/' + permee[1] : Museo === 'mnac' ? 'https://www.museunacional.cat/ca/colleccio/' + permee[1] : Museo === 'smkmuseum' ? 'https://open.smk.dk/en/artwork/image/' + permee[1] : Museo === 'artic' ? 'https://www.artic.edu/artworks/' + permee[1] : Museo === 'dia' ? 'https://dia.org/collection/' + permee[1] : Museo === 'siedu' ? 'https://collections.si.edu/search/detail/' + permee[1] : Museo === 'kmska' ? 'https://www.kmska.be/en/' + permee[1] : Museo === 'nms' ? 'https://collection.nationalmuseum.se/en/collection/item/' + permee[1] : Museo === 'imamuseum' ? 'https://collections.discovernewfields.org/art/artwork/' + permee[1] : Museo === 'getty' ? 'https://www.getty.edu/art/collection/object/' + permee[1] : Museo === 'currier' ? 'https://collections.currier.org/objects-1/info/' + permee[1] : Museo === 'staedel' ? 'https://sammlung.staedelmuseum.de/en/work/' + permee[1] : Museo === 'bruggea' ? 'https://collectie.museabrugge.be/collection/work/id/' + permee[1] : Museo === 'harvardmuseum' ? 'https://harvardartmuseums.org/collections/object/' + permee[1] : Museo === 'ghentmuseum' ? 'https://www.mskgent.be/en/collection/' + permee[1] : Museo === 'waltersmuseum' ? 'https://art.thewalters.org/object/' + permee[1] : Museo === 'princely' ? 'https://www.liechtensteincollections.at/en/collections-online/' + permee[1] : Museo === 'carnegieart' ? 'https://collection.carnegieart.org/objects/' + permee[1] : Museo === 'gemaldesmb' ? 'https://recherche.smb.museum/detail/' + permee[1] : Museo === 'artsmia' ? 'https://collections.artsmia.org/art/' + permee[1] : Museo === 'gardner' ? 'https://www.gardnermuseum.org/experience/collection/' + permee[1] : Museo === 'clark' ? 'https://www.clarkart.edu/ArtPiece/Detail/' + permee[1] : Museo === 'canada' ? 'https://www.gallery.ca/collection/artwork/' + permee[1] : Museo === 'risdmuseum' ? 'https://risdmuseum.org/art-design/collection/' + permee[1] : Museo === 'pafamuseum' ? 'https://www.pafa.org/museum/collection/item/' + permee[1] : Museo === 'akronartmuseum' ? 'https://akronartmuseum.org/collection/?object=' + permee[1] : Museo === 'princetonmuseum' ? 'https://artmuseum.princeton.edu/art/collections/objects/' + permee[1] : Museo === 'whitneymuseum' ? 'https://whitney.org/collection/works/' + permee[1] : Museo === 'phillipscollection' ? 'https://www.phillipscollection.org/collection/' + permee[1] : Museo === 'yaleartgallery' ? 'https://artgallery.yale.edu/collections/objects/' + permee[1] : Museo === 'momamuseum' ? 'https://www.moma.org/collection/works/' + permee[1] : Museo === 'walkermuseum' ? 'https://walkerart.org/collections/artworks/' + permee[1] : Museo === 'desmoinesartcenter' ? 'https://emuseum.desmoinesartcenter.org/objects/' + permee[1] : Museo === 'crystalbridges' ? 'https://crystalbridges.emuseum.com/objects/' + permee[1] : Museo === 'thyssenmuseum' ? 'https://www.museothyssen.org/en/collection/' + permee[1] : Museo === 'courtauld' ? 'https://gallerycollections.courtauld.ac.uk/' + permee[1] : Museo === 'scotland' ? 'https://www.nationalgalleries.org/art-and-artists/' + permee[1] : Museo === 'tours' ? 'https://musees.tours.fr/collections/' + permee[1] : Museo === 'bellasartesba' ? 'https://www.bellasartes.gob.ar/coleccion/obra/' + permee[1] : Museo === 'fivecolleges' ? 'https://museums.fivecolleges.edu/collection/search/' + permee[1] : Museo === 'museefabre' ? 'https://www.museefabre.fr/' + permee[1] : Museo === 'marmottan' ? 'https://www.marmottan.fr/notice/' + permee[1] : Museo === 'toulouselautrec' ? 'https://www.musee-toulouse-lautrec.com/collections/chefs-d-oeuvre/' + permee[1] : Museo === 'lenbachhaus' ? 'https://www.lenbachhaus.de/digital/sammlung-online/detail/' + permee[1] : Museo === 'mahmah' ? 'https://www.mahmah.ch/collection/oeuvres/' + permee[1] : Museo === 'mcbamuseum' ? 'https://www.mcba.ch/en/collection/' + permee[1] : Museo === 'ludwig' ? 'https://museum-ludwig.kulturelles-erbe-koeln.de/documents/obj/' + permee[1] : Museo === 'centraalmuseum' ? 'https://collectie.centraalmuseum.nl/details/collection/' + permee[1] : Museo === 'wienmuseum' ? 'https://sammlung.wienmuseum.at/objekt/' + permee[1] : Museo === 'nasjonalmuseet' ? 'https://www.nasjonalmuseet.no/en/collection/object/' + permee[1] : Museo === 'buffaloakg' ? 'https://buffaloakg.org/artworks/' + permee[1] : Museo === 'albertina' ? 'https://sammlungenonline.albertina.at/en/objects/' + permee[1] : Museo === 'manchesterag' ? 'https://collections.manchesterartgallery.org/collections/item/' + permee[1] : Museo === 'victoria' ? 'https://www.ngv.vic.gov.au/explore/collection/work/' + permee[1] : Museo === 'guggenheim' ? 'https://www.guggenheim.org/artwork/' + permee[1] : Museo === 'buehrle' ? 'https://buehrle.ch/en/artworks/' + permee[1] : Museo === 'vangoghmuseum' ? 'https://www.vangoghmuseum.nl/en/collection/' + permee[1] : Museo === 'hagginmuseum' ? 'https://hagginmuseum.org/collections/' + permee[1] : Museo === 'sdmart' ? 'https://collection.sdmart.org/' + permee[1] : Museo === 'artsbma' ? 'https://www.artsbma.org/collection/' + permee[1] : Museo === 'tatemuseum' ? 'https://www.tate.org.uk/art/artworks/' + permee[1] : Museo === 'dmamuseum' ? 'https://www.dma.org/art/collection/object/' + permee[1] : Museo === 'famsf' ? 'https://www.famsf.org/artworks/' + permee[1] : Museo === 'chrysler' ? 'https://chrysler.emuseum.com/objects/' + permee[1] : Museo === 'terra' ? 'https://collection.terraamericanart.org/objects/' + permee[1] : Museo === 'reinasofia' ? 'https://www.museoreinasofia.es/en/collections/artwork/' + permee[1] : Museo === 'royaltrust' ? 'https://www.rct.uk/collection/' + permee[1] : Museo === 'karlsruhe' ? 'https://www.kunsthalle-karlsruhe.de/kunstwerke/' + permee[1] : Museo === 'dulwich' ? 'https://www.dulwichpicturegallery.org.uk/explore/explore-the-collection/' + permee[1] : Museo === 'khm' ? 'https://www.khm.at/en/artworks/' + permee[1] : Museo === 'worcester' ? 'https://worcester.emuseum.com/objects/' + permee[1] : Museo === 'carmenthyssen' ? 'https://www.carmenthyssenmalaga.org/obra/' + permee[1] : Museo === 'mesdag' ? 'https://www.demesdagcollectie.nl/en/collection/' + permee[1] : Museo === 'bruecke' ? 'https://www.bruecke-museum.de/en/sammlung/werke/' + permee[1] : Museo === 'allen' ? 'https://allenartcollection.oberlin.edu/objects/' + permee[1] : Museo === 'thorvald' ? 'https://kataloget.thorvaldsensmuseum.dk/' + permee[1] : Museo === 'aargauer' ? 'https://aargauerkunsthaus.ch/werk/' + permee[1] : Museo === 'muzee' ? 'https://www.muzee.be/en/' + permee[1] : '/?' + Museo : ''
 
-  museoReal = Museo === 'mauritshuis' ? 'Mauritshuis, The Hague' : museoReal // educational
   museoReal = Museo === 'neuepinakothek' ? 'Neue Pinakothek, Munchen' : museoReal // CC BY-SA 4.0 for public domain
   museoReal = Museo === 'altepinakothek' ? 'Alte Pinakothek, Munchen' : museoReal // the same
   museoReal = Museo === 'modernepinakothek' ? 'Pinakothek der Moderne, Munchen' : museoReal // the same
-  museoReal = Museo === 'belvederemuseum' ? 'Galerie Belvedere, Wien' : museoReal // got their permission by email for educ.&non-comm. purposes
-  museoReal = Museo === 'hmbgksthalle' ? 'Kunsthalle, Hamburg' : museoReal // no explicit CR message, no dnld button but good quality dnld is possible
   museoReal = Museo === 'kunstbasel' ? 'Kunstmuseum, Basel' : museoReal // open access for PD
-  museoReal = Museo === 'metmuseum' ? 'Met Museum, New York' : museoReal // open access for PD
+  museoReal = Museo === 'metmuseum' ? 'Met Museum, New York' : museoReal // open access for PD https://www.metmuseum.org/policies/terms-and-conditions
   museoReal = Museo === 'slammuseum' ? 'Art Museum, Saint Louis' : museoReal // open access for PD
   museoReal = Museo === 'philamuseum' ? 'Museum of Art, Philadelphia' : museoReal // open access for PD
   museoReal = Museo === 'cmamuseum' ? 'Museum of Art, Cleveland' : museoReal // open access
-  museoReal = Museo === 'brooklynmuseum' ? 'Brooklyn Museum, New York' : museoReal // brooklynmuseum.org/image-services - use for noncommercial purposes with proper attribution
   museoReal = Museo === 'ngamuseum' ? 'NGA, Washington' : museoReal // open access
-  museoReal = Museo === 'pradomuseum' ? 'Museo del Prado, Madrid' : museoReal // non-commercial&educational
-  museoReal = Museo === 'tmamuseum' ? 'Toledo Museum of Art' : museoReal // FAIR USE FOR PUBLIC DOMAIN
   museoReal = Museo === 'saam' ? 'Smithsonian AAM' : museoReal // open access cc0
-  museoReal = Museo === 'mfamuseum' ? 'Museum of Fine Arts, Boston' : museoReal // fair use for non-commercial&educational purpose; otherwise prohibited
   museoReal = Museo === 'lacma' ? 'County Museum of Art, LA' : museoReal // without restriction on PD
-  museoReal = Museo === 'mnac' ? 'MNAC, Barcelona' : museoReal // CC BY-NC-SA 3.0.0.
   museoReal = Museo === 'smkmuseum' ? 'SMK, Copenhagen' : museoReal // open access
   museoReal = Museo === 'artic' ? 'Art Institute, Chicago' : museoReal // open access with CC0 tag
   museoReal = Museo === 'dia' ? 'Detroit Inst. of Arts' : museoReal // open access for PD
   museoReal = Museo === 'siedu' ? 'Smithsonian NMAA' : museoReal // open access cc0
   museoReal = Museo === 'kmska' ? 'KMSKA, Antwerpen' : museoReal // open access
-  museoReal = Museo === 'nms' ? 'Nationalmuseum, Stockholm' : museoReal // CC BY-SA tagged can be shared/etc
+  museoReal = Museo === 'nms' ? 'Nationalmuseum, Stockholm' : museoReal // CC BY-SA, or no CR https://www.nationalmuseum.se/en/explore-art-and-design/images/rights-and-reproductions
   museoReal = Museo === 'imamuseum' ? 'IMA, Indianapolis' : museoReal // cc0 for PD
   museoReal = Museo === 'getty' ? 'Getty Museum, LA' : museoReal // any purpose Getty Open Content
   museoReal = Museo === 'currier' ? 'Currier MA, NH' : museoReal // open access
   museoReal = Museo === 'staedel' ? 'Staedel, Frankfurt' : museoReal // open access on PD
-  museoReal = Museo === 'bruggea' ? 'Musea Brugge, Belgium' : museoReal // PD non-commercial and link to https://artinflanders.be/en
-  museoReal = Museo === 'harvardmuseum' ? 'Harvard Art Museums, MA' : museoReal // non-commercial&educational https://harvardartmuseums.org/terms-of-use
-  museoReal = Museo === 'ghentmuseum' ? 'Ghent Museum, Belgium' : museoReal
+  museoReal = Museo === 'ghentmuseum' ? 'Ghent Museum, Belgium' : museoReal // unrestricted use for PD https://www.mskgent.be/en/collection/image-rights
   museoReal = Museo === 'waltersmuseum' ? 'Walters Museum, Baltimore' : museoReal // cc0 for PD https://thewalters.org/about/policies/rights-reproductions/
-  museoReal = Museo === 'princely' ? 'Liechtenstein Collections' : museoReal
-  museoReal = Museo === 'carnegieart' ? 'Carnegie MA, Pittsburgh' : museoReal // BAD
   museoReal = Museo === 'gemaldesmb' ? 'Staatliche Museen zu Berlin' : museoReal // open access https://www.smb.museum/en/open-science/use/ Gemäldegalerie, Berlin
   museoReal = Museo === 'artsmia' ? 'Minneapolis Inst. of Art' : museoReal // open access on PD
-  museoReal = Museo === 'gardner' ? 'I.S.Gardner Museum, Boston' : museoReal // Creative Commons license (CC BY-NC-ND 4.0)
   museoReal = Museo === 'clark' ? 'Clark Art Institute, MA' : museoReal // open access for PD https://www.clarkart.edu/museum/collections/image-resources
-  museoReal = Museo === 'canada' ? 'National Gallery of Canada, Ottawa' : museoReal // non-commercial https://www.gallery.ca/terms-of-use
-  museoReal = Museo === 'risdmuseum' ? 'RISD Museum, Providence' : museoReal // CC BY-NC-SA 3.0 US https://risdmuseum.org/terms-use
-  museoReal = Museo === 'pafamuseum' ? 'PAFA Museum, Philadelphia' : museoReal // BAD https://www.pafa.org/legal
-  museoReal = Museo === 'akronartmuseum' ? 'Akron Art Museum, OH' : museoReal // no comment on CR on the site. Asked them.
-  museoReal = Museo === 'princetonmuseum' ? 'Princeton Univ. Art Museum' : museoReal // fair use non-commercial https://artmuseum.princeton.edu/terms-and-conditions
-  museoReal = Museo === 'whitneymuseum' ? 'Whitney Museum, NYC' : museoReal // fair use non-commercial https://whitney.org/terms-and-conditions
-  museoReal = Museo === 'phillipscollection' ? 'Phillips Collection, Washington' : museoReal // noncommercial educational with link back
   museoReal = Museo === 'yaleartgallery' ? 'Yale Art Gallery, New Haven' : museoReal // open access
-  museoReal = Museo === 'momamuseum' ? 'Museum of Modern Art, NYC' : museoReal // fair use for educational and non-commercial
-  museoReal = Museo === 'walkermuseum' ? 'Walker Art Center, MN' : museoReal // non-commercial & educational only CR 2020
-  museoReal = Museo === 'desmoinesartcenter' ? 'Des Moines Art Center, IA' : museoReal // no access, really BAD
-  museoReal = Museo === 'crystalbridges' ? 'Crystal Bridges, Bentonville, AR' : museoReal // no access, really BAD
-  museoReal = Museo === 'thyssenmuseum' ? 'Museo Thyssen-Bornemisza, Madrid' : museoReal // educational&noncommercial
   museoReal = Museo === 'courtauld' ? 'Courtauld Gallery, London' : museoReal // CC license whenever possible https://courtauld.ac.uk/gallery/copyright/
-  museoReal = Museo === 'scotland' ? 'National Gals. of Scotland, Edinburgh' : museoReal // educational with link back; https://www.nationalgalleries.org/website-terms-of-use
-  museoReal = Museo === 'tours' ? 'Musée des Beaux-arts de Tours, France' : museoReal // BAD
-  museoReal = Museo === 'bellasartesba' ? 'MN Bellas Artes, Buenos Aires' : museoReal // no info; asked by email
-  museoReal = Museo === 'fivecolleges' ? 'Five College Museums, Amherst, MA' : museoReal // real BAD
-  museoReal = Museo === 'museefabre' ? 'Musée Fabre, Montpellier' : museoReal // BAD
-  museoReal = Museo === 'marmottan' ? 'Musée Marmottan Monet, Paris' : museoReal // no info about CR; no dnld button but good quality images
-  museoReal = Museo === 'toulouselautrec' ? 'Musée Toulouse-Lautrec, Albi' : museoReal // no info on copyright; old school online gallery
   museoReal = Museo === 'lenbachhaus' ? 'Lenbachhaus, Munchen' : museoReal // tags with Creative Commons license CC0 1.0 are free to dnld
-  museoReal = Museo === 'mahmah' ? 'Museum of Art and History, Geneva' : museoReal // personal&educational ok https://www.mahmah.ch/faq
-  museoReal = Museo === 'mcbamuseum' ? 'Musée cantonal des Beaux-Arts, Lausanne' : museoReal // no information on usage terms; asked in email; no good reply
-  museoReal = Museo === 'ludwig' ? 'Museum Ludwig, Cologne' : museoReal // download button 1200 pix no mention of Public Domain or copyright. Dubious. Need to write them.
   museoReal = Museo === 'centraalmuseum' ? 'Centraal Museum, Utrecht' : museoReal // images have public domain notice and ask to mention the Museo. which we do.
   museoReal = Museo === 'wienmuseum' ? 'Wien Museum, Vienna' : museoReal // public domain free use CC-BY
   museoReal = Museo === 'nasjonalmuseet' ? 'National Museum, Oslo' : museoReal // public domain free use CC-BY
   museoReal = Museo === 'buffaloakg' ? 'Buffalo AKG Art Museum' : museoReal // free for PD; fair use for others https://buffaloakg.org/terms-use
   museoReal = Museo === 'albertina' ? 'Albertina Museum, Vienna' : museoReal // free on PD to 1200px
-  museoReal = Museo === 'manchesterag' ? 'Art Gallery, Manchester' : museoReal // CC BY-SA 4.0
-  museoReal = Museo === 'victoria' ? 'National Gal. of Victoria, Melbourne' : museoReal // all 5 bought by 0x5F4B - lots of BAD stuff at https://www.ngv.vic.gov.au/about/reports-and-documents/copyright-and-reproductions/ 
-  museoReal = Museo === 'guggenheim' ? 'Guggenheim, New York' : museoReal // fair use & educational non-commercial
-  museoReal = Museo === 'buehrle' ? 'Emil Buehrle Collection, Zurich' : museoReal // no info at the site; asked on email; good qual images
-  museoReal = Museo === 'vangoghmuseum' ? 'Van Gogh Museum, Amsterdam' : museoReal // low quality images but can be dnld; no comment on terms
-  museoReal = Museo === 'hagginmuseum' ? 'Haggin Museum, Stockton, CA' : museoReal // no comment on terms of use
-  museoReal = Museo === 'sdmart' ? 'San Diego Museum of Art, CA' : museoReal // no terms of use, low qual
+  museoReal = Museo === 'manchesterag' ? 'Art Gallery, Manchester' : museoReal // CC BY-SA https://manchesterartgallery.org/about/loans-and-licensing
   museoReal = Museo === 'artsbma' ? 'Birmingham Museum of Art, AL' : museoReal // open access for PD
-  museoReal = Museo === 'tatemuseum' ? 'Tate Gallery, UK' : museoReal // non-commercial https://www.tate.org.uk/about-us/policies-and-procedures/website-terms-use
   museoReal = Museo === 'dmamuseum' ? 'Dallas Museum of Art, TX' : museoReal // open access for PD
-  museoReal = Museo === 'famsf' ? 'Fine Arts Museums, SF' : museoReal // fair use
-  museoReal = Museo === 'chrysler' ? 'Chrysler Art Museum, Norfolk, VA' : museoReal // fair use
-  museoReal = Museo === 'terra' ? 'Terra Foundation for American Art, IL' : museoReal // fair use
-  museoReal = Museo === 'reinasofia' ? 'Museo Reina Sofia, Madrid' : museoReal // cc 4.0 https://www.museoreinasofia.es/aviso-legal
-  museoReal = Museo === 'royaltrust' ? 'Royal Collection Trust, UK' : museoReal // https://www.rct.uk/about/policies/copyright
   museoReal = Museo === 'karlsruhe' ? 'Staatliche Kunsthalle, Karlsruhe' : museoReal // download in high res & no english
-  museoReal = Museo === 'dulwich' ? 'Dulwich Picture Gallery, London' : museoReal // low res; personal use inc. educational non-profit
-  museoReal = Museo === 'khm' ? 'Kunsthistorisches Museum, Wien' : museoReal // personal use
-  museoReal = Museo === 'worcester' ? 'Worcester Art Museum, MA' : museoReal // fair use
-  museoReal = Museo === 'carmenthyssen' ? 'Museo Carmen Thyssen, Malaga' : museoReal // legal 2018 bad but download is in high res (3k)
-  museoReal = Museo === 'mesdag' ? 'Mesdag Collection, The Hague' : museoReal // low res downloads, no mention of CR
-  museoReal = Museo === 'bruecke' ? 'Bruecke-Museum, Berlin' : museoReal // high res, non-comercial use for website, separate for collection
-  museoReal = Museo === 'allen' ? 'Allen Memorial Art Museum, OH' : museoReal // download button, no Terms of Use found; low res
+  museoReal = Museo === 'bruecke' ? 'Bruecke-Museum, Berlin' : museoReal // CC-BY-SA https://www.bruecke-museum.de/en/sammlung/nutzungsrechte/846/creative-commons-lizenz-cc-by-sa-4-0
   museoReal = Museo === 'thorvald' ? 'Thorvaldsen\'s Museum, Denmark' : museoReal // open access
-  museoReal = Museo === 'aargauer' ? 'Aargauer Kunsthaus, Switzerland' : museoReal // no terms of use
   museoReal = Museo === 'muzee' ? 'Museum of Modern Art, Ostend' : museoReal // hi-res and dnld button, no terms of use, open access
+
+  // total removed 33 + 31 + 111 + 13 + 17 + 5 + 21 + 21 + 7 + 39 + 9 + 18 + 10 + 6 + 20 + 9 + 6 + 9 + 33 + 20 + 18 + 30 + 5 + 1 + 1 + 3 + 4 + 2 + 3 + 1 + 1 + 1 + 1 + 1 + 3 + 2 + 1 + 5 + 3 + 5 + 2 + 1 + 1 + 2 + 3 + 1 + 9 = 548 items 47 museums
+
+  museoReal = Museo === 'mauritshuis' ? 'Mauritshuis, The Hague' : museoReal // REMOVED; 33 items bought 0x1c1e - non-commercial warning on download button
+  museoReal = Museo === 'dulwich' ? 'Dulwich Picture Gallery, London' : museoReal // REMOVED; bought 0x4599 4 items; low res; personal use inc. educational non-profit
+  museoReal = Museo === 'khm' ? 'Kunsthistorisches Museum, Wien' : museoReal // REMOVED; personal use https://www.khm.at/en/museum/rights-reproduction all 21 bought by 0xbc26
+  museoReal = Museo === 'worcester' ? 'Worcester Art Museum, MA' : museoReal // REMOVED; bought 0x4599 2 items; fair use
+  museoReal = Museo === 'carmenthyssen' ? 'Museo Carmen Thyssen, Malaga' : museoReal // REMOVED; bought 0x4599 3 items; legal 2018 bad but download is in high res (3k)
+  museoReal = Museo === 'famsf' ? 'Fine Arts Museums, SF' : museoReal // REMOVED; bought 0x4599 5 items; fair use
+  museoReal = Museo === 'chrysler' ? 'Chrysler Art Museum, Norfolk, VA' : museoReal // REMOVED; bought 0x4599 1 item; fair use
+  museoReal = Museo === 'terra' ? 'Terra Foundation for American Art, IL' : museoReal // REMOVED; bought 0x4599 1 item; fair use
+  museoReal = Museo === 'reinasofia' ? 'Museo Reina Sofia, Madrid' : museoReal // REMOVED; bought 0x4599 3 items;non-commercial CC https://www.museoreinasofia.es/aviso-legal
+  museoReal = Museo === 'royaltrust' ? 'Royal Collection Trust, UK' : museoReal // REMOVED; 9 items bought 0xB38D written permission for commercial https://www.rct.uk/about/policies/copyright
+  museoReal = Museo === 'tatemuseum' ? 'Tate Gallery, UK' : museoReal // REMOVED; 18 items bought 0xCfE8 non-commercial https://www.tate.org.uk/about-us/policies-and-procedures/website-terms-use
+  museoReal = Museo === 'victoria' ? 'National Gal. of Victoria, Melbourne' : museoReal // REMOVED; all 5 bought by 0x5F4B - lots of BAD stuff at https://www.ngv.vic.gov.au/about/reports-and-documents/copyright-and-reproductions/
+  museoReal = Museo === 'scotland' ? 'National Gals. of Scotland, Edinburgh' : museoReal // REMOVED; 9 items bought 0x6BbF educational with link back; https://www.nationalgalleries.org/website-terms-of-use
+  museoReal = Museo === 'thyssenmuseum' ? 'Museo Thyssen-Bornemisza, Madrid' : museoReal // REMOVED; bought by 0x2Ed 17 items educational&noncommercial
+  museoReal = Museo === 'princetonmuseum' ? 'Princeton Univ. Art Museum' : museoReal // REMOVED; 10 items bought 0xCfE8 fair use non-commercial https://artmuseum.princeton.edu/terms-and-conditions
+  museoReal = Museo === 'whitneymuseum' ? 'Whitney Museum, NYC' : museoReal // REMOVED; 6 items bought 0xCfE8 fair use non-commercial https://whitney.org/terms-and-conditions
+  museoReal = Museo === 'phillipscollection' ? 'Phillips Collection, Washington' : museoReal // REMOVED; bought by 0x2Ed 13 items noncommercial educational with link back
+  museoReal = Museo === 'canada' ? 'National Gallery of Canada, Ottawa' : museoReal // REMOVED; 6 items bought 0x6BbF non-commercial https://www.gallery.ca/terms-of-use
+  museoReal = Museo === 'risdmuseum' ? 'RISD Museum, Providence' : museoReal // REMOVED; 7 items bought by c16f8 CC BY-NC-SA 3.0 US https://risdmuseum.org/terms-use
+  museoReal = Museo === 'gardner' ? 'I.S.Gardner Museum, Boston' : museoReal // REMOVED; 21 items owned by c16f8; Creative Commons license (CC BY-NC-ND 4.0) https://www.gardnermuseum.org/organization/rights-reproductions
+  museoReal = Museo === 'bruggea' ? 'Musea Brugge, Belgium' : museoReal // REMOVED; 9 items owner 0x55a PD non-commercial and link to https://artinflanders.be/en; FORBIDDEN
+  museoReal = Museo === 'harvardmuseum' ? 'Harvard Art Museums, MA' : museoReal // REMOVED; 39 items owner 0x55a non-commercial&educational https://harvardartmuseums.org/terms-of-use
+  museoReal = Museo === 'mfamuseum' ? 'Museum of Fine Arts, Boston' : museoReal // REMOVED; 111 items by 3 buyers; fair use for non-commercial&educational purpose; otherwise prohibited https://www.metmuseum.org/policies/terms-and-conditions
+  museoReal = Museo === 'mnac' ? 'MNAC, Barcelona' : museoReal // REMOVED; 20 items bought 0x6BbF CC BY-NC-SA 3.0.0 https://www.museunacional.cat/en/legal-notice
+  museoReal = Museo === 'pradomuseum' ? 'Museo del Prado, Madrid' : museoReal // REMOVED; non-commercial&educational; all 31 items bought by 0x9e3A
+  museoReal = Museo === 'tmamuseum' ? 'Toledo Museum of Art' : museoReal // REMOVED; 30 items owned by 0xd166 FAIR USE FOR PUBLIC DOMAIN https://toledomuseum.org/collection/image-resources/
+  museoReal = Museo === 'brooklynmuseum' ? 'Brooklyn Museum, New York' : museoReal // REMOVED; 18 items bought 0xa54c brooklynmuseum.org/image-services - use for noncommercial purposes with proper attribution
+  museoReal = Museo === 'belvederemuseum' ? 'Galerie Belvedere, Wien' : museoReal // REMOVED; 33 items bought 0xB38D got their permission by email for educ.&non-comm. purposes; https://www.belvedere.at/en/legal-notice
+  museoReal = Museo === 'hmbgksthalle' ? 'Kunsthalle, Hamburg' : museoReal // REMOVED; 20 items bought 0xa54C; no explicit CR message, no dnld button but good quality dnld is possible
+  museoReal = Museo === 'marmottan' ? 'Musée Marmottan Monet, Paris' : museoReal // REMOVED; bought 0x4599 1 item; no info about CR; no dnld button but good quality images
+  museoReal = Museo === 'toulouselautrec' ? 'Musée Toulouse-Lautrec, Albi' : museoReal // REMOVED; bought 0x4599 1 item; no info on copyright; old school online gallery
+  museoReal = Museo === 'mahmah' ? 'Museum of Art and History, Geneva' : museoReal // REMOVED; bought 0x4599 1 item; personal&educational ok https://www.mahmah.ch/faq
+  museoReal = Museo === 'momamuseum' ? 'Museum of Modern Art, NYC' : museoReal // REMOVED; bought 0x4599 1 item; fair use for educational and non-commercial
+  museoReal = Museo === 'walkermuseum' ? 'Walker Art Center, MN' : museoReal // REMOVED; bought 0xA298 1 item; non-commercial & educational only CR 2020
+  museoReal = Museo === 'guggenheim' ? 'Guggenheim, New York' : museoReal // REMOVED; bought 0x4599 3 items; fair use & educational non-commercial
+  museoReal = Museo === 'buehrle' ? 'Emil Buehrle Collection, Zurich' : museoReal // REMOVED; bought 0x4599 2 items; no info at the site; asked on email; good qual images
+  museoReal = Museo === 'princely' ? 'Liechtenstein Collections' : museoReal // REMOVED; bought 0x4599 1 item;
+  museoReal = Museo === 'akronartmuseum' ? 'Akron Art Museum, OH' : museoReal // REMOVED; bought 0x4599 5 items; no comment on CR on the site. Asked them.
+  museoReal = Museo === 'mcbamuseum' ? 'Musée cantonal des Beaux-Arts, Lausanne' : museoReal // REMOVED; bought 0x4599 3 items; no information on usage terms; asked in email; no good reply
+  museoReal = Museo === 'ludwig' ? 'Museum Ludwig, Cologne' : museoReal // REMOVED; bought 0xE0FD 6 items; download button 1200 pix no mention of Public Domain or copyright. Dubious. Need to write them.
+  museoReal = Museo === 'vangoghmuseum' ? 'Van Gogh Museum, Amsterdam' : museoReal // REMOVED; bought 0xe4 2 items;low quality images but can be dnld; no comment on terms
+  museoReal = Museo === 'hagginmuseum' ? 'Haggin Museum, Stockton, CA' : museoReal // REMOVED; 1 item bought 0xe4 no comment on terms of use
+  museoReal = Museo === 'sdmart' ? 'San Diego Museum of Art, CA' : museoReal // REMOVED; 1 item bought 0xe4; no terms of use, low qual
+  museoReal = Museo === 'mesdag' ? 'Mesdag Collection, The Hague' : museoReal // REMOVED bought 2 items 0xE0FD; low res downloads, non-commercial https://www.demesdagcollectie.nl/en/about/terms-and-conditions
+  museoReal = Museo === 'allen' ? 'Allen Memorial Art Museum, OH' : museoReal // REMOVED; owner 0x082 3 items download button, no Terms of Use found; low res
+  museoReal = Museo === 'aargauer' ? 'Aargauer Kunsthaus, Switzerland' : museoReal // REMOVED; bought 0x082 1 item; no terms of use
+  museoReal = Museo === 'bellasartesba' ? 'MN Bellas Artes, Buenos Aires' : museoReal // REMOVED; bought 0x082 9 items; no info; asked by email
+
+  museoReal = Museo === 'pafamuseum' ? 'PAFA Museum, Philadelphia' : museoReal // BAD https://www.pafa.org/legal
+  museoReal = Museo === 'fivecolleges' ? 'Five College Museums, Amherst, MA' : museoReal // real BAD
+  museoReal = Museo === 'museefabre' ? 'Musée Fabre, Montpellier' : museoReal // BAD
+  museoReal = Museo === 'tours' ? 'Musée des Beaux-arts de Tours, France' : museoReal // BAD
+  museoReal = Museo === 'desmoinesartcenter' ? 'Des Moines Art Center, IA' : museoReal // no access, really BAD
+  museoReal = Museo === 'crystalbridges' ? 'Crystal Bridges, Bentonville, AR' : museoReal // no access, really BAD
+  museoReal = Museo === 'carnegieart' ? 'Carnegie MA, Pittsburgh' : museoReal // BAD
 
   const curSizee = Sizeo === 'long' ? '84%' : currSize
   const curBo = Sizeo === 'long' && currSize === '138%' ? '54%' : '0'

@@ -180,7 +180,8 @@ export default function NFTCard ({ nft, action, updateNFT, onCliCliCli }) {
   museoReal = Museo === 'neuepinakothek' ? 'Neue Pinakothek, Munchen' : museoReal // CC BY-SA 4.0 for public domain
   museoReal = Museo === 'altepinakothek' ? 'Alte Pinakothek, Munchen' : museoReal // the same
   museoReal = Museo === 'modernepinakothek' ? 'Pinakothek der Moderne, Munchen' : museoReal // the same
-  museoReal = Museo === 'kunstbasel' ? 'Kunstmuseum, Basel' : museoReal // open access for PD
+  museoReal = Museo === 'belvederemuseum' ? 'Galerie Belvedere, Wien' : museoReal // store 0xB38D permission by email for educ.&non-comm. purposes; https://www.belvedere.at/en/legal-notice
+  museoReal = Museo === 'kunstbasel' ? 'Kunstmuseum, Basel' : museoReal // open access for PD e.g. https://download.kunstmuseumbasel.ch/#/ImageRequestFormular/1502
   museoReal = Museo === 'metmuseum' ? 'Met Museum, New York' : museoReal // open access for PD https://www.metmuseum.org/policies/terms-and-conditions
   museoReal = Museo === 'slammuseum' ? 'Art Museum, Saint Louis' : museoReal // open access for PD
   museoReal = Museo === 'philamuseum' ? 'Museum of Art, Philadelphia' : museoReal // open access for PD
@@ -209,7 +210,6 @@ export default function NFTCard ({ nft, action, updateNFT, onCliCliCli }) {
   museoReal = Museo === 'centraalmuseum' ? 'Centraal Museum, Utrecht' : museoReal // images have public domain notice and ask to mention the Museo. which we do.
   museoReal = Museo === 'wienmuseum' ? 'Wien Museum, Vienna' : museoReal // public domain free use CC-BY
   museoReal = Museo === 'nasjonalmuseet' ? 'National Museum, Oslo' : museoReal // public domain free use CC-BY
-  museoReal = Museo === 'buffaloakg' ? 'Buffalo AKG Art Museum' : museoReal // free for PD; fair use for others https://buffaloakg.org/terms-use
   museoReal = Museo === 'albertina' ? 'Albertina Museum, Vienna' : museoReal // free on PD to 1200px
   museoReal = Museo === 'manchesterag' ? 'Art Gallery, Manchester' : museoReal // CC BY-SA https://manchesterartgallery.org/about/loans-and-licensing
   museoReal = Museo === 'artsbma' ? 'Birmingham Museum of Art, AL' : museoReal // open access for PD
@@ -223,37 +223,36 @@ export default function NFTCard ({ nft, action, updateNFT, onCliCliCli }) {
 
   museoReal = Museo === 'mauritshuis' ? 'Mauritshuis, The Hague' : museoReal // REMOVED; 33 items bought 0x1c1e - non-commercial warning on download button
   museoReal = Museo === 'dulwich' ? 'Dulwich Picture Gallery, London' : museoReal // REMOVED; bought 0x4599 4 items; low res; personal use inc. educational non-profit
-  museoReal = Museo === 'khm' ? 'Kunsthistorisches Museum, Wien' : museoReal // REMOVED; personal use https://www.khm.at/en/museum/rights-reproduction all 21 bought by 0xbc26
-  museoReal = Museo === 'worcester' ? 'Worcester Art Museum, MA' : museoReal // REMOVED; bought 0x4599 2 items; fair use
+  museoReal = Museo === 'khm' ? 'Kunsthistorisches Museum, Wien' : museoReal // REMOVED; https://www.khm.at/en/museum/rights-reproduction all 21 bought by 0xbc26; total 22 tokens
+  museoReal = Museo === 'worcester' ? 'Worcester Art Museum, MA' : museoReal // REMOVED; bought 0x4599 2 items; 3 items total; fair use
   museoReal = Museo === 'carmenthyssen' ? 'Museo Carmen Thyssen, Malaga' : museoReal // REMOVED; bought 0x4599 3 items; legal 2018 bad but download is in high res (3k)
   museoReal = Museo === 'famsf' ? 'Fine Arts Museums, SF' : museoReal // REMOVED; bought 0x4599 5 items; fair use
   museoReal = Museo === 'chrysler' ? 'Chrysler Art Museum, Norfolk, VA' : museoReal // REMOVED; bought 0x4599 1 item; fair use
-  museoReal = Museo === 'terra' ? 'Terra Foundation for American Art, IL' : museoReal // REMOVED; bought 0x4599 1 item; fair use
+  museoReal = Museo === 'terra' ? 'Terra Foundation for American Art, IL' : museoReal // REMOVED; bought 0x4599 1 item; fair use https://www.terraamericanart.org/collection/image-rights-and-reproductions/
   museoReal = Museo === 'reinasofia' ? 'Museo Reina Sofia, Madrid' : museoReal // REMOVED; bought 0x4599 3 items;non-commercial CC https://www.museoreinasofia.es/aviso-legal
   museoReal = Museo === 'royaltrust' ? 'Royal Collection Trust, UK' : museoReal // REMOVED; 9 items bought 0xB38D written permission for commercial https://www.rct.uk/about/policies/copyright
-  museoReal = Museo === 'tatemuseum' ? 'Tate Gallery, UK' : museoReal // REMOVED; 18 items bought 0xCfE8 non-commercial https://www.tate.org.uk/about-us/policies-and-procedures/website-terms-use
+  museoReal = Museo === 'tatemuseum' ? 'Tate Gallery, UK' : museoReal // REMOVED; 18 items bought 0xCfE8 non-commercial https://www.tate.org.uk/about-us/policies-and-procedures/website-terms-use; total 20 tokens
   museoReal = Museo === 'victoria' ? 'National Gal. of Victoria, Melbourne' : museoReal // REMOVED; all 5 bought by 0x5F4B - lots of BAD stuff at https://www.ngv.vic.gov.au/about/reports-and-documents/copyright-and-reproductions/
   museoReal = Museo === 'scotland' ? 'National Gals. of Scotland, Edinburgh' : museoReal // REMOVED; 9 items bought 0x6BbF educational with link back; https://www.nationalgalleries.org/website-terms-of-use
-  museoReal = Museo === 'thyssenmuseum' ? 'Museo Thyssen-Bornemisza, Madrid' : museoReal // REMOVED; bought by 0x2Ed 17 items educational&noncommercial
+  museoReal = Museo === 'thyssenmuseum' ? 'Museo Thyssen-Bornemisza, Madrid' : museoReal // REMOVED; bought by 0x2Ed 17 items; 21 tokens total; educational&noncommercial
   museoReal = Museo === 'princetonmuseum' ? 'Princeton Univ. Art Museum' : museoReal // REMOVED; 10 items bought 0xCfE8 fair use non-commercial https://artmuseum.princeton.edu/terms-and-conditions
   museoReal = Museo === 'whitneymuseum' ? 'Whitney Museum, NYC' : museoReal // REMOVED; 6 items bought 0xCfE8 fair use non-commercial https://whitney.org/terms-and-conditions
-  museoReal = Museo === 'phillipscollection' ? 'Phillips Collection, Washington' : museoReal // REMOVED; bought by 0x2Ed 13 items noncommercial educational with link back
+  museoReal = Museo === 'phillipscollection' ? 'Phillips Collection, Washington' : museoReal // REMOVED; bought by 0x2Ed 13 items; 17 items total noncommercial educational with link back
   museoReal = Museo === 'canada' ? 'National Gallery of Canada, Ottawa' : museoReal // REMOVED; 6 items bought 0x6BbF non-commercial https://www.gallery.ca/terms-of-use
   museoReal = Museo === 'risdmuseum' ? 'RISD Museum, Providence' : museoReal // REMOVED; 7 items bought by c16f8 CC BY-NC-SA 3.0 US https://risdmuseum.org/terms-use
   museoReal = Museo === 'gardner' ? 'I.S.Gardner Museum, Boston' : museoReal // REMOVED; 21 items owned by c16f8; Creative Commons license (CC BY-NC-ND 4.0) https://www.gardnermuseum.org/organization/rights-reproductions
   museoReal = Museo === 'bruggea' ? 'Musea Brugge, Belgium' : museoReal // REMOVED; 9 items owner 0x55a PD non-commercial and link to https://artinflanders.be/en; FORBIDDEN
   museoReal = Museo === 'harvardmuseum' ? 'Harvard Art Museums, MA' : museoReal // REMOVED; 39 items owner 0x55a non-commercial&educational https://harvardartmuseums.org/terms-of-use
-  museoReal = Museo === 'mfamuseum' ? 'Museum of Fine Arts, Boston' : museoReal // REMOVED; 111 items by 3 buyers; fair use for non-commercial&educational purpose; otherwise prohibited https://www.metmuseum.org/policies/terms-and-conditions
+  museoReal = Museo === 'mfamuseum' ? 'Museum of Fine Arts, Boston' : museoReal // REMOVED; 111 items by 3 buyers; fair use for non-commercial&educational purpose; otherwise prohibited https://www.mfa.org/about/terms-of-use
   museoReal = Museo === 'mnac' ? 'MNAC, Barcelona' : museoReal // REMOVED; 20 items bought 0x6BbF CC BY-NC-SA 3.0.0 https://www.museunacional.cat/en/legal-notice
   museoReal = Museo === 'pradomuseum' ? 'Museo del Prado, Madrid' : museoReal // REMOVED; non-commercial&educational; all 31 items bought by 0x9e3A
   museoReal = Museo === 'tmamuseum' ? 'Toledo Museum of Art' : museoReal // REMOVED; 30 items owned by 0xd166 FAIR USE FOR PUBLIC DOMAIN https://toledomuseum.org/collection/image-resources/
-  museoReal = Museo === 'brooklynmuseum' ? 'Brooklyn Museum, New York' : museoReal // REMOVED; 18 items bought 0xa54c brooklynmuseum.org/image-services - use for noncommercial purposes with proper attribution
-  museoReal = Museo === 'belvederemuseum' ? 'Galerie Belvedere, Wien' : museoReal // REMOVED; 33 items bought 0xB38D got their permission by email for educ.&non-comm. purposes; https://www.belvedere.at/en/legal-notice
+  museoReal = Museo === 'brooklynmuseum' ? 'Brooklyn Museum, New York' : museoReal // REMOVED; 18 items bought 0xa54c; 19 tokens total; brooklynmuseum.org/image-services - use for noncommercial purposes with proper attribution
   museoReal = Museo === 'hmbgksthalle' ? 'Kunsthalle, Hamburg' : museoReal // REMOVED; 20 items bought 0xa54C; no explicit CR message, no dnld button but good quality dnld is possible
   museoReal = Museo === 'marmottan' ? 'Musée Marmottan Monet, Paris' : museoReal // REMOVED; bought 0x4599 1 item; no info about CR; no dnld button but good quality images
   museoReal = Museo === 'toulouselautrec' ? 'Musée Toulouse-Lautrec, Albi' : museoReal // REMOVED; bought 0x4599 1 item; no info on copyright; old school online gallery
   museoReal = Museo === 'mahmah' ? 'Museum of Art and History, Geneva' : museoReal // REMOVED; bought 0x4599 1 item; personal&educational ok https://www.mahmah.ch/faq
-  museoReal = Museo === 'momamuseum' ? 'Museum of Modern Art, NYC' : museoReal // REMOVED; bought 0x4599 1 item; fair use for educational and non-commercial
+  museoReal = Museo === 'momamuseum' ? 'Museum of Modern Art, NYC' : museoReal // REMOVED; bought 0x4599 1 item; fair use for educational and non-commercial; 4 tokens total
   museoReal = Museo === 'walkermuseum' ? 'Walker Art Center, MN' : museoReal // REMOVED; bought 0xA298 1 item; non-commercial & educational only CR 2020
   museoReal = Museo === 'guggenheim' ? 'Guggenheim, New York' : museoReal // REMOVED; bought 0x4599 3 items; fair use & educational non-commercial
   museoReal = Museo === 'buehrle' ? 'Emil Buehrle Collection, Zurich' : museoReal // REMOVED; bought 0x4599 2 items; no info at the site; asked on email; good qual images
@@ -268,6 +267,7 @@ export default function NFTCard ({ nft, action, updateNFT, onCliCliCli }) {
   museoReal = Museo === 'allen' ? 'Allen Memorial Art Museum, OH' : museoReal // REMOVED; owner 0x082 3 items download button, no Terms of Use found; low res
   museoReal = Museo === 'aargauer' ? 'Aargauer Kunsthaus, Switzerland' : museoReal // REMOVED; bought 0x082 1 item; no terms of use
   museoReal = Museo === 'bellasartesba' ? 'MN Bellas Artes, Buenos Aires' : museoReal // REMOVED; bought 0x082 9 items; no info; asked by email
+  museoReal = Museo === 'buffaloakg' ? 'Buffalo AKG Art Museum' : museoReal // REMOVED 10 items; images download for educ only; https://buffaloakg.org/terms-use
 
   museoReal = Museo === 'pafamuseum' ? 'PAFA Museum, Philadelphia' : museoReal // BAD https://www.pafa.org/legal
   museoReal = Museo === 'fivecolleges' ? 'Five College Museums, Amherst, MA' : museoReal // real BAD

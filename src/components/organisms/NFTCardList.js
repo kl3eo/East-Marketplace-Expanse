@@ -249,7 +249,7 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
         // if (autoScroll) canRoll = 1 // good, double take on first scroll down
         // if ((!mydocs && !goodNotebook) || autoScroll || hiResScreen) canRoll = 1 // no double take on first scroll down
         if (autoScroll || (scalingAllowed && hiResScreen)) canRoll = 1
-        canRoll = 1 // no double take on first scroll down
+        // canRoll = 1 // no double take on first scroll down
         if (!dimmed) setDimmed(true)
 
         const slicedStoredFilteredItems = storedFilteredItems.slice(itemsInRow + itemsInRow * currDiff, numParam + itemsInRow + itemsInRow * currDiff)

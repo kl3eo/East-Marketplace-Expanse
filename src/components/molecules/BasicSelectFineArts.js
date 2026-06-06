@@ -43,7 +43,8 @@ export default function BasicSelectFineArts ({ disabledBox }) {
           inputProps={{ 'aria-label': 'Without label' }}
           onChange={handleChange}
         >
-          <MenuItem value="">Click To Open</MenuItem>
+          <MenuItem value="">Quick Filter</MenuItem>
+          <MenuItem disabled={loading} selected={categStr === 'Painting'} value="Painting">Painting</MenuItem>
           <MenuItem disabled={loading} selected={categStr === 'Drawing'} value="Drawing">Drawing</MenuItem>
           <MenuItem disabled={loading} selected={categStr === 'Photo'} value="Photo">Photo</MenuItem>
           <MenuItem disabled={loading} selected={categStr === 'Genre'} value="Genre">Genre</MenuItem>
@@ -129,7 +130,7 @@ export default function BasicSelectFineArts ({ disabledBox }) {
           <MenuItem disabled={loading} selected={categStr === 'Magic'} value="Magic">Magic Realism</MenuItem>
           <MenuItem disabled={loading} selected={categStr === 'Art Deco'} value="Art Deco">Art Deco</MenuItem>
           <MenuItem disabled={loading} selected={categStr === 'Nouveau'} value="Nouveau">Art Nouveau</MenuItem>
-          <MenuItem disabled={loading} selected={categStr === 'Muralism'} value="Muralism">Muralism</MenuItem>
+          <MenuItem disabled={loading} selected={categStr === 'Mural'} value="Mural">Muralism</MenuItem>
           <MenuItem disabled={loading} selected={categStr === 'Animalism'} value="Animalism">Animalism</MenuItem>
           <MenuItem disabled={loading} selected={categStr === 'Travel'} value="Travel">Travel</MenuItem>
         </Select>

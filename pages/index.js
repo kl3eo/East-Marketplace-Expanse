@@ -123,7 +123,7 @@ export default function Home () {
       }
     } catch (error) { console.log(error); alert('Please re-open Metamask and reload this page!'); return }
 
-    console.log('got data length', data.length); if (!data.length) { if (!lookupStr.length) alert('No data found!'); dispatch(setFullyLoaded(true)) }
+    console.log('got data length', data.length); if (!data.length) { alert('No data found!'); dispatch(setFullyLoaded(true)) }
     let arrayForSort = []
     if (rawData.length > 0) {
       const reduced = []; let ii = 0

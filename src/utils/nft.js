@@ -13,6 +13,7 @@ const split96 = typeof window !== 'undefined' && window.location.hostname === 's
 const cache1 = {}
 const cache2 = {}
 
+const test_placeh = {'name':'Hola!', 'description':'This is a Test', 'image':'https://' + currentServer + '.room-house.com' + currentServerPort + '/img/bluesky.jpg', 'tags':'photo'}
 const placeh = {'name':'Please Wait', 'description':'..on approval by R-H', 'image':'https://' + currentServer + '.room-house.com' + currentServerPort + '/img/bluesky.jpg', 'tags':'photo'}
 const burned_placeh = {'name':'Token Missing or Locked', 'description':'Reload the page', 'image':'https://' + currentServer + '.room-house.com' + currentServerPort + '/img/gd2560d.png', 'tags':'photo'}
 
@@ -26,6 +27,8 @@ export async function fetchCheckUri (tokenUri, tokenId, signed) {
 } 
 
 export async function getTokenMetadataByTokenId (nftContract, tokenId, signed , par) {
+  // console.log('Here tokenId', tokenId._hex)
+  if (parseInt(tokenId._hex, 16) === 10000000) return test_placeh
   if (cache2[tokenId]) return cache2[tokenId]
   try {
 

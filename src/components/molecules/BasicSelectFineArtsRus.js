@@ -44,6 +44,7 @@ export default function BasicSelectFineArts ({ disabledBox }) {
           onChange={handleChange}
         >
           <MenuItem value="">Click to Open</MenuItem>
+          <MenuItem disabled={loading} selected={categStr === 'Painting'} value="Painting">Painting</MenuItem>
           <MenuItem disabled={loading} selected={categStr === 'Drawing'} value="Drawing">Рисунок</MenuItem>
           <MenuItem disabled={loading} selected={categStr === 'Photo'} value="Photo">Фото</MenuItem>
           <MenuItem disabled={loading} selected={categStr === 'Genre'} value="Genre">Жанр</MenuItem>
@@ -129,7 +130,7 @@ export default function BasicSelectFineArts ({ disabledBox }) {
           <MenuItem disabled={loading} selected={categStr === 'Magic'} value="Magic">Магический реализм</MenuItem>
           <MenuItem disabled={loading} selected={categStr === 'Art Deco'} value="Art Deco">Art Deco</MenuItem>
           <MenuItem disabled={loading} selected={categStr === 'Nouveau'} value="Nouveau">Art Nouveau</MenuItem>
-          <MenuItem disabled={loading} selected={categStr === 'Muralism'} value="Muralism">Мурализм</MenuItem>
+          <MenuItem disabled={loading} selected={categStr === 'Mural'} value="Mural">Мурализм</MenuItem>
           <MenuItem disabled={loading} selected={categStr === 'Animalism'} value="Animalism">Анимализм</MenuItem>
           <MenuItem disabled={loading} selected={categStr === 'Travel'} value="Travel">Travel</MenuItem>
         </Select>

@@ -197,7 +197,6 @@ export default function NFTCard ({ nft, action, updateNFT, onCliCliCli }) {
   museoReal = Museo === 'nms' ? 'Nationalmuseum, Stockholm' : museoReal // CC BY-SA, or no CR https://www.nationalmuseum.se/en/explore-art-and-design/images/rights-and-reproductions
   museoReal = Museo === 'imamuseum' ? 'IMA, Indianapolis' : museoReal // cc0 for PD
   museoReal = Museo === 'getty' ? 'Getty Museum, LA' : museoReal // any purpose Getty Open Content
-  museoReal = Museo === 'currier' ? 'Currier MA, NH' : museoReal // open access
   museoReal = Museo === 'staedel' ? 'Staedel, Frankfurt' : museoReal // open access on PD
   museoReal = Museo === 'ghentmuseum' ? 'Ghent Museum, Belgium' : museoReal // unrestricted use for PD https://www.mskgent.be/en/collection/image-rights
   museoReal = Museo === 'waltersmuseum' ? 'Walters Museum, Baltimore' : museoReal // cc0 for PD https://thewalters.org/about/policies/rights-reproductions/
@@ -219,7 +218,7 @@ export default function NFTCard ({ nft, action, updateNFT, onCliCliCli }) {
   museoReal = Museo === 'thorvald' ? 'Thorvaldsen\'s Museum, Denmark' : museoReal // open access
   museoReal = Museo === 'muzee' ? 'Museum of Modern Art, Ostend' : museoReal // hi-res and dnld button, no terms of use, open access
 
-  // total removed 33 + 31 + 111 + 13 + 17 + 5 + 21 + 21 + 7 + 39 + 9 + 18 + 10 + 6 + 20 + 9 + 6 + 9 + 33 + 20 + 18 + 30 + 5 + 1 + 1 + 3 + 4 + 2 + 3 + 1 + 1 + 1 + 1 + 1 + 3 + 2 + 1 + 5 + 3 + 5 + 2 + 1 + 1 + 2 + 3 + 1 + 9 = 548 items 47 museums
+  // total removed 33 + 31 + 111 + 13 + 17 + 5 + 21 + 21 + 7 + 39 + 9 + 18 + 10 + 6 + 20 + 9 + 6 + 9 + 33 + 20 + 18 + 30 + 5 + 1 + 1 + 3 + 4 + 2 + 3 + 1 + 1 + 1 + 1 + 1 + 3 + 2 + 1 + 5 + 3 + 5 + 2 + 1 + 1 + 2 + 3 + 1 + 9 + 3 = 551 items 48 museums
 
   museoReal = Museo === 'mauritshuis' ? 'Mauritshuis, The Hague' : museoReal // REMOVED; 33 items bought 0x1c1e - non-commercial warning on download button
   museoReal = Museo === 'dulwich' ? 'Dulwich Picture Gallery, London' : museoReal // REMOVED; bought 0x4599 4 items; low res; personal use inc. educational non-profit
@@ -268,6 +267,7 @@ export default function NFTCard ({ nft, action, updateNFT, onCliCliCli }) {
   museoReal = Museo === 'aargauer' ? 'Aargauer Kunsthaus, Switzerland' : museoReal // REMOVED; bought 0x082 1 item; no terms of use
   museoReal = Museo === 'bellasartesba' ? 'MN Bellas Artes, Buenos Aires' : museoReal // REMOVED; bought 0x082 9 items; no info; asked by email
   museoReal = Museo === 'buffaloakg' ? 'Buffalo AKG Art Museum' : museoReal // REMOVED 10 items; images download for educ only; https://buffaloakg.org/terms-use
+  museoReal = Museo === 'currier' ? 'Currier MA, NH' : museoReal // dubious; asked on email, no reply; REMOVED 3 items
 
   museoReal = Museo === 'pafamuseum' ? 'PAFA Museum, Philadelphia' : museoReal // BAD https://www.pafa.org/legal
   museoReal = Museo === 'fivecolleges' ? 'Five College Museums, Amherst, MA' : museoReal // real BAD

@@ -588,7 +588,7 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
   return (
     <InfiniteScroll
       dataLength={nfts.length}
-      loader={<LinearProgress />} style={{ marginTop: isMobb ? '48px' : '56px', minHeight: '98vh', backgroundColor: lightBgr ? '#012' : '#fff' }}
+      loader={<LinearProgress />} style={{ marginTop: isMobb ? '48px' : '56px', minHeight: '98vh', backgroundColor: lightBgr ? '#fff' : '#012' }}
     >
       <div id='fixbar' onClick={onCli} style={{ cursor: 'pointer', left: isMobb ? '0' : '31.5%', width: isMobb ? '33%' : '33%', height: '60px', textAlign: 'center', margin: '0 auto', fontSize: isMobb ? '24px' : '30px', position: 'fixed', zIndex: '1001', top: isMobb ? '60px' : '1%', opacity: '1', display: ((loading || dimmed || (storedFilteredItems.length !== numFound && lookupStr.length && numFound > 16) || !fullyLoaded || chunkLoaded) && !isMobb) ? 'block' : 'none', color: isMobb ? '#ecf' : '#ccc', backgroundColor: 'transparent' }}>{loadingMsg}{updown}{continu}</div>
       <div style={{ width: '310px', height: '300px', position: 'fixed', marginLeft: '32px', marginTop: '14px', fontSize: '20px', zIndex: '1011', textAlign: 'center', backgroundColor: '#9cf', display: contactShown ? 'block' : 'none' }}>

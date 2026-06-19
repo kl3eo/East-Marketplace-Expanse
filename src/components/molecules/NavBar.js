@@ -111,12 +111,15 @@ const NavBar = () => {
   }
 
   const clickerHandler = (e) => {
+    const state = store.getState()
+    const storedFilteredItemsList = state.storedFilteredItemsList
+    const { storedFilteredItems } = storedFilteredItemsList
     e.preventDefault()
     const { searchInput } = e.target
     if (searchInput.value === categStr || (searchInput.value.length < 3 && searchInput.value.length > 0)) return
     if (searchInput.value.length) {
       if (categStr.length) {
-        if (searchInput.value.match(/\s/g)) { dispatch(setCateg(searchInput.value)); setIsCategChangedInMenu(false); dispatch(setLookup('')) } else { dispatch(setLookup(searchInput.value)) }
+        if (searchInput.value.match(/\s/g) || !storedFilteredItems.length) { dispatch(setCateg(searchInput.value)); setIsCategChangedInMenu(false); dispatch(setLookup('')) } else { dispatch(setLookup(searchInput.value)) }
       } else {
         dispatch(setCateg(searchInput.value)); setIsCategChangedInMenu(false)
       }

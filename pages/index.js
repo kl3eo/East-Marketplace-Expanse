@@ -123,7 +123,7 @@ export default function Home () {
       }
     } catch (error) { console.log(error); alert('Please re-open Metamask and reload this page!'); return }
 
-    console.log('got data length', data.length); if (!data.length) { alert('No data found!'); dispatch(setFullyLoaded(true)) }
+    console.log('got data length', data.length); if (!data.length) { alert('No data found!');/* dispatch(setLookup('')); dispatch(setCateg('')); */ dispatch(setFullyLoaded(true)) }
     let arrayForSort = []
     if (rawData.length > 0) {
       const reduced = []; let ii = 0
@@ -277,7 +277,7 @@ export default function Home () {
   if (!network) return <UnsupportedChain style={{ marginTop: '64px' }}/>
   if (isLoading) return <LinearProgress style={{ marginTop: '64px' }}/>
   if (!fullyLoaded && !isLoading && !nfts.length && lookupStr.length === 0 && categStr.length === 0) return <LinearProgress style={{ marginTop: '64px' }}/>
-  if (fullyLoaded && !isLoading && !nfts.length && lookupStr.length) return <h1 style={{ marginTop: '64px' }}>No data found for search: { lookupStr } { categStr } </h1>
+  // if (fullyLoaded && !isLoading && !nfts.length && lookupStr.length) return <h1 style={{ marginTop: '64px' }}>No data found for search: { lookupStr } { categStr } </h1>
 
   return (
     typeof window !== 'undefined' && window.location.hostname !== 'happyminter.room-house.com' && window.location.hostname !== 'happydox.room-house.com' && <NFTCardList nfts={nfts} setNfts={setNfts} withCreateNFT={false}/>

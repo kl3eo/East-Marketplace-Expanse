@@ -102,7 +102,7 @@ export function mapAvailableMarketItems (nftContract) {
   }
 }
 
-export function mapCreatedAndOwnedTokenIdsAsMarketItems (marketplaceContract, nftContract, account, signed) {
+export function mapCreatedAndOwnedTokenIdsAsMarketItems_old (marketplaceContract, nftContract, account, signed) {
   return async (tokenId) => {
     const metadata = await getTokenMetadataByTokenId(nftContract, tokenId, signed, 1)
     if (metadata === burned_placeh ) return mapMarketItem({}, metadata, tokenId, account, false)
@@ -124,6 +124,24 @@ export function mapCreatedAndOwnedTokenIdsAsMarketItems (marketplaceContract, nf
       .catch((err) => { console.log('Fetch fData Error', err) })
     // console.log('mapCreatedAndOwnedTokenIdsAsMarketItems rawdata is', rawData)
     const marketItems = split96 || mydocs ? await marketplaceContract.fetchMoreMarketItemsByMarketItemIds(rawData, 0) : await marketplaceContract.fetchMarketItemsByMarketItemIds(rawData, 0)
+    const marketItem = marketItems[0] ? marketItems[0] : {}
+    // console.log('with token', tokenId, 'what we have?', marketItems, 'and so', marketItem)
+    return mapMarketItem(marketItem, metadata, tokenId, account, hasMarketApproval) 
+  }
+}
+
+export function mapCreatedAndOwnedTokenIdsAsMarketItems (marketplaceContract, nftContract, account, signed) {
+  return async (tokenData) => {
+    const tokenId = tokenData[0]; const itemId = tokenData[1]; const itemIdArr = [itemId]
+    // console.log('nfts.js: tok is', tokenId, 'item is', itemId)
+    const metadata = await getTokenMetadataByTokenId(nftContract, tokenId, signed, 1)
+    if (metadata === burned_placeh ) return mapMarketItem({}, metadata, tokenId, account, false)
+
+    let approveAddress = ''
+    try { approveAddress = await nftContract.getApproved(tokenId) } catch (error) { console.log('Caught',error); return mapMarketItem({}, metadata, tokenId, account, false) }
+    const hasMarketApproval = approveAddress === marketplaceContract.address
+
+    const marketItems = split96 || mydocs ? await marketplaceContract.fetchMoreMarketItemsByMarketItemIds(itemIdArr, 0) : await marketplaceContract.fetchMarketItemsByMarketItemIds(itemIdArr, 0)
     const marketItem = marketItems[0] ? marketItems[0] : {}
     // console.log('with token', tokenId, 'what we have?', marketItems, 'and so', marketItem)
     return mapMarketItem(marketItem, metadata, tokenId, account, hasMarketApproval) 

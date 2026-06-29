@@ -61,7 +61,8 @@ export default function CreatorDashboard () {
     if (window.location.hostname === 'mydocs.room-house.com') fData.append('network', 'hd')
     await fetch('https://' + currentServer + '.room-house.com' + currentServerPort + '/cgi/get_data.pl', { body: fData, method: 'post', enctype: 'multipart/form-data' })
       .then((response) => response.json())
-      .then((result) => { rawData = result.map((element) => parseInt(element[0])); rawData = rawData.filter(item => item !== 9598) })
+      // .then((result) => { rawData = result.map((element) => parseInt(element[0])); rawData = rawData.filter(item => item !== 9598) })
+      .then((result) => { rawData = result.map((element) => [parseInt(element[0]), element[1]]) })
       .catch((err) => { console.log('Fetch fData Error', err) })
     // console.log('rawData', rawData)
 

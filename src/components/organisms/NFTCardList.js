@@ -15,7 +15,7 @@ import { ethers } from 'ethers'
 import { Web3Context } from '../providers/Web3Provider'
 import { useContext, useEffect, useLayoutEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import { mapCreatedAndOwnedTokenIdsAsMarketItems, mapAvailableMarketItems } from '../../utils/nft'
+import { mapCreatedAndOwnedTokenIdsAsMarketItemsOld, mapAvailableMarketItems } from '../../utils/nft'
 import { store } from '../../../store/store'
 import { useDispatch, useSelector } from 'react-redux'
 import { setAutoScroll, setCurrentDisp, setCurrentSlice, getData, setFullyLoaded, setChu, setLoading, setLooping, setRelo, setNum, setCurrDiff } from '../../../store/actions/dataAction'
@@ -354,7 +354,7 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
     } // currDiff defined for this block only
   }
   async function updateNFT (index, tokenId) {
-    const updatedNFt = await mapCreatedAndOwnedTokenIdsAsMarketItems(marketplaceContract, nftContract, account)(tokenId)
+    const updatedNFt = await mapCreatedAndOwnedTokenIdsAsMarketItemsOld(marketplaceContract, nftContract, account)(tokenId)
     console.log('NFT4!', updatedNFt)
     // dispatch(getData([]))
     // dispatch(setRelo(false))
@@ -368,7 +368,7 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
   }
 
   async function updateAfterBurn (index, tokenId) {
-    const updatedNFt = await mapCreatedAndOwnedTokenIdsAsMarketItems(marketplaceContract, nftContract, account)(tokenId)
+    const updatedNFt = await mapCreatedAndOwnedTokenIdsAsMarketItemsOld(marketplaceContract, nftContract, account)(tokenId)
     updatedNFt.owner = ethers.constants.AddressZero
     updatedNFt.price = 0
     console.log('NFT4a!', updatedNFt)
@@ -386,7 +386,7 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
   }
 
   async function addNFTToList (tokenId) {
-    const nft = await mapCreatedAndOwnedTokenIdsAsMarketItems(marketplaceContract, nftContract, account)(tokenId)
+    const nft = await mapCreatedAndOwnedTokenIdsAsMarketItemsOld(marketplaceContract, nftContract, account)(tokenId)
     setNfts(prevNfts => [nft, ...prevNfts])
     await sendEmail('alexshevlakov@yandex.ru', 'new token minted', '')
   }

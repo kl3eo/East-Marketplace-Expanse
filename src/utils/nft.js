@@ -27,8 +27,7 @@ export async function fetchCheckUri (tokenUri, tokenId, signed) {
 } 
 
 export async function getTokenMetadataByTokenId (nftContract, tokenId, signed , par) {
-  // console.log('Here tokenId', tokenId._hex)
-  if (parseInt(tokenId._hex, 16) === 10000000) return test_placeh
+  // console.log('getTokenMetadataByTokenId tokenId', tokenId)
   if (cache2[tokenId]) return cache2[tokenId]
   try {
 
@@ -102,7 +101,7 @@ export function mapAvailableMarketItems (nftContract) {
   }
 }
 
-export function mapCreatedAndOwnedTokenIdsAsMarketItems_old (marketplaceContract, nftContract, account, signed) {
+export function mapCreatedAndOwnedTokenIdsAsMarketItemsOld (marketplaceContract, nftContract, account, signed) {
   return async (tokenId) => {
     const metadata = await getTokenMetadataByTokenId(nftContract, tokenId, signed, 1)
     if (metadata === burned_placeh ) return mapMarketItem({}, metadata, tokenId, account, false)
@@ -133,7 +132,9 @@ export function mapCreatedAndOwnedTokenIdsAsMarketItems_old (marketplaceContract
 export function mapCreatedAndOwnedTokenIdsAsMarketItems (marketplaceContract, nftContract, account, signed) {
   return async (tokenData) => {
     const tokenId = tokenData[0]; const itemId = tokenData[1]; const itemIdArr = [itemId]
-    // console.log('nfts.js: tok is', tokenId, 'item is', itemId)
+    // const itemIdArr = tokenData.slice(1)
+    // const rawData = itemIdArr.map((element) => parseInt(element[0]))
+    console.log('nfts.js: tok is', tokenId, 'item is', itemIdArr)
     const metadata = await getTokenMetadataByTokenId(nftContract, tokenId, signed, 1)
     if (metadata === burned_placeh ) return mapMarketItem({}, metadata, tokenId, account, false)
 

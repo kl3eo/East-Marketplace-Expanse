@@ -136,7 +136,7 @@ export function mapCreatedAndOwnedTokenIdsAsMarketItems (marketplaceContract, nf
     // const rawData = itemIdArr.map((element) => parseInt(element[0]))
     console.log('nfts.js: tok is', tokenId, 'item is', itemIdArr)
     const metadata = await getTokenMetadataByTokenId(nftContract, tokenId, signed, 1)
-    if (metadata === burned_placeh ) return mapMarketItem({}, metadata, tokenId, account, false)
+    if (metadata === burned_placeh || itemId === 0 ) return mapMarketItem({}, metadata, tokenId, account, false)
 
     let approveAddress = ''
     try { approveAddress = await nftContract.getApproved(tokenId) } catch (error) { console.log('Caught',error); return mapMarketItem({}, metadata, tokenId, account, false) }

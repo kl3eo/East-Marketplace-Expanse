@@ -25,11 +25,6 @@ handler.post(async function handlePost ({ body }, response) {
     formData1.append('checking', tId)
     if (network !== '') formData1.append('network', network)
     const { data: responseData } = await axios.post(`${nftBaseUrl}/cgi/gettee_filee_infee.pl`, formData1, { headers: { 'Content-Type': `multipart/form-data; boundary=${formData1._boundary}` } })
-    // console.log(responseDa)
-    // const responseData = JSON.parse(JSON.stringify(responseDa).toString('latin1'))
-    // console.log('And here', responseData)
-    // const response = await fetch(`${nftBaseUrl}/cgi/gettee_filee_infee.pl`, { body: formData1, method: 'post' })
-    // console.log('response', response)
     const res = responseData.result
     const tx = responseData.tx
     const ts = responseData.ts

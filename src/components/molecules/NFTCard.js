@@ -14,6 +14,7 @@ import NavDesc from '../atoms/NavDesc'
 import NavMuseo from '../atoms/NavMuseo'
 import CardAddresses from './CardAddresses'
 import PriceTextField from '../atoms/PriceTextField'
+import OwnerTextField from '../atoms/OwnerTextField'
 import { useDispatch, useSelector } from 'react-redux'
 import { setFullyLoaded, setAutoScroll } from '../../../store/actions/dataAction'
 import sendEmail from '../../utils/sendEmail'
@@ -102,6 +103,8 @@ export default function NFTCard ({ nft, action, updateNFT, onCliCliCli }) {
   const [fileUrl, setFileUrl] = useState(defaultFileUrl)
   const [priceError, setPriceError] = useState(false)
   const [newPrice, setPrice] = useState(0)
+  const [ownerError, setOwnerError] = useState(false)
+  const [newOwner, setOwner] = useState(0)
   const [isShortDesc, setIsShortDesc] = useState(true)
 
   const storedFilteredItemsList = useSelector(state => state.storedFilteredItemsList)
@@ -327,6 +330,10 @@ Header set "Content-Disposition" "attachment; filename=\"%{FILENAME}e\"" env=FIL
       text: 'Approve for selling',
       method: approveNft
     },
+    transfer: {
+      text: 'Transfer',
+      method: transferNft
+    },
     burn: {
       text: 'Burn',
       method: burnNft
@@ -371,6 +378,18 @@ Header set "Content-Disposition" "attachment; filename=\"%{FILENAME}e\"" env=FIL
     await approveTx.wait()
     updateNFT()
     return approveTx
+  }
+
+  async function transferNft (nft) {
+    if (!newOwner) {
+      setOwnerError(true)
+      return
+    }
+    setOwnerError(false)
+    const transferTx = await nftContract.transferFrom(account, newOwner, nft.tokenId)
+    await transferTx.wait()
+    updateNFT()
+    return transferTx
   }
 
   async function burnNft (nft) {
@@ -555,9 +574,11 @@ Header set "Content-Disposition" "attachment; filename=\"%{FILENAME}e\"" env=FIL
             <div className={classes.priceContainer} style={{ float: 'right', display: nft.isLocked || (mydocs) ? 'none' : 'block' }}>
               {action === 'sell'
                 ? <PriceTextField listingFee={listingFee} error={priceError} disabled={isLoading} onChange={e => setPrice(e.target.value)}/>
-                : <NFTPrice nft={nft} variant={notebook ? 'h6' : 'h6'}/>
+                : action === 'transfer'
+                  ? <OwnerTextField error={ownerError} disabled={isLoading} onChange={e => setOwner(e.target.value)}/>
+                  : <NFTPrice nft={nft} variant={notebook ? 'h6' : 'h6'}/>
               }
-            </div>
+            </div><div style={{ float: 'left', marginLeft: '5px', fontSize: '16px', color: '#369', display: action === 'sell' || action === 'transfer' ? 'block' : 'none' }} onClick={onCliCliCli}>{action === 'sell' ? 'or Transfer' : action === 'transfer' ? 'or Burn' : 'or Sell'}</div>
             <div className={classes.priceContainer} style={{ float: 'right', display: nft.isLocked ? 'block' : 'none' }}>
               This Token is Locked. <span style={{ color: '#369', fontWeight: 'bold', cursor: 'pointer', textDecoration: 'underline' }} onClick={() => { document.getElementById('unlocker' + tId).style.display = 'table'; document.getElementById('cm_' + tId).style.display = 'none'; document.getElementById('cc_' + tId).style.display = 'none' }}>Unlock</span>&nbsp;<span style={{ color: '#59c', fontWeight: 'bold', cursor: 'pointer', textDecoration: 'underline' }} onClick={() => { setIsEdited(true) }}>Edit</span>
             </div>

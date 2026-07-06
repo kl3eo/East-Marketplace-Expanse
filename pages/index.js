@@ -258,6 +258,7 @@ export default function Home () {
       dispatch(setLoading(false))
       dispatch(setFullyLoaded(true)); console.log('truer 9')
       console.log('totalFiltered', nowItems.length)
+      // dispatch(setLightBgr(false))
     }
   }
 

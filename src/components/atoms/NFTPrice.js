@@ -14,7 +14,7 @@ function getPriceText (nft) {
   }
 
   if (!price) {
-    return 'Wait a min..'
+    return 'New Token'
   }
 
   return 'Price'

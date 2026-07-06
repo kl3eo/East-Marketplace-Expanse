@@ -12,8 +12,9 @@ const split96 = typeof window !== 'undefined' && window.location.hostname === 's
 
 const cache1 = {}
 const cache2 = {}
-const cache3 = {}
-const cache4 = {}
+// use SQL query for owner and creator
+// const cache3 = {}
+// const cache4 = {}
 
 const test_placeh = {'name':'Hola!', 'description':'This is a Test', 'image':'https://' + currentServer + '.room-house.com' + currentServerPort + '/img/bluesky.jpg', 'tags':'photo'}
 const placeh = {'name':'Please Wait', 'description':'..on approval by R-H', 'image':'https://' + currentServer + '.room-house.com' + currentServerPort + '/img/bluesky.jpg', 'tags':'photo'}
@@ -32,8 +33,8 @@ export async function getTokenMetadataByTokenId (nftContract, tokenId, signed , 
   // console.log('getTokenMetadataByTokenId tokenId', tokenId)
   if (cache2[tokenId]) return cache2[tokenId]
   try {
-    let tokenCreator = ''; try { if (cache4[tokenId]) { tokenCreator = cache4[tokenId] } else { tokenCreator = await nftContract.getTokenCreatorById(tokenId); cache4[tokenId] = tokenCreator } } catch (error) { console.log('Caught get tokenCreator err', error); return placeh }
-    let tokenOwner = ''; try { if (cache3[tokenId]) { tokenOwner = cache3[tokenId] } else { tokenOwner = await nftContract.ownerOf(tokenId); /* hack ash */ if (tokenOwner === '0x03C0c1C913D1D749e42ca92e17F2BE83F1dB3607') tokenOwner = '0x0000000000000000000000000000000000000000'; cache3[tokenId] = tokenOwner; /* console.log('No error, tokenOwner', tokenOwner) */ } } catch (error) { console.log('Caught get tokenOwner err', error); return placeh }
+    /* let tokenCreator = ''; try { if (cache4[tokenId]) { tokenCreator = cache4[tokenId] } else { tokenCreator = await nftContract.getTokenCreatorById(tokenId); cache4[tokenId] = tokenCreator } } catch (error) { console.log('Caught get tokenCreator err', error); return placeh }
+    let tokenOwner = ''; try { if (cache3[tokenId]) { tokenOwner = cache3[tokenId] } else { tokenOwner = await nftContract.ownerOf(tokenId); if (tokenOwner === '0x03C0c1C913D1D749e42ca92e17F2BE83F1dB3607') tokenOwner = '0x0000000000000000000000000000000000000000'; cache3[tokenId] = tokenOwner;  } } catch (error) { console.log('Caught get tokenOwner err', error); return placeh } */
     let tokenUri = ''; try { if (cache1[tokenId]) { tokenUri = cache1[tokenId] } else { tokenUri = await nftContract.tokenURI(tokenId); cache1[tokenId] = tokenUri; /* console.log('No error, tokenUri', tokenUri) */ } } catch (error) { console.log('Caught get tokenUri err', error)
     /* if (par) { const fData = new FormData()
       fData.append('checking', tokenId); if (mydocs) fData.append('network', 'hd')
@@ -50,7 +51,7 @@ export async function getTokenMetadataByTokenId (nftContract, tokenId, signed , 
       fData.append('tokenId', tokenId)
       fData.append('signed', signed)
       const { data } = await axios.post('/api/check_uri', fData, { headers: { 'Content-Type': 'multipart/form-data' }})
-      data.mData.creator = tokenCreator; data.mData.owner = tokenOwner
+      // data.mData.creator = tokenCreator; data.mData.owner = tokenOwner
       cache2[tokenId] = data.mData
       return data.mData
     } else {
@@ -81,7 +82,8 @@ export async function getTokenMetadataByTokenId (nftContract, tokenId, signed , 
       const isSigned = ret === '' ? false : ret.with_verify === '1' // must be char!
       const mData = {'name': name, 'description': description, 'image': curImg, 'tags': tags, 'isLocked': isLocked, 'isSigned': isSigned} */
 
-      const mData = {'name': name, 'description': description, 'image': curImg, 'tags': tags, 'isLocked': false, 'isSigned': false, 'owner': tokenOwner, 'creator': tokenCreator}
+      // const mData = {'name': name, 'description': description, 'image': curImg, 'tags': tags, 'isLocked': false, 'isSigned': false, 'owner': tokenOwner, 'creator': tokenCreator}
+      const mData = {'name': name, 'description': description, 'image': curImg, 'tags': tags, 'isLocked': false, 'isSigned': false}
       return mData
     }
   } catch (error) { // main try
@@ -123,9 +125,10 @@ export function mapCreatedAndOwnedTokenIdsAsMarketItemsOld (marketplaceContract,
     // if (split96) fData.append('network', 'hd96')
     await fetch('https://' + currentServer + '.room-house.com' + currentServerPort + '/cgi/get_data.pl', { body: fData, method: 'post', enctype: 'multipart/form-data' })
       .then((response) => response.json())
-      .then((result) => { rawData = result.map((element) => parseInt(element[0])); rawData = rawData.filter(item => item !== 9598) })
+      .then((result) => { rawData = result.map((element) => parseInt(element[0])); rawData = rawData.filter(item => item !== 9598); metadata.creator = result.map((element) => element[1])[0]; metadata.owner = result.map((element) => element[2])[0]; })
       .catch((err) => { console.log('Fetch fData Error', err) })
     // console.log('mapCreatedAndOwnedTokenIdsAsMarketItems rawdata is', rawData)
+    // console.log('metadata creator', metadata.creator, 'owner', metadata.owner)
     const marketItems = split96 || mydocs ? await marketplaceContract.fetchMoreMarketItemsByMarketItemIds(rawData, 0) : await marketplaceContract.fetchMarketItemsByMarketItemIds(rawData, 0)
     const marketItem = marketItems[0] ? marketItems[0] : {}
     // console.log('with token', tokenId, 'what we have?', marketItems, 'and so', marketItem)
@@ -135,11 +138,13 @@ export function mapCreatedAndOwnedTokenIdsAsMarketItemsOld (marketplaceContract,
 
 export function mapCreatedAndOwnedTokenIdsAsMarketItems (marketplaceContract, nftContract, account, signed) {
   return async (tokenData) => {
-    const tokenId = tokenData[0]; const itemId = tokenData[1]; const itemIdArr = [itemId]
+    const tokenId = tokenData[0]; const itemId = tokenData[1]; const itemIdArr = [itemId]; const tokenCreator = tokenData[2]; const tokenOwner = tokenData[3];
     // const itemIdArr = tokenData.slice(1)
     // const rawData = itemIdArr.map((element) => parseInt(element[0]))
     // console.log('nfts.js: tok is', tokenId, 'item is', itemIdArr)
     const metadata = await getTokenMetadataByTokenId(nftContract, tokenId, signed, 1)
+    metadata.owner = tokenOwner; metadata.creator = tokenCreator;
+    // console.log('metadata:', metadata);
     if (metadata === burned_placeh || itemId === 0 ) return mapMarketItem({}, metadata, tokenId, account, false)
 
     let approveAddress = ''

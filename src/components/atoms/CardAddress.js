@@ -4,8 +4,11 @@ import { useContext } from 'react'
 import { shortenAddress } from '../../utils/format'
 import { Web3Context } from '../providers/Web3Provider'
 
+const mydocs = typeof window !== 'undefined' && window.location.hostname === 'mydocs.room-house.com'
+
 function getAddressText (address, account) {
-  if (address === ethers.constants.AddressZero) return 'Marketplace'
+  if (address === ethers.constants.AddressZero && !mydocs) return 'Marketplace'
+  if (address === ethers.constants.AddressZero && mydocs) return 'Public'
   if (address === account) return 'You'
   return shortenAddress(address)
 }

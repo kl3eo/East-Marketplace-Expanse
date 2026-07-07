@@ -366,12 +366,24 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
     })
   }
 
-  async function updateAfterBurn (index, tokenId, newPrice) {
+  async function updateAfterBurn (index, tokenId) {
     const updatedNFt = await mapCreatedAndOwnedTokenIdsAsMarketItemsOld(marketplaceContract, nftContract, account)(tokenId)
     updatedNFt.owner = ethers.constants.AddressZero
     // updatedNFt.price = newPrice
     updatedNFt.canceled = false
     console.log('NFT4a!', updatedNFt)
+    setNfts(prevNfts => {
+      const updatedNfts = [...prevNfts]
+      updatedNfts[index] = updatedNFt
+      return updatedNfts
+    })
+  }
+
+  async function updateAfterTransfer (index, tokenId) {
+    const updatedNFt = await mapCreatedAndOwnedTokenIdsAsMarketItemsOld(marketplaceContract, nftContract, account)(tokenId)
+    updatedNFt.price = 0
+    updatedNFt.canceled = false
+    console.log('NFT4b!', updatedNFt)
     setNfts(prevNfts => {
       const updatedNfts = [...prevNfts]
       updatedNfts[index] = updatedNFt
@@ -410,7 +422,7 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
       return <NFTCard nft={nft} action="sell" updateNFT={async () => { const fData = new FormData(); fData.append('pass', 'lollol'); if (mydocs) fData.append('network', 'hd'); if (split96) fData.append('network', 'hd96'); await fetch('https://' + currentServer + '.room-house.com' + currentServerPort + '/cgi/update_10_last.pl', { body: fData, method: 'post', enctype: 'multipart/form-data' }).then((response) => response.json()).then((result) => { console.log('update_10_last1 result', result); updateAfterBurn(index, nft.tokenId) }).catch(async (err) => { console.log('Fetch1 update_10_last Error', err); await fetch('https://' + resServer + '.room-house.com' + resServerPort + '/cgi/update_10_last.pl', { body: fData, method: 'post', enctype: 'multipart/form-data' }).then((response) => response.json()).then((result) => { console.log('update_10_last2 result', result); updateAfterBurn(index, nft.tokenId) }).catch((err) => { console.log('Fetch2 update_10_last Error', err) }) }); const emailHtml = render(<EmailCard nft={nft} mes={values.message.length ? values.message : 'by ' + nft.owner} who={values.subject.length ? values.subject : 'selling token ' + nft.tokenId} />); const req = await sendEmail(values.email.length ? values.email : 'alexshevlakov@yandex.ru', description, emailHtml); console.log('send_email req is', req) }} onCliCliCli={onCliCliCli} />
     }
 
-    if (nft.owner === account && !nft.hasMarketApproval && nft.creator !== account && !nft.isLocked) {
+    if (nft.owner === account && !nft.hasMarketApproval && nft.creator !== account && !nft.isLocked && !mydocs) {
       return <NFTCard nft={nft} action="approve" updateNFT={() => updateNFT(index, nft.tokenId)} onCliCliCli={onCliCliCli} />
     }
 
@@ -419,7 +431,7 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
     }
 
     if (nft.owner === account && !nft.isLocked && transferShown) {
-      return <NFTCard nft={nft} action="transfer" updateNFT={async () => { const fData = new FormData(); fData.append('pass', 'lollol'); fData.append('id', nft.tokenId); await axios.post('/api/transfer_post', fData, { headers: { 'Content-Type': 'multipart/form-data' } }).then(updateNFT(index, nft.tokenId)).catch((err) => { console.log('transfer_post Error', err) }); const emailHtml = render(<EmailCard nft={nft} mes={values.message.length ? values.message : 'by ' + nft.owner} who={values.subject.length ? values.subject : 'transfering token ' + nft.tokenId} />); const req = await sendEmail(values.email.length ? values.email : 'alexshevlakov@yandex.ru', description, emailHtml); console.log('send_email req is', req) }} onCliCliCli={onCliCliCli} />
+      return <NFTCard nft={nft} action="transfer" updateNFT={async () => { const fData = new FormData(); fData.append('pass', 'lollol'); fData.append('id', nft.tokenId); if (mydocs) fData.append('network', 'hd'); if (split96) fData.append('network', 'hd96'); await axios.post('/api/transfer_post', fData, { headers: { 'Content-Type': 'multipart/form-data' } }); updateAfterTransfer(index, nft.tokenId); const emailHtml = render(<EmailCard nft={nft} mes={values.message.length ? values.message : 'by ' + nft.owner} who={values.subject.length ? values.subject : 'transfering token ' + nft.tokenId} />); const req = await sendEmail(values.email.length ? values.email : 'alexshevlakov@yandex.ru', description, emailHtml); console.log('send_email req is', req) }} onCliCliCli={onCliCliCli} />
     }
 
     if (nft.seller === account && !nft.sold && !nft.isLocked) {

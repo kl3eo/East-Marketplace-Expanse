@@ -548,7 +548,7 @@ Header set "Content-Disposition" "attachment; filename=\"%{FILENAME}e\"" env=FIL
   return (
     !isEdited
       ? <Card
-        className={classes.root} sx={{ backgroundColor: lightBgr ? mydocs ? '#012' : '#fff' : '#012', maxHeight: scalingAllowed && hiResScreen ? '25vh' : goodNotebook && !bigger ? isDescOpen ? mydocs || split96 ? '66vh' : '98vh' : mydocs || split96 ? 480 : '60vh' : null, minHeight: scalingAllowed && hiResScreen ? '22vh' : goodNotebook && !bigger ? isDescOpen ? mydocs || split96 ? '66vh' : 590 : mydocs || split96 ? '56vh' : 510 : null }}
+        className={classes.root} sx={{ backgroundColor: lightBgr ? mydocs ? '#912' : '#fff' : '#912', maxHeight: scalingAllowed && hiResScreen ? '25vh' : goodNotebook && !bigger ? isDescOpen ? mydocs || split96 ? '66vh' : '98vh' : mydocs || split96 ? 480 : '60vh' : null, minHeight: scalingAllowed && hiResScreen ? '22vh' : goodNotebook && !bigger ? isDescOpen ? mydocs || split96 ? '66vh' : 590 : mydocs || split96 ? '56vh' : 510 : null }}
         raised={isHovered}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
@@ -571,7 +571,7 @@ Header set "Content-Disposition" "attachment; filename=\"%{FILENAME}e\"" env=FIL
             <div className={classes.addressesContainer} style={{ float: 'left' }} >
               <CardAddresses nft={nft}/>
             </div>
-            <div className={classes.priceContainer} style={{ float: 'right', display: nft.isLocked || (mydocs) ? 'none' : 'block' }}>
+            <div className={classes.priceContainer} style={{ float: 'right', display: nft.isLocked || (mydocs && action !== 'transfer') ? 'none' : 'block' }}>
               {action === 'sell'
                 ? <PriceTextField listingFee={listingFee} error={priceError} disabled={isLoading} onChange={e => setPrice(e.target.value)}/>
                 : action === 'transfer'
@@ -588,7 +588,7 @@ Header set "Content-Disposition" "attachment; filename=\"%{FILENAME}e\"" env=FIL
             : <Divider className={classes.firstDivider} style={{ display: 'none' }}/>
           }
         </CardContent>
-        <CardActions className={classes.cardActions} style={{ backgroundColor: '#fff', display: isDescOpen ? badThingsHappen ? 'none' : (mydocs) && actions[action].text !== 'Burn' && actions[action].text !== 'cancel' && actions[action].text !== 'Publish' ? 'none' : 'block' : 'none' }}>
+        <CardActions className={classes.cardActions} style={{ backgroundColor: '#fff', display: isDescOpen ? badThingsHappen ? 'none' : (mydocs) && actions[action].text !== 'Burn' && actions[action].text !== 'cancel' && actions[action].text !== 'Publish' && actions[action].text !== 'Transfer' ? 'none' : 'block' : 'none' }}>
           <Button size="small" id={'act' + tId} onClick={() => { if ((actions[action].text === 'Send a postcard' || actions[action].text === 'Burn') && fullyLoaded) { document.getElementById('warnerburn' + tId).style.display = 'table'; document.getElementById('cm_' + tId).style.display = 'none'; document.getElementById('cc_' + tId).style.display = 'none' }; !isLoading && (!fullyLoaded || (actions[action].text !== 'Send a postcard' && actions[action].text !== 'Burn')) && onClicker(nft, 0) }}>
             {isLoading
               ? <CircularProgress size="20px" />

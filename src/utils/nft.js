@@ -129,6 +129,7 @@ export function mapCreatedAndOwnedTokenIdsAsMarketItemsOld (marketplaceContract,
       .catch((err) => { console.log('Fetch fData Error', err) })
     // console.log('mapCreatedAndOwnedTokenIdsAsMarketItems rawdata is', rawData)
     // console.log('metadata creator', metadata.creator, 'owner', metadata.owner)
+    if (rawData.length === 1 && rawData[0] === 0) return mapMarketItem({}, metadata, tokenId, account, false) // no items
     const marketItems = split96 || mydocs ? await marketplaceContract.fetchMoreMarketItemsByMarketItemIds(rawData, 0) : await marketplaceContract.fetchMarketItemsByMarketItemIds(rawData, 0)
     const marketItem = marketItems[0] ? marketItems[0] : {}
     // console.log('with token', tokenId, 'what we have?', marketItems, 'and so', marketItem)

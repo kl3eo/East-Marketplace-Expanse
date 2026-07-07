@@ -33,17 +33,19 @@ export const config = {
 }
 
 handler.post(async function handlePost ({ body }, response) {
-  const id = body.id[0]
+  const id = body.id[0]; const network = typeof body.network !== 'undefined' ? body.network[0] : ''
+  // console.log('transfer_post network', network)
 
   try {
     const formData1 = new FormData()
     formData1.append('tId', id)
-    // const { data: responseData } =
-    await axios.post(`${nftBaseUrl}/cgi/transferee_postee.pl`, formData1, { headers: { 'Content-Type': `multipart/form-data; boundary=${formData1._boundary}` } })
+    if (network !== '') formData1.append('network', network)
+    const { data: responseData } = await axios.post(`${nftBaseUrl}/cgi/transferee_postee.pl`, formData1, { headers: { 'Content-Type': `multipart/form-data; boundary=${formData1._boundary}` } })
     // console.log('transferee_postee res', responseData.result)
-    // const metaData = { name: 'dummy', description: 'desc' }
-    // return response.status(200).json({ mData: metaData })
-    return null
+    const metaData = { res: responseData.result, description: 'desc' }
+    return response.status(200).json({
+      mData: metaData
+    })
   } catch (error) {
     console.log('Error: ', error)
   }

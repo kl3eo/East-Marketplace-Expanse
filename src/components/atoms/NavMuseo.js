@@ -16,7 +16,7 @@ export default function NavMuseo ({ title, href, col }) {
         ? <Link href={href} key={title} passHref>
         <a target="_blank" style={{ position: 'relative', zIndex: '999', marginBottom: '-8px', textAlign: 'right', fontSize: '12px', color: '#234', padding: '2px', textDecoration: 'none', '&:hover': { backgroundColor: '#9cf', color: '#3c52b2' } }}><span style={{ color: '#006', textDecoration: 'underline' }}>Image:</span> <span style={{ color: '#000', fontWeight: 'normal', textDecoration: 'none' }}>{title}</span> (<span style={{ color: '#006' }}><a style={{ padding: '0px', textDecoration: 'none' }} href='https://creativecommons.org/publicdomain/zero/1.0/legalcode.en'>CC0</a></span>)</a>
       </Link>
-        : title === 'Nasjonalmuseet, Oslo' || title === 'Wien Museum, Vienna'
+        : title === 'Nasjonalmuseet, Oslo' || title === 'Wien Museum, Vienna' || title === 'Museum für Neue Kunst, Freiburg' || title === 'Augustiner Museum, Freiburg'
           ? <Link href={href} key={title} passHref>
           <a target="_blank" style={{ position: 'relative', zIndex: '999', marginBottom: '-8px', textAlign: 'right', fontSize: '12px', color: '#234', padding: '2px', textDecoration: 'none', '&:hover': { backgroundColor: '#9cf', color: '#3c52b2' } }}><span style={{ color: '#006', textDecoration: 'underline' }}>Credits:</span> <span style={{ color: '#000', fontWeight: 'normal', textDecoration: 'none' }}>{title}</span> (<span style={{ color: '#006' }}><a style={{ padding: '0px', textDecoration: 'none' }} href='https://creativecommons.org/licenses/by/4.0/'>CC-BY</a></span>)</a>
         </Link>

@@ -45,11 +45,14 @@ export default function ReqCardCreation () {
     currLang === 'EN' ? setCurrLang('RU') : setCurrLang('EN')
   }
 
-  function createNFTFormDataFile (name, description, file, par) {
+  function createNFTFormDataFile (name, description, file, sum, origN, size, par) {
     const formData = new FormData()
     formData.append('name', name)
     formData.append('description', description)
-    formData.append('file', file)
+    par === 1 && formData.append('file', file)
+    par === 2 && formData.append('checksum', sum)
+    par === 2 && formData.append('originalFilename', origN)
+    par === 2 && formData.append('size', size)
     par === 1 && formData.append('account', 'DUMMY')
     par === 2 && formData.append('account', 'DUMMY2')
     if (typeof window !== 'undefined' && window.location.hostname === 'happydox.room-house.com') formData.append('network', 'hd')
@@ -80,7 +83,7 @@ export default function ReqCardCreation () {
       try {
         setIsLoading(true)
         if (document.getElementById('retBut')) document.getElementById('retBut').style.display = 'none'
-        const formData = createNFTFormDataFile(name, description, file, 1)
+        const formData = createNFTFormDataFile(name, description, file, null, null, null, 1)
         const [metadataUrl, hash2, check] = await uploadFileToIPFS(formData)
         formData.delete('file')
         formData.delete('name')
@@ -114,16 +117,27 @@ export default function ReqCardCreation () {
     if (yon) {
       try {
         if (!file || isLoading) return
+        // console.log("Here File:", file)
         setIsLoading(true)
         if (document.getElementById('retBut')) document.getElementById('retBut').style.display = 'none'
-        const formData = createNFTFormDataFile(name, description, file, 2)
+        const csum = async (file) => {
+          if (Object.prototype.toString.call(file) === '[object File]') {
+            const buffer = await file.arrayBuffer()
+            const hash = await crypto.subtle.digest('SHA-256', buffer)
+            const ret = Array.from(new Uint8Array(hash)).map(byte => byte.toString(16).padStart(2, '0')).join('')
+            // console.log('csum is', ret)
+            return ret
+          } else throw Error('File is not valid.')
+        }
+        const checksum = await csum(file); console.log('checksum', checksum, 'name', file.name, 'size', file.size) // correct
+        const formData = createNFTFormDataFile(name, description, null, checksum, file.name, file.size, 2)
         const [metadataUrl, hash2, check] = await uploadFileToIPFS(formData)
         formData.delete('file')
         formData.delete('name')
         formData.delete('description')
         console.log('metadataUrl', metadataUrl)
         if (typeof metadataUrl === 'undefined') { document.getElementById('reqformdiv4').innerText = currLang === 'EN' ? 'Error occurred. Please try later.' : 'Ошибка. Попробуйте позже.'; document.getElementById('reqformdiv4').style.display = 'block'; return }
-        if (metadataUrl === 'null' || metadataUrl === null) { document.getElementById('reqformdiv4').innerText = currLang === 'EN' ? 'Error occurred. Check file size must be < 3M.' : 'Ошибка. Проверьте размер файла < 1M.'; document.getElementById('reqformdiv4').style.display = 'block'; return }
+        if (metadataUrl === 'null' || metadataUrl === null) { document.getElementById('reqformdiv4').innerText = currLang === 'EN' ? 'Error occurred. Check file size must be < 100M.' : 'Ошибка. Проверьте размер файла < 100M.'; document.getElementById('reqformdiv4').style.display = 'block'; return }
 
         document.getElementById('reqformdiv4').innerText = hash2
         if (check === 'OK') document.getElementById('reqformdiv4').click(); else document.getElementById('reqformdiv4').style.display = 'block'

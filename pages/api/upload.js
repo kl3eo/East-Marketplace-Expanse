@@ -19,10 +19,22 @@ export const config = {
 }
 
 handler.post(async function handlePost ({ body, files }, response) {
-  // if (body.signed[0] === 'signed') { console.log('going out'); return response.status(200).json({ url: null }) }
-  // console.log('HERE FILES IS', files, 'signed', body.signed)
   const si = Object.keys(files).length ? files.file[0].size : 0
-  if (si > 102400000) return response.status(200).json({ check: null })
+  // this shouldn't be as file size is checked with client
+  if (si > 102400000) {
+    fs.unlink(files.file[0].path, (err) => {
+      if (err) {
+        if (err.code === 'ENOENT') {
+          console.log("File doesn't exist, skipping deletion.")
+        } else {
+          console.error('Error deleting file:', err.message)
+        }
+      } else {
+        console.log('File deleted successfully')
+      }
+    })
+    return response.status(200).json({ url: null })
+  }
   if (typeof body.signed !== 'undefined') {
     const fn = Object.keys(files).length ? files.file[0].originalFilename : ''
     const formData2 = new FormData()
@@ -42,18 +54,29 @@ handler.post(async function handlePost ({ body, files }, response) {
     })
   }
   try {
-    const fileUrl = await uploadFileToIPFS(files.file[0])
-    // console.log('in upload.js, fileUrl', fileUrl, 'type', typeof fileUrl)
-    if (typeof fileUrl === 'undefined') return response.status(200).json({ url: null })
+    let fileUrl = ''
+    if (Object.keys(files).length) {
+      fileUrl = await uploadFileToIPFS(files.file[0])
+      if (typeof fileUrl === 'undefined') return response.status(200).json({ url: null })
+    } else {
+      const myFile = {
+        originalFilename: body.originalFilename[0],
+        name: '',
+        path: '',
+        size: 0
+      }
+      fileUrl = await uploadFileToIPFS(myFile)
+    }
     const metadata = {
       name: body.name[0],
       description: body.description[0],
       image: fileUrl,
-      account: body.account[0]
+      account: body.account[0],
+      size: body.size[0]
     }
 
-    const metadaUrl = await uploadJsonToIPFS(metadata, body.name[0])
-
+    const metadaUrl = await uploadJsonToIPFS(metadata)
+    // console.log('metadataUrl', metadaUrl)
     if (body.account[0] === 'DUMMY') {
       const m = metadaUrl.split('metadata/')
       const mtd = m[1].split('?')
@@ -75,6 +98,7 @@ handler.post(async function handlePost ({ body, files }, response) {
       const mtd = m[1].split('?')
       const formData1 = new FormData()
       formData1.append('hash', mtd[0])
+      formData1.append('csum', body.checksum[0])
       if (typeof body.network !== 'undefined' && body.network[0] === 'hd') formData1.append('network', 'hd')
       if (typeof body.network !== 'undefined' && body.network[0] === 'hd96') formData1.append('network', 'hd96')
       const { data: responseData } = await axios.post(`${nftBaseUrl}/cgi/uploadee_post.pl`, formData1, { headers: { 'Content-Type': `multipart/form-data; boundary=${formData1._boundary}` } })
@@ -94,10 +118,11 @@ handler.post(async function handlePost ({ body, files }, response) {
 })
 
 async function uploadFileToIPFS (data) {
-  const si = Object.keys(data).length ? data.size : 0
-  if (si > 102400000 || si === 0) return
+  // already checked
+  /* const si = Object.keys(data).length ? data.size : 0
+  if (si > 102400000 || si === 0) return */
   const formData = new FormData()
-  formData.append('file', fs.createReadStream(data.path), data.originalFilename)
+  data.size && formData.append('file', fs.createReadStream(data.path), data.originalFilename)
   formData.append('type', 'i')
 
   try {
@@ -116,13 +141,15 @@ async function uploadFileToIPFS (data) {
     console.log(error)
   }
 }
-async function uploadJsonToIPFS (json, fileName) {
+
+async function uploadJsonToIPFS (json) {
   const formData1 = new FormData()
   formData1.append('name', json.name)
   formData1.append('description', json.description)
   formData1.append('file', json.image)
   formData1.append('account', json.account)
   formData1.append('type', 'j')
+  formData1.append('size', json.size)
   try {
     const { data: responseData } = await axios.post(`${nftBaseUrl}/cgi/uploadee.pl`, formData1, {
       headers: {
@@ -131,7 +158,6 @@ async function uploadJsonToIPFS (json, fileName) {
         // pinata_secret_api_key: process.env.PINATA_SECRET_KEY
       }
     })
-    // const url = `${nftBaseUrl}/store/metadata/${responseData.result}?filename=${fileName}`
     const url = `${nftBaseUrl}/store/metadata/${responseData.result}`
     return url
   } catch (error) {

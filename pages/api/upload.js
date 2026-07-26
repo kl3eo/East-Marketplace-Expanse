@@ -71,11 +71,12 @@ handler.post(async function handlePost ({ body, files }, response) {
       name: body.name[0],
       description: body.description[0],
       image: fileUrl,
-      account: body.account[0],
-      size: body.size[0]
+      account: body.account[0]
     }
+    if (body.account[0] === 'DUMMY2') metadata.size = body.size[0]
 
-    const metadaUrl = await uploadJsonToIPFS(metadata)
+    const p = body.account[0] === 'DUMMY2' ? 1 : 0
+    const metadaUrl = await uploadJsonToIPFS(metadata, p)
     // console.log('metadataUrl', metadaUrl)
     if (body.account[0] === 'DUMMY') {
       const m = metadaUrl.split('metadata/')
@@ -142,14 +143,14 @@ async function uploadFileToIPFS (data) {
   }
 }
 
-async function uploadJsonToIPFS (json) {
+async function uploadJsonToIPFS (json, p) {
   const formData1 = new FormData()
   formData1.append('name', json.name)
   formData1.append('description', json.description)
   formData1.append('file', json.image)
   formData1.append('account', json.account)
   formData1.append('type', 'j')
-  formData1.append('size', json.size)
+  if (p) formData1.append('size', json.size)
   try {
     const { data: responseData } = await axios.post(`${nftBaseUrl}/cgi/uploadee.pl`, formData1, {
       headers: {

@@ -12,12 +12,13 @@ import { store } from '../store/store'
 import { isMobile } from 'react-device-detect'
 
 const currentServer = process.env.CURRENT_SERVER
+const currentDomain = 'room-house.com'
 const currentServerPort = process.env.CURRENT_SERVER_PORT
 
 const randomBeauty = Math.floor(Math.random() * 1024)
-const mydocs = typeof window !== 'undefined' && window.location.hostname === 'mydocs.room-house.com'
-const split96 = typeof window !== 'undefined' && window.location.hostname === 'split.room-house.com'
-const bestnft = typeof window !== 'undefined' && window.location.hostname === 'nft.room-house.com'
+const mydocs = typeof window !== 'undefined' && window.location.hostname === 'mydocs' + '.' + currentDomain
+const split96 = typeof window !== 'undefined' && window.location.hostname === 'split' + '.' + currentDomain
+const bestnft = typeof window !== 'undefined' && window.location.hostname === 'nft' + '.' + currentDomain
 const goodNotebook = typeof window !== 'undefined' && window.screen.width > 1600
 const hiResScreen = typeof window !== 'undefined' && window.screen.width >= 1920
 
@@ -50,13 +51,13 @@ export default function Home () {
       if (!lookupStr.length && !t.match(/(&|\||!)/g)) dispatch(setCateg(t))
       if (lookupStr.length || t.match(/(&|\||!)/g)) { dispatch(setLookup(t)); dispatch(setSomethingLoaded(true)) }
     }
-    // if (!/my-nfts$/i.test(paths[0]) && typeof window !== 'undefined' && window.location.hostname === 'mydocs.room-house.com') window.location.href = '/my-nfts'
+    // if (!/my-nfts$/i.test(paths[0]) && typeof window !== 'undefined' && window.location.hostname === 'mydocs' + '.' + currentDomain) window.location.href = '/my-nfts'
   }, [])
   useEffect(() => {
-    if (typeof window !== 'undefined' && window.location.hostname !== 'happyminter.room-house.com' && window.location.hostname !== 'happydox.room-house.com') loadNFTs()
+    if (typeof window !== 'undefined' && window.location.hostname !== 'happyminter' + '.' + currentDomain && window.location.hostname !== 'happydox' + '.' + currentDomain && window.location.hostname !== 'tokenizer' + '.' + currentDomain) loadNFTs()
   }, [isReady, lookupStr, categStr])
   useEffect(() => {
-    // document.body.style.zoom = typeof window !== 'undefined' && window.location.hostname === 'ooc.room-house.com' ? '110%' : '110%'
+    // document.body.style.zoom = typeof window !== 'undefined' && window.location.hostname === 'ooc' + '.' + currentDomain ? '110%' : '110%'
     if (document.getElementById('stats_bar') && !isMobile) document.getElementById('stats_bar').style.display = 'block'
   }, [])
 
@@ -80,10 +81,10 @@ export default function Home () {
       fData.append('sixinro', goodNotebook)
       if (typeof window !== 'undefined') fData.append('loco', window.location.hostname)
       if (categStr && categStr.length) fData.append('categstr', categStr)
-      if (window.location.hostname === 'nudenft.room-house.com') fData.append('theme', 'nude')
-      if (window.location.hostname === 'shopping.room-house.com') fData.append('theme', 'eshopping')
-      if (window.location.hostname === 'selfi.room-house.com' || window.location.hostname === 'selfie.room-house.com') fData.append('theme', 'portrait')
-      await fetch('https://' + currentServer + '.room-house.com' + currentServerPort + '/cgi/get_data.pl', { body: fData, method: 'post', enctype: 'multipart/form-data' })
+      if (window.location.hostname === 'nudenft' + '.' + currentDomain) fData.append('theme', 'nude')
+      if (window.location.hostname === 'shopping' + '.' + currentDomain) fData.append('theme', 'eshopping')
+      if (window.location.hostname === 'selfi' + '.' + currentDomain || window.location.hostname === 'selfie' + '.' + currentDomain) fData.append('theme', 'portrait')
+      await fetch('https://' + currentServer + '.' + currentDomain + currentServerPort + '/cgi/get_data.pl', { body: fData, method: 'post', enctype: 'multipart/form-data' })
         .then((response) => response.json())
         .then((result) => { rawData = result.map((element) => parseInt(element[0])); rawData = rawData.filter(item => item !== 9598); dispatch(setNum(rawData.length)) })
         .catch((err) => { console.log('Fetch fData Error', err) })
@@ -96,10 +97,10 @@ export default function Home () {
       fData.append('sixinro', goodNotebook)
       if (typeof window !== 'undefined') fData.append('loco', window.location.hostname)
       if (categStr && categStr.length) fData.append('categstr', categStr)
-      if (typeof window !== 'undefined' && window.location.hostname === 'nudenft.room-house.com') fData.append('theme', 'nude')
-      if (typeof window !== 'undefined' && window.location.hostname === 'shopping.room-house.com') fData.append('theme', 'eshopping')
-      if (typeof window !== 'undefined' && (window.location.hostname === 'selfi.room-house.com' || window.location.hostname === 'selfie.room-house.com')) fData.append('theme', 'portrait')
-      await fetch('https://' + currentServer + '.room-house.com' + currentServerPort + '/cgi/get_data.pl', { body: fData, method: 'post', enctype: 'multipart/form-data' })
+      if (typeof window !== 'undefined' && window.location.hostname === 'nudenft' + '.' + currentDomain) fData.append('theme', 'nude')
+      if (typeof window !== 'undefined' && window.location.hostname === 'shopping' + '.' + currentDomain) fData.append('theme', 'eshopping')
+      if (typeof window !== 'undefined' && (window.location.hostname === 'selfi' + '.' + currentDomain || window.location.hostname === 'selfie' + '.' + currentDomain)) fData.append('theme', 'portrait')
+      await fetch('https://' + currentServer + '.' + currentDomain + currentServerPort + '/cgi/get_data.pl', { body: fData, method: 'post', enctype: 'multipart/form-data' })
         .then((response) => response.json())
         .then((result) => { rawData = result.map((element) => parseInt(element[0])); rawData = rawData.filter(item => item !== 9598); dispatch(setNum(rawData.length)) })
         .catch((err) => { console.log('Fetch fData Error', err) })
@@ -281,6 +282,6 @@ export default function Home () {
   // if (fullyLoaded && !isLoading && !nfts.length && lookupStr.length) return <h1 style={{ marginTop: '64px' }}>No data found for search: { lookupStr } { categStr } </h1>
 
   return (
-    typeof window !== 'undefined' && window.location.hostname !== 'happyminter.room-house.com' && window.location.hostname !== 'happydox.room-house.com' && <NFTCardList nfts={nfts} setNfts={setNfts} withCreateNFT={false}/>
+    typeof window !== 'undefined' && window.location.hostname !== 'happyminter' + '.' + currentDomain && window.location.hostname !== 'happydox' + '.' + currentDomain && window.location.hostname !== 'tokenizer' + '.' + currentDomain && <NFTCardList nfts={nfts} setNfts={setNfts} withCreateNFT={false}/>
   )
 }

@@ -1,13 +1,13 @@
 import { createContext, useState } from 'react'
-// import { isMobile } from 'react-device-detect'
 
+const currentDomain = 'room-house.com'
 const contextDefaultValues = {
   modalNFT: undefined,
   isModalOpen: false,
   isCategChangedInMenu: false,
-  isDescOpen: typeof window !== 'undefined' && (window.location.hostname !== 'nft.room-house'),
-  isReqFormOpen: typeof window !== 'undefined' && (window.location.hostname === 'happyminter.room-house.com' || window.location.hostname === 'happydox.room-house.com'),
-  // currLang: typeof window !== 'undefined' && window.location.hostname === 'happydox.room-house.com' ? 'RU' : 'EN',
+  isDescOpen: true,
+  isReqFormOpen: typeof window !== 'undefined' && (window.location.hostname === 'happyminter' + '.' + currentDomain || window.location.hostname === 'happydox' + '.' + currentDomain || window.location.hostname === 'tokenizer' + '.' + currentDomain),
+  // currLang: typeof window !== 'undefined' && window.location.hostname === 'happydox' + '.' + currentDomain ? 'RU' : 'EN',
   currLang: 'EN',
   currSize: '138%',
   setModalNFT: () => {},

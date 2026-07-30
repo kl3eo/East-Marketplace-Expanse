@@ -4,38 +4,25 @@ This is a fork from https://github.com/johnoseni1/East-Marketplace-Full with cha
 
 Checkout the live demo: https://nft.room-house.com/
 
-DEPLOY CONTRACTS 
-################
-(if using pre-compiled binaries from artifacts/contracts/, - skip to BUILD)
+## Build
 
-Edit source Marketplace.sol and NFT.sol from contracts/ and trim your contracts as you wish.
+yarn add hardhat
 
 Compile Solidity files:
 npx hardhat compile
 
-Deploy two contracts with command:
+Deploy two contracts to Expanse:
 npx hardhat run scripts/deploy.js --network expanse
 
-Edit address constants in .env file:
+Edit constants in .env file:
 vi .env
 ...
 
-BUILD
-#####
+Skip to "scripts" folder and run "replace_domain.sh" scripts with param "your_domain.name"
+e.g. cd East_NFT/scripts && ./replace_domain.sh mydomain.com
 
-## Build with yarn v1.22
+yarn && yarn build
 
-with node 22.2.0 tested on Ubuntu 24.04
+## Run
 
-Install required packages:
-yarn 
-
-Build:
-yarn build
-
-Run app on 127.0.0.1 default port 3000 (or set another port in package.json and re-build):
 yarn run start
-
-Use Apache as proxy to link the running app to external IP, host name and port.
-
-

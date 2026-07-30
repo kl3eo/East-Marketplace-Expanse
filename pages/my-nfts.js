@@ -14,8 +14,9 @@ import { store } from '../store/store'
 // import { isMobile } from 'react-device-detect'
 
 const currentServer = process.env.CURRENT_SERVER
+const currentDomain = 'room-house.com'
 const currentServerPort = process.env.CURRENT_SERVER_PORT
-// const mydocs = typeof window !== 'undefined' && window.location.hostname === 'mydocs.room-house.com'
+// const mydocs = typeof window !== 'undefined' && window.location.hostname === 'mydocs' + '.' + currentDomain
 
 export default function CreatorDashboard () {
   const [nfts, setNfts] = useState([])
@@ -31,7 +32,7 @@ export default function CreatorDashboard () {
     // dispatch(setCateg(''))
     // dispatch(setLookup(''))
     // if (document.getElementById('searchInput')) document.getElementById('searchInput').value = ''
-    // document.body.style.zoom = typeof window !== 'undefined' && window.location.hostname === 'ooc.room-house.com' ? '110%' : '110%' // this not working in FF, good in Chrome/Opera
+    // document.body.style.zoom = typeof window !== 'undefined' && window.location.hostname === 'ooc' + '.' + currentDomain ? '110%' : '110%' // this not working in FF, good in Chrome/Opera
     dispatch(setLightBgr(false))
     setIsDescOpen(true)
   }, [])
@@ -55,11 +56,11 @@ export default function CreatorDashboard () {
     fData.append('account', account)
     fData.append('sixinro', 0) // always not more than 4 in my-nfts
     if (typeof window !== 'undefined') fData.append('loco', window.location.hostname)
-    if (window.location.hostname === 'nudenft.room-house.com') fData.append('theme', 'nude')
-    if (window.location.hostname === 'shopping.room-house.com') fData.append('theme', 'eshopping')
-    if (window.location.hostname === 'selfi.room-house.com' || window.location.hostname === 'selfie.room-house.com') fData.append('theme', 'portrait')
-    if (window.location.hostname === 'mydocs.room-house.com') fData.append('network', 'hd')
-    await fetch('https://' + currentServer + '.room-house.com' + currentServerPort + '/cgi/get_data.pl', { body: fData, method: 'post', enctype: 'multipart/form-data' })
+    if (window.location.hostname === 'nudenft' + '.' + currentDomain) fData.append('theme', 'nude')
+    if (window.location.hostname === 'shopping' + '.' + currentDomain) fData.append('theme', 'eshopping')
+    if (window.location.hostname === 'selfi' + '.' + currentDomain || window.location.hostname === 'selfie' + '.' + currentDomain) fData.append('theme', 'portrait')
+    if (window.location.hostname === 'mydocs' + '.' + currentDomain) fData.append('network', 'hd')
+    await fetch('https://' + currentServer + '.' + currentDomain + currentServerPort + '/cgi/get_data.pl', { body: fData, method: 'post', enctype: 'multipart/form-data' })
       .then((response) => response.json())
       // .then((result) => { rawData = result.map((element) => parseInt(element[0])); rawData = rawData.filter(item => item !== 9598) })
       .then((result) => { rawData = result.map((element) => [parseInt(element[0]), element[1], element[2], element[3]]) })
@@ -104,7 +105,7 @@ export default function CreatorDashboard () {
     dispatch(setCurrentDisp(0))
     setIsLoading(false)
     dispatch(setLoading(false))
-    if (window.location.hostname === 'shopping.room-house.com') dispatch(setFullyLoaded(false)); else dispatch(setFullyLoaded(true))
+    if (window.location.hostname === 'shopping' + '.' + currentDomain) dispatch(setFullyLoaded(false)); else dispatch(setFullyLoaded(true))
   }
 
   if (!hasWindowEthereum && isReady) return <div style={{ marginTop: '30vh', fontSize: '48px', minWidth: '50vw', textAlign: 'center', marginLeft: 'auto' }}>Install Metamask</div>

@@ -5,10 +5,13 @@ import NavBar from '../molecules/NavBar'
 import NFTModal from '../organisms/NFTModal'
 import ReqFormDiv from '../organisms/ReqFormDiv'
 import ReqFormDoc from '../organisms/ReqFormDoc'
+import ReqFormEasy from '../organisms/ReqFormEasy'
 // import NFTModalProvider, { NFTModalContext } from '../providers/NFTModalProvider'
 import NFTModalProvider from '../providers/NFTModalProvider'
 import { Web3Context } from '../providers/Web3Provider'
 import styles from './Button.module.css'
+
+const currentDomain = 'room-house.com'
 
 export default function BaseLayout ({ children }) {
   const { network, balance, isReady, hasWeb3 } = useContext(Web3Context)
@@ -23,7 +26,7 @@ export default function BaseLayout ({ children }) {
     // setTimeout(() => { window.scrollTo({ top: 2, behavior: 'smooth' }) }, 1000)
     document.getElementById('toggleLightBgr').style.backgroundColor = '#234' // set default
   }
-  const hideBackButton = typeof window !== 'undefined' && window.location.hostname === 'shopping.room-house.com' && isMobile
+  const hideBackButton = typeof window !== 'undefined' && window.location.hostname === 'shopping' + '.' + currentDomain && isMobile
   useEffect(() => {
     window.addEventListener('scroll', () => {
       if (window.pageYOffset > 300 && !hideBackButton) {
@@ -38,12 +41,13 @@ export default function BaseLayout ({ children }) {
   return (
     <>
       <NFTModalProvider>
-        {typeof window !== 'undefined' && window.location.hostname !== 'happyminter.room-house.com' && window.location.hostname !== 'happydox.room-house.com' && <NavBar/>}
+        {typeof window !== 'undefined' && window.location.hostname !== 'happyminter' + '.' + currentDomain && window.location.hostname !== 'happydox' + '.' + currentDomain && window.location.hostname !== 'tokenizer' + '.' + currentDomain && <NavBar/>}
         {hasWeb3 && isReady && network && isLowOnEther && <LowOnBalanceTip/>}
         {children}
         <NFTModal/>
-        {typeof window !== 'undefined' && (window.location.hostname === 'ooc.room-house.com' || window.location.hostname === 'selfie.room-house.com' || window.location.hostname === 'selfi.room-house.com' || window.location.hostname === 'nft.room-house.com' || window.location.hostname === 'happyminter.room-house.com') && <ReqFormDiv/>}
-        {typeof window !== 'undefined' && window.location.hostname === 'happydox.room-house.com' && <ReqFormDoc/>}
+        {typeof window !== 'undefined' && (window.location.hostname === 'ooc' + '.' + currentDomain || window.location.hostname === 'selfie' + '.' + currentDomain || window.location.hostname === 'selfi' + '.' + currentDomain || window.location.hostname === 'nft' + '.' + currentDomain || window.location.hostname === 'happyminter' + '.' + currentDomain) && <ReqFormDiv/>}
+        {typeof window !== 'undefined' && window.location.hostname === 'happydox' + '.' + currentDomain && <ReqFormDoc/>}
+        {typeof window !== 'undefined' && window.location.hostname === 'tokenizer' + '.' + currentDomain && <ReqFormEasy/>}
       </NFTModalProvider>
       {showButton && (
         <button onClick={scrollToTop} className={styles.back_to_top}>

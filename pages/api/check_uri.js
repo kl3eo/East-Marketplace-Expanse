@@ -4,12 +4,13 @@ import nextConnect from 'next-connect'
 import FormData from 'form-data'
 
 const currentServer = process.env.CURRENT_SERVER
+const currentDomain = 'room-house.com'
 const currentServerPort = process.env.CURRENT_SERVER_PORT
 const resServer = process.env.RES_SERVER
 
-const burnedPlaceh = { name: 'Token Missing or Locked', description: 'Reload the page', image: 'https://' + currentServer + '.room-house.com' + currentServerPort + '/img/gd2560d.png', tags: 'photo' }
+const burnedPlaceh = { name: 'Token Missing or Locked', description: 'Reload the page', image: 'https://' + currentServer + '.' + currentDomain + currentServerPort + '/img/gd2560d.png', tags: 'photo' }
 
-const nftBaseUrl = 'https://' + currentServer + '.room-house.com' + currentServerPort
+const nftBaseUrl = 'https://' + currentServer + '.' + currentDomain + currentServerPort
 
 const handler = nextConnect()
 handler.use(middleware)
@@ -38,8 +39,8 @@ handler.post(async function handlePost ({ body }, response) {
     // console.log('response data hash', responseData.hash, 'isLocked', isLocked, 'isSigned', isSigned)
     if (isLocked) setTimeout(async () => { const formData2 = new FormData(); formData2.append('uri', tokenUri); formData2.append('signed', signed); formData2.append('random', rdr); await axios.post(`${nftBaseUrl}/cgi/rmee_uri.pl`, formData2, { headers: { 'Content-Type': `multipart/form-data; boundary=${formData2._boundary}` } }) }, 10000)
     // console.log('after check_uri.pl, tokenUriNew', tokenUriNew, 'isLocked', isLocked)
-    const regex = new RegExp(`${resServer}.room-house.com`)
-    const result = tokenUriNew.replace(regex, currentServer + '.room-house.com')
+    const regex = new RegExp(`${resServer}.${currentDomain}`)
+    const result = tokenUriNew.replace(regex, currentServer + '.' + currentDomain)
 
     let numProvider = 0
 
@@ -52,7 +53,7 @@ handler.post(async function handlePost ({ body }, response) {
     // let curImg = tokenUri !== tokenUriNew ? tokenUriNew.replace('metadata', 'images') : image
     // let curImg = image // real location
     let curImg = tokenUri !== tokenUriNew ? tokenUri.replace('metadata', 'temp').replace(responseData.hash, responseData.random) : image
-    curImg = numProvider ? curImg : curImg.replace(regex, currentServer + '.room-house.com')
+    curImg = numProvider ? curImg : curImg.replace(regex, currentServer + '.' + currentDomain)
     const m = image.split('?'); curImg = curImg.match(/\?/g) ? curImg : curImg + '?' + m[1]
     const metaData = { name: name, description: description, image: curImg, tags: tags, isLocked: isLocked, isSigned: isSigned }
     // console.log('5', metaData)

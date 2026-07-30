@@ -4,9 +4,10 @@ import nextConnect from 'next-connect'
 import FormData from 'form-data'
 
 const currentServer = process.env.CURRENT_SERVER
+const currentDomain = 'room-house.com'
 const currentServerPort = process.env.CURRENT_SERVER_PORT
 
-const nftBaseUrl = 'https://' + currentServer + '.room-house.com' + currentServerPort
+const nftBaseUrl = 'https://' + currentServer + '.' + currentDomain + currentServerPort
 
 const handler = nextConnect()
 handler.use(middleware)

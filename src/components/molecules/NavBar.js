@@ -31,8 +31,10 @@ const onCli = (e) => {
   e.target.value = ''
 }
 
-const mydocs = typeof window !== 'undefined' && window.location.hostname === 'mydocs.room-house.com'
-const split96 = typeof window !== 'undefined' && window.location.hostname === 'split.room-house.com'
+const currentDomain = 'room-house.com'
+
+const mydocs = typeof window !== 'undefined' && window.location.hostname === 'mydocs.' + currentDomain
+const split96 = typeof window !== 'undefined' && window.location.hostname === 'split.' + currentDomain
 const goodNotebook = typeof window !== 'undefined' && window.screen.width > 1600
 const hiResScreen = typeof window !== 'undefined' && window.screen.width >= 1920
 
@@ -50,16 +52,16 @@ const NavBar = () => {
 
   const pages = [
     {
-      title: currLang === 'EN' ? typeof window !== 'undefined' && window.location.hostname === 'shopping.room-house.com' ? 'Shop' : mydocs ? 'Aggregator' : 'Gallery' : mydocs ? 'Агрегатор' : 'Галерея',
+      title: currLang === 'EN' ? typeof window !== 'undefined' && window.location.hostname === 'shopping.' + currentDomain ? 'Shop' : mydocs ? 'Aggregator' : 'Gallery' : mydocs ? 'Агрегатор' : 'Галерея',
       href: '/'
     },
     {
-      title: currLang === 'EN' ? typeof window !== 'undefined' && window.location.hostname === 'shopping.room-house.com' ? 'Owner' : mydocs ? 'My Docs' : 'My' : 'Личные',
+      title: currLang === 'EN' ? typeof window !== 'undefined' && window.location.hostname === 'shopping.' + currentDomain ? 'Owner' : mydocs ? 'My Docs' : 'My' : 'Личные',
       href: '/my-nfts'
     }
   ]
   useEffect(() => {
-    setTimeout(() => { if (typeof window !== 'undefined' && (window.location.hostname === 'shopping.room-house.com' || window.location.hostname === 'selfi.room-house.com' || window.location.hostname === 'selfie.room-house.com') && !isMobile) { setIsDescOpen(true) }; if (isMobile) { setIsDescOpen(false) } }, 1000)
+    setTimeout(() => { if (typeof window !== 'undefined' && (window.location.hostname === 'shopping.' + currentDomain || window.location.hostname === 'selfi.' + currentDomain || window.location.hostname === 'selfie.' + currentDomain) && !isMobile) { setIsDescOpen(true) }; if (isMobile) { setIsDescOpen(false) } }, 1000)
   }, [])
 
   /* useEffect(() => {
@@ -152,7 +154,7 @@ const NavBar = () => {
   const ifPath = () => {
     if (pathname === '/' && (categStr.length || lookupStr.length)) location.href = '/'
   }
-  let reqNewRoom = currLang === 'EN' ? typeof window !== 'undefined' && window.location.hostname === 'ooc.room-house.com' ? 'Create an Office!' : typeof window !== 'undefined' && window.location.hostname === 'nft.room-house.com' ? 'Add NFT' : 'Add a Selfie!' : typeof window !== 'undefined' && window.location.hostname === 'ooc.room-house.com' ? 'Получить офис!' : typeof window !== 'undefined' && window.location.hostname === 'nft.room-house.com' ? 'Add NFT' : 'Добавить сэлфи'
+  let reqNewRoom = currLang === 'EN' ? typeof window !== 'undefined' && window.location.hostname === 'ooc.' + currentDomain ? 'Create an Office!' : typeof window !== 'undefined' && window.location.hostname === 'nft.' + currentDomain ? 'Add NFT' : 'Add a Selfie!' : typeof window !== 'undefined' && window.location.hostname === 'ooc.' + currentDomain ? 'Получить офис!' : typeof window !== 'undefined' && window.location.hostname === 'nft.' + currentDomain ? 'Add NFT' : 'Добавить сэлфи'
   reqNewRoom = isMobile ? '+' : reqNewRoom
 
   const oOc = currLang === 'EN' ? 'ffice Center "Room-House"' : 'фис Центр "Room-House"'
@@ -162,31 +164,31 @@ const NavBar = () => {
     <AppBar position="fixed" sx={{ marginBottom: '12px', zIndex: '1000' }}>
       <Container maxWidth="100%" sx={{ backgroundColor: '#001122' }}>
         <Toolbar disableGutters sx={{ backgroundColor: '#001122' }}>
-          <Box sx={{ flexGrow: 1, display: 'flex', maxWidth: typeof window !== 'undefined' && window.location.hostname === 'ooc.room-house.com' ? '38%' : '100%' }}>
+          <Box sx={{ flexGrow: 1, display: 'flex', maxWidth: typeof window !== 'undefined' && window.location.hostname === 'ooc.' + currentDomain ? '38%' : '100%' }}>
             {lightBgr && isMobile ? <div style={{ width: '1px' }}></div> : (isReady || hasInit) && (window.innerWidth > 640 || !lightBgr) && pages.map(({ title, href }) => <div key={title} onClick={href === '/my-nfts' ? () => { console.log('do nothing') } : ifPath}><NavItem title={title} href={href} key={title} style={{ maxWidth: isMobile ? '24px' : '120px', fontSize: isMobile ? '12px' : '16px' }}/></div>)}
             {isMobile ? <div style={{ width: '1px' }}></div> : <div onClick={toggleAutoScroll} style={{ display: (isReady || hasInit) ? 'block' : 'none', color: autoScroll ? '#def' : '#fff', backgroundColor: autoScroll ? '#369' : '#234', fontSize: '20px', width: '30px', height: '30px', borderRadius: '0px', cursor: 'pointer', textAlign: 'center', padding: '2px', margin: '10px 5px', lineHeight: '24px' }}>↑↓</div>}
             <div id="toggleLightBgr" onClick={toggleLightBgr} style={{ display: (isReady || hasInit) ? 'block' : 'none', color: lightBgr ? '#def' : '#fff', backgroundColor: '#234', fontSize: '20px', width: '30px', height: '30px', borderRadius: '0px', cursor: 'pointer', textAlign: 'center', padding: '2px', margin: '10px 5px', lineHeight: '24px' }}>💡</div>
             {isMobile ? <div style={{ width: '1px' }}></div> : <div onClick={toggleLang} style={{ display: (isReady || hasInit) ? 'block' : 'none', color: '#fff', backgroundColor: '#234', fontSize: '20px', width: '30px', height: '30px', borderRadius: '0px', cursor: 'pointer', textAlign: 'center', padding: '2px', margin: '10px 5px', lineHeight: '24px' }}>{currLang}</div>}
-             {typeof window !== 'undefined' && window.location.hostname === 'ooc.room-house.com' ? <div id='toggleInfo' style={{ width: '1px' }}></div> : <div id='toggleInfo' onClick={toggleInfo} style={{ display: (isReady || hasInit) ? 'block' : 'none', color: isDescOpen ? '#def' : '#fff', backgroundColor: isDescOpen ? '#369' : '#234', fontSize: '20px', width: '30px', height: '30px', borderRadius: '0px', cursor: 'pointer', textAlign: 'center', padding: '2px', margin: '10px 10px 10px 5px', lineHeight: '24px' }}>...</div>}
-          {(isReady || hasInit) && !account && typeof window !== 'undefined' && (window.location.hostname === 'ooc.room-house.com' || window.location.hostname === 'selfie.room-house.com' || window.location.hostname === 'selfi.room-house.com') && <div id='getRoom' onClick={toggleReqForm} style={{ display: (isMobile) ? 'block' : 'block', color: '#9cf', backgroundColor: '#234', fontSize: isMobile ? '18px' : '20px', fontWeight: 'bold', width: isMobile ? '30px' : currLang === 'EN' ? '240px' : '300px', height: '30px', borderRadius: '0px', cursor: 'pointer', textAlign: 'center', padding: '2px', margin: '10px 3px 10px -2px', lineHeight: '24px' }}>{reqNewRoom}</div>}
+             {typeof window !== 'undefined' && window.location.hostname === 'ooc.' + currentDomain ? <div id='toggleInfo' style={{ width: '1px' }}></div> : <div id='toggleInfo' onClick={toggleInfo} style={{ display: (isReady || hasInit) ? 'block' : 'none', color: isDescOpen ? '#def' : '#fff', backgroundColor: isDescOpen ? '#369' : '#234', fontSize: '20px', width: '30px', height: '30px', borderRadius: '0px', cursor: 'pointer', textAlign: 'center', padding: '2px', margin: '10px 10px 10px 5px', lineHeight: '24px' }}>...</div>}
+          {(isReady || hasInit) && !account && typeof window !== 'undefined' && (window.location.hostname === 'ooc.' + currentDomain || window.location.hostname === 'selfie.' + currentDomain || window.location.hostname === 'selfi.' + currentDomain) && <div id='getRoom' onClick={toggleReqForm} style={{ display: (isMobile) ? 'block' : 'block', color: '#9cf', backgroundColor: '#234', fontSize: isMobile ? '18px' : '20px', fontWeight: 'bold', width: isMobile ? '30px' : currLang === 'EN' ? '240px' : '300px', height: '30px', borderRadius: '0px', cursor: 'pointer', textAlign: 'center', padding: '2px', margin: '10px 3px 10px -2px', lineHeight: '24px' }}>{reqNewRoom}</div>}
           {(!goodNotebook || hiResScreen) && (isReady || hasInit) && <div id='toggleScalingAllowed' onClick={toggleScalingAllowed} style={{ display: (isMobile) ? 'none' : 'block', color: scalingAllowed ? '#def' : '#fff', backgroundColor: scalingAllowed ? '#369' : '#234', fontSize: '20px', width: '30px', height: '30px', borderRadius: '0px', cursor: 'pointer', textAlign: 'center', padding: '2px', margin: '10px 5px', lineHeight: '24px' }}>Aa</div>}
           </Box>
-          {typeof window !== 'undefined' && (window.location.hostname === 'nft.room-house.com' || window.location.hostname === 'supernft.room-house.com') && !isMobile && window.innerWidth > 640 && <Box sx={{ flexGrow: 1, display: 'flex' }}><div id='stats_bar' style={{ display: isMobile ? ' none' : 'block', color: '#fed', backgroundColor: 'transparent', fontSize: '18px', width: '390px', height: '42px', borderRadius: '0px', textAlign: 'center', padding: '2px', margin: '12px 0px 8px 0px', lineHeight: '30px' }}><div style={{ width: '380px', margin: '0 auto' }}><div id='globe' style={{ float: 'left', display: 'none' }}>{globeO}</div><div id='stats_bar_string' style={{ float: 'left', fontWeight: 'bold' }}></div><div style={{ clear: 'left' }}></div></div></div></Box>}
-          {typeof window !== 'undefined' && window.location.hostname === 'ooc.room-house.com' && !isMobile && <Box sx={{ flexGrow: 1, display: 'flex' }}><div id='office_bar' style={{ display: (isMobile) ? 'none' : 'block', color: '#fed', backgroundColor: '#234', fontSize: '24px', width: '350px', height: '42px', borderRadius: '0px', textAlign: 'center', padding: '2px', margin: '10px 0px', lineHeight: '30px' }}><div style={{ width: '340px', margin: '0 auto' }}><div style={{ float: 'left', marginLeft: '10px' }}>{globeO}</div><div style={{ float: 'left', marginLeft: '0px', fontWeight: 'bold' }}>{oOc}</div><div style={{ clear: 'left' }}></div></div></div></Box>}
-          {typeof window !== 'undefined' && window.location.hostname === 'shopping.room-house.com' && <BasicSelect style={{ zIndex: '1004' }}/>}
-          {typeof window !== 'undefined' && (window.location.hostname === 'nft.room-house.com' || window.location.hostname === 'supernft.room-house.com') && currLang === 'RU' && <BasicSelectFineArtsRus disabledBox={disableBox} placeHolder={disableBox} style={{ zIndex: '1004' }}/>}
-          {typeof window !== 'undefined' && (window.location.hostname === 'nft.room-house.com' || window.location.hostname === 'supernft.room-house.com') && currLang === 'EN' && <BasicSelectFineArts disabledBox={disableBox} placeHolder={disableBox} style={{ zIndex: '1004' }}/>}
-          {typeof window !== 'undefined' && window.location.hostname === 'ooc.room-house.com' && currLang === 'RU' && <BasicSelectProfiRus style={{ zIndex: '1004' }}/>}
-          {typeof window !== 'undefined' && window.location.hostname === 'ooc.room-house.com' && currLang === 'EN' && <BasicSelectProfiEng style={{ zIndex: '1004' }}/>}
-          {typeof window !== 'undefined' && (window.location.hostname === 'selfi.room-house.com' || window.location.hostname === 'selfie.room-house.com') && currLang === 'RU' && <BasicSelectSelfiRus style={{ zIndex: '1004' }}/>}
-          {typeof window !== 'undefined' && (window.location.hostname === 'selfi.room-house.com' || window.location.hostname === 'selfie.room-house.com') && currLang === 'EN' && <BasicSelectSelfiEng style={{ zIndex: '1004' }}/>}
+          {typeof window !== 'undefined' && (window.location.hostname === 'nft.' + currentDomain || window.location.hostname === 'supernft.' + currentDomain) && !isMobile && window.innerWidth > 640 && <Box sx={{ flexGrow: 1, display: 'flex' }}><div id='stats_bar' style={{ display: isMobile ? ' none' : 'block', color: '#fed', backgroundColor: 'transparent', fontSize: '18px', width: '390px', height: '42px', borderRadius: '0px', textAlign: 'center', padding: '2px', margin: '12px 0px 8px 0px', lineHeight: '30px' }}><div style={{ width: '380px', margin: '0 auto' }}><div id='globe' style={{ float: 'left', display: 'none' }}>{globeO}</div><div id='stats_bar_string' style={{ float: 'left', fontWeight: 'bold' }}></div><div style={{ clear: 'left' }}></div></div></div></Box>}
+          {typeof window !== 'undefined' && window.location.hostname === 'ooc.' + currentDomain && !isMobile && <Box sx={{ flexGrow: 1, display: 'flex' }}><div id='office_bar' style={{ display: (isMobile) ? 'none' : 'block', color: '#fed', backgroundColor: '#234', fontSize: '24px', width: '350px', height: '42px', borderRadius: '0px', textAlign: 'center', padding: '2px', margin: '10px 0px', lineHeight: '30px' }}><div style={{ width: '340px', margin: '0 auto' }}><div style={{ float: 'left', marginLeft: '10px' }}>{globeO}</div><div style={{ float: 'left', marginLeft: '0px', fontWeight: 'bold' }}>{oOc}</div><div style={{ clear: 'left' }}></div></div></div></Box>}
+          {typeof window !== 'undefined' && window.location.hostname === 'shopping.' + currentDomain && <BasicSelect style={{ zIndex: '1004' }}/>}
+          {typeof window !== 'undefined' && (window.location.hostname === 'nft.' + currentDomain || window.location.hostname === 'supernft.' + currentDomain) && currLang === 'RU' && <BasicSelectFineArtsRus disabledBox={disableBox} placeHolder={disableBox} style={{ zIndex: '1004' }}/>}
+          {typeof window !== 'undefined' && (window.location.hostname === 'nft.' + currentDomain || window.location.hostname === 'supernft.' + currentDomain) && currLang === 'EN' && <BasicSelectFineArts disabledBox={disableBox} placeHolder={disableBox} style={{ zIndex: '1004' }}/>}
+          {typeof window !== 'undefined' && window.location.hostname === 'ooc.' + currentDomain && currLang === 'RU' && <BasicSelectProfiRus style={{ zIndex: '1004' }}/>}
+          {typeof window !== 'undefined' && window.location.hostname === 'ooc.' + currentDomain && currLang === 'EN' && <BasicSelectProfiEng style={{ zIndex: '1004' }}/>}
+          {typeof window !== 'undefined' && (window.location.hostname === 'selfi.' + currentDomain || window.location.hostname === 'selfie.' + currentDomain) && currLang === 'RU' && <BasicSelectSelfiRus style={{ zIndex: '1004' }}/>}
+          {typeof window !== 'undefined' && (window.location.hostname === 'selfi.' + currentDomain || window.location.hostname === 'selfie.' + currentDomain) && currLang === 'EN' && <BasicSelectSelfiEng style={{ zIndex: '1004' }}/>}
           {mydocs && currLang === 'RU' && <BasicSelectHDRus disabledBox={disableBox} placeHolder={disableBox} style={{ zIndex: '1004' }}/>}
           {mydocs && currLang === 'EN' && <BasicSelectHDEng disabledBox={disableBox} placeHolder={disableBox} style={{ zIndex: '1004', marginRight: '8px' }}/>}
           {split96 && <BasicSelectSplitEng disabledBox={disableBox} placeHolder={disableBox} style={{ zIndex: '1004', minWidth: '120px' }}/>}
           <form onSubmit={clickerHandler}>
           {(isReady || hasInit) && <input id="searchInput" name="searchInput" disabled={disableBox} ref={inputRef} placeholder="🔍" type="text" onClick={onCli} style={{ display: isMobile ? 'block' : 'block', maxWidth: isMobile ? '102px' : '120px', marginRight: isMobile ? '0px' : '60px', fontSize: '30px', zIndex: '1004', position: 'relative' }} />}
           </form>
-          {typeof window !== 'undefined' && window.location.hostname === 'ooc.room-house.com' ? <div style={{ width: '1px' }}></div> : account && isDescOpen ? <ConnectedAccountAddress account={account}/> : (isReady || hasInit) && !account && isDescOpen && <ConnectButton/>}
+          {typeof window !== 'undefined' && window.location.hostname === 'ooc.' + currentDomain ? <div style={{ width: '1px' }}></div> : account && isDescOpen ? <ConnectedAccountAddress account={account}/> : (isReady || hasInit) && !account && isDescOpen && <ConnectButton/>}
         </Toolbar>
       </Container>
     </AppBar>

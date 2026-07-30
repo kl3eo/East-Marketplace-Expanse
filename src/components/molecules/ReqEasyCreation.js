@@ -6,7 +6,6 @@ import axios from 'axios'
 import { NFTModalContext } from '../providers/NFTModalProvider'
 import { isMobile } from 'react-device-detect'
 
-const currentDomain = 'room-house.com'
 const useStyles = makeStyles({
   root: {
     flexDirection: 'column',
@@ -24,18 +23,19 @@ const useStyles = makeStyles({
   }
 })
 
-export default function ReqCardCreation () {
+export default function ReqEasyCreation () {
+  const currentDomain = 'room-house.com'
   const [file, setFile] = useState(null)
   const classes = useStyles()
   const { register, handleSubmit, reset } = useForm()
   const [isLoading, setIsLoading] = useState(false)
-  const { setIsReqFormOpen, currLang, setCurrLang } = useContext(NFTModalContext)
+  const { currLang, setCurrLang } = useContext(NFTModalContext)
   const Labee = currLang === 'EN' ? 'Title' : 'Название'
   const Descee = currLang === 'EN' ? 'Description' : 'Описание'
 
-  const defaultFileUrl = currLang === 'EN' ? '/nft_rh_250.png' : '/nft_rh_250_ru.png'
-  const defaultVideoFileUrl = '/nft_video_250.png'
-  const defaultFileTypeUrl = '/filetype.png'
+  const defaultFileUrl = currLang === 'EN' ? '/nft_rh_250_bw.png' : '/nft_rh_250_ru_bw.png'
+  const defaultVideoFileUrl = '/nft_rh_250_blank.png'
+  const defaultFileTypeUrl = '/nft_rh_250_blank.png'
   const [fileUrl, setFileUrl] = useState(defaultFileUrl)
 
   useEffect(() => {
@@ -56,7 +56,7 @@ export default function ReqCardCreation () {
     par === 2 && formData.append('size', size)
     par === 1 && formData.append('account', 'DUMMY')
     par === 2 && formData.append('account', 'DUMMY2')
-    if (typeof window !== 'undefined' && window.location.hostname === 'happydox.' + currentDomain) formData.append('network', 'hd')
+    if (typeof window !== 'undefined' && window.location.hostname === 'tokenizer.' + currentDomain) formData.append('network', 'hd')
     return formData
   }
 
@@ -79,7 +79,7 @@ export default function ReqCardCreation () {
 
   async function onSubmit ({ name, description }) {
     if (!file || isLoading) return
-    const yon = currLang === 'EN' ? window.confirm('Mint HappyDox token? This site does not use cookies and no personal data is collected.') : window.confirm('Печатаем ТОКЕН? Вы НЕ сообщаете свои персональные данные! Этот сайт НЕ использует куки!')
+    const yon = currLang === 'EN' ? window.confirm('Mint New Token? This site does not use cookies and no personal data is collected.') : window.confirm('Печатаем ТОКЕН? Вы НЕ сообщаете свои персональные данные! Этот сайт НЕ использует куки!')
     if (yon) {
       try {
         setIsLoading(true)
@@ -101,7 +101,7 @@ export default function ReqCardCreation () {
         console.log(error)
       } finally {
         setIsLoading(false)
-        // setIsReqFormOpen(false)
+
         document.getElementById('reqformdiv1').style.display = 'none'
         document.getElementById('reqformdiv2').style.display = 'none'
         document.getElementById('reqformdiv3').style.display = 'block'
@@ -117,7 +117,7 @@ export default function ReqCardCreation () {
     const yon = currLang === 'EN' ? window.confirm('EasyHD Token Mint selected. This Token only saves hash of the file in blockchain. OK?') : window.confirm('Печатаем EasyHD ТОКЕН? Он только сохраняет хэш сумму файла в блокчейн. ')
     if (yon) {
       try {
-        if (!file || isLoading) return
+        if (!file || isLoading) { alert('No file selected!'); return }
         // console.log("Here File:", file)
         setIsLoading(true)
         if (document.getElementById('retBut')) document.getElementById('retBut').style.display = 'none'
@@ -148,7 +148,7 @@ export default function ReqCardCreation () {
         console.log(error)
       } finally {
         setIsLoading(false)
-        // setIsReqFormOpen(false)
+
         document.getElementById('reqformdiv1').style.display = 'none'
         document.getElementById('reqformdiv2').style.display = 'none'
         document.getElementById('reqformdiv3').style.display = 'block'
@@ -159,12 +159,12 @@ export default function ReqCardCreation () {
   }
   // const testClick = () => { console.log('test clicked!') }
   return (
-    <Card className={classes.root} component="form" sx={{ maxWidth: 345, margin: '0 auto', position: 'relative', background: '#ffeedd', width: isMobile ? '77%' : '96%', height: isMobile ? '77%' : '84%' }} onSubmit={handleSubmit(onSubmit)}>
-      <div onClick={toggleLang} style={{ zIndex: '100001', position: 'absolute', display: 'block', color: '#fff', backgroundColor: '#906', fontSize: '24px', width: '40px', height: '40px', borderRadius: '20px', cursor: 'pointer', textAlign: 'center', padding: '2px', margin: '10px 5px', lineHeight: '36px' }}>{currLang}</div>
+    <Card className={classes.root} component="form" sx={{ maxWidth: 345, margin: '0 auto', border: '1px solid #fff', position: 'relative', background: '#012', width: isMobile ? '77%' : '96%', height: isMobile ? '77%' : '84%' }} onSubmit={handleSubmit(onSubmit)}>
+      <div onClick={toggleLang} style={{ zIndex: '100001', position: 'absolute', display: 'block', color: '#fff', backgroundColor: '#012', border: '1px solid #fff', fontSize: '24px', width: '40px', height: '40px', borderRadius: '20px', cursor: 'pointer', textAlign: 'center', padding: '2px', margin: '10px 5px', lineHeight: '36px' }}>{currLang}</div>
       <label htmlFor="file-input">
         <CardMedia
           className={classes.media}
-          alt='Upload image'
+          alt='Select image'
           image={fileUrl} sx={{ position: 'relative' }}>
           <div id="labelFileName" style={{ color: '#369', fontSize: '24px', position: 'absolute', top: '10px', left: '48px', display: 'none' }}></div>
         </CardMedia>
@@ -182,8 +182,8 @@ export default function ReqCardCreation () {
           label={Labee}
           name="name"
           size="small"
-          InputProps={{ style: { fontSize: 24 } }}
-          InputLabelProps={{ style: { fontSize: 24 } }}
+          InputProps={{ style: { border: '1px solid #fff', fontSize: 24, color: '#fed' } }}
+          InputLabelProps={{ style: { fontSize: 24, color: '#fed' } }}
           fullWidth
           required
           margin="dense"
@@ -197,8 +197,8 @@ export default function ReqCardCreation () {
           size="small"
           multiline
           rows={1}
-          InputProps={{ style: { fontSize: 24 } }}
-          InputLabelProps={{ style: { fontSize: 24 } }}
+          InputProps={{ style: { border: '1px solid #fff', fontSize: 24, color: '#fed' } }}
+          InputLabelProps={{ style: { fontSize: 24, color: '#fed' } }}
           fullWidth
           required
           margin="dense"
@@ -207,22 +207,7 @@ export default function ReqCardCreation () {
         />
       </CardContent>
       <CardActions className={classes.cardActions}>
-        <Button style={{ fontSize: '24px', position: 'absolute', left: '10px', bottom: '2px', marginBottom: '5px', backgroundImage: 'linear-gradient(.25turn, #f00, #00f)', color: '#fed' }} size="small" type="submit" >
-          {isLoading
-            ? <CircularProgress size="20px" />
-            : currLang === 'EN' ? typeof window !== 'undefined' && window.location.hostname !== 'happydox.' + currentDomain ? 'Mint Token' : 'Gold Token' : typeof window !== 'undefined' && window.location.hostname !== 'happydox.' + currentDomain ? 'Печатать' : 'Gold Токен'
-          }
-        </Button>
-        {typeof window !== 'undefined' && window.location.hostname !== 'happyminter.' + currentDomain && window.location.hostname !== 'happydox.' + currentDomain && <Button id="retBut" onClick={ (e) => { e.stopPropagation(); setIsReqFormOpen(false); if (document.getElementById('getRoom')) document.getElementById('getRoom').style.display = 'block' }} style={{ position: 'absolute', right: '10px', bottom: '2px' }} size="small" type="close">
-          {currLang === 'EN' ? 'Return' : isMobile ? 'Назад' : 'Вернуться'}
-        </Button>}
-        {typeof window !== 'undefined' && window.location.hostname === 'happydoxx.' + currentDomain && <a id="retBut" style={{ float: 'right', marginLeft: currLang === 'EN' ? '54px' : '48px', whiteSpace: 'nowrap' }} href='https://mydocs.room-house.com/my-nfts'>
-          {currLang === 'EN' ? 'Go To MyDocs' : isMobile ? 'MyDocs' : 'Перейти на MyDocs'}
-        </a>}
-        {typeof window !== 'undefined' && window.location.hostname === 'happydox.' + currentDomain && <Button style={{ position: 'absolute', fontSize: '24px', right: '10px', bottom: '2px', marginBottom: '5px' }} size="small" color="secondary" onClick={handleSubmit(onSubmitEasy)}>{isLoading ? <CircularProgress size="20px" /> : currLang === 'EN' ? 'Easy Token' : 'Easy Токен'}</Button>}
-        {typeof window !== 'undefined' && window.location.hostname === 'happyminter.' + currentDomain && <a id="retBut" style={{ position: 'absolute', whiteSpace: 'nowrap', right: '10px', bottom: '2px' }} href='https://nft.room-house.com'>
-          {currLang === 'EN' ? 'Go To NFTs' : isMobile ? 'NFTs' : 'Перейти на NFTs'}
-        </a>}
+        <Button style={{ position: 'absolute', textAlign: 'center', fontSize: '24px', bottom: '2px', marginBottom: '5px' }} size="small" color="secondary" onClick={handleSubmit(onSubmitEasy)}>{isLoading ? <CircularProgress size="20px" /> : currLang === 'EN' ? 'Mint Token' : 'Создать Токен'}</Button>
       </CardActions>
     </Card>
   )

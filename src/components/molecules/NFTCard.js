@@ -21,8 +21,10 @@ import sendEmail from '../../utils/sendEmail'
 import axios from 'axios'
 import styles from '../layout/Button.module.css'
 
-const mydocs = typeof window !== 'undefined' && window.location.hostname === 'mydocs.room-house.com'
-const split96 = typeof window !== 'undefined' && window.location.hostname === 'split.room-house.com'
+const currentDomain = 'room-house.com'
+
+const mydocs = typeof window !== 'undefined' && window.location.hostname === 'mydocs' + '.' + currentDomain
+const split96 = typeof window !== 'undefined' && window.location.hostname === 'split' + '.' + currentDomain
 const notebook = typeof window !== 'undefined' && window.screen.width < 1920
 const goodNotebook = typeof window !== 'undefined' && window.screen.width > 1600
 const hiResScreen = typeof window !== 'undefined' && window.screen.width >= 1920
@@ -112,11 +114,11 @@ export default function NFTCard ({ nft, action, updateNFT, onCliCliCli }) {
   // const [isVisible, setIsVisible] = useState(false)
   const classes = useStyles()
   const { name, description, image, tags } = nft
-  // const href = mydocs ? 'https://nft.room-house.com/?' + description : '/?' + description
+
   const href = '/?' + description
   const localProvider = 0
-  const regex = new RegExp(`${resServer}.room-house.com`)
-  const curImage = localProvider ? image.replace(regex, currentServer + '.room-house.com') : image
+  const regex = new RegExp(`${resServer}.${currentDomain}`)
+  const curImage = localProvider ? image.replace(regex, currentServer + '.' + currentDomain) : image
   const tId = typeof nft.tokenId === 'object' ? parseInt(nft.tokenId._hex, 16) : parseInt(nft.tokenId)
   const { register, handleSubmit, reset } = useForm()
   const Cancel = <a href=''>Cancel</a>
@@ -173,7 +175,7 @@ export default function NFTCard ({ nft, action, updateNFT, onCliCliCli }) {
     l++
   }
   // console.log('here addree is', addree)
-  img = (tags.match(/eshopping/) || tags.match(/oocoocooc/g)) && addree.length === 2 && addree[0] === addree[1] ? 'https://' + addree[0] + '.room-house.com/' : (tags.match(/eshopping/) || tags.match(/oocoocooc/g)) && addree.length === 2 ? 'https://' + addree[0] + '.room-house.com/#' + addree[1] : img
+  img = (tags.match(/eshopping/) || tags.match(/oocoocooc/g)) && addree.length === 2 && addree[0] === addree[1] ? 'https://' + addree[0] + '.' + currentDomain + '/' : (tags.match(/eshopping/) || tags.match(/oocoocooc/g)) && addree.length === 2 ? 'https://' + addree[0] + '.' + currentDomain + '#' + addree[1] : img
   // console.log('here len is', addree.length, 'here img is', img, 'isWebRTC', isWebRTC)
   const Sizeo = sizee.length === 2 && sizee[0] === 'sizee' ? sizee[1] : ''
   const Museo = musee.length === 2 && musee[0] === 'museo' ? musee[1] : ''
@@ -454,7 +456,7 @@ Header set "Content-Disposition" "attachment; filename=\"%{FILENAME}e\"" env=FIL
   /* async function checkSigned (nft) {
     if (isLocked) return // but it never is
     // console.log('check signed: going to try!')
-    try { const fData1 = new FormData(); fData1.append('tid', tId); await fetch('https://' + currentServer + '.room-house.com' + currentServerPort + '/cgi/check_signed.pl', { body: fData1, method: 'post', enctype: 'multipart/form-data' }).then((response) => response.json()).then((res) => { if (typeof res.result !== 'undefined' && res.result === 'ERR') setIsLocked(true); else setIsLocked(false); console.log('checked signed:', res, 'locked:', isLocked) }) } catch (e) { console.log('failed check signed') }
+    try { const fData1 = new FormData(); fData1.append('tid', tId); await fetch('https://' + currentServer + '.' + currentDomain + currentServerPort + '/cgi/check_signed.pl', { body: fData1, method: 'post', enctype: 'multipart/form-data' }).then((response) => response.json()).then((res) => { if (typeof res.result !== 'undefined' && res.result === 'ERR') setIsLocked(true); else setIsLocked(false); console.log('checked signed:', res, 'locked:', isLocked) }) } catch (e) { console.log('failed check signed') }
   } */
   async function getFileInfo (e) {
     e.stopPropagation(); e.preventDefault(); document.getElementById('cm_' + tId).style.opacity = 0.5; const fData = new FormData(); fData.append('tId', tId); if (mydocs) fData.append('network', 'hd'); if (split96) fData.append('network', 'hd96'); const { data } = await axios.post('/api/get_file_info', fData, { headers: { 'Content-Type': 'multipart/form-data' } }); if (data.mData.fn) { /* alert('CHECK SUM ' + data.mData.hs + ' MINTED AT ' + data.mData.ts) */ document.getElementById('informer_text_0_' + tId).innerText = '"' + data.mData.fn + '"'; document.getElementById('informer_text_0a_' + tId).innerText = data.mData.fs + ' bytes'; document.getElementById('informer_text_1_' + tId).innerText = data.mData.hs.substring(0, 12) + '..'; document.getElementById('informer_checkbox_1_' + tId).innerHTML = data.mData.eq === '1' ? '&#x2705;' : data.mData.eq === '-1' ? '&#x274C;' : '?'; document.getElementById('informer_hidden_1_' + tId).innerText = data.mData.hs; document.getElementById('informer_text_2_' + tId).innerText = data.mData.ts; document.getElementById('informer_text_3_' + tId).innerText = data.mData.tx.substring(0, 12) + '..'; document.getElementById('informer_hidden_3_' + tId).innerText = data.mData.tx; document.getElementById('informer_text_4_' + tId).innerText = '"' + description + '"'; document.getElementById('informer_text_8_' + tId).innerText = '"' + name + '"'; document.getElementById('informer_text_5_' + tId).innerText = data.mData.bn; document.getElementById('informer_text_6_' + tId).innerText = data.mData.cr.substring(0, 12) + '..'; document.getElementById('informer_hidden_6_' + tId).innerText = data.mData.cr; document.getElementById('informer' + tId).style.display = 'block'; document.getElementById('cm_' + tId).style.display = 'none'; document.getElementById('cc_' + tId).style.display = 'none' } else { alert('No data received!'); document.getElementById('cm_' + tId).style.opacity = 1 }
@@ -465,7 +467,7 @@ Header set "Content-Disposition" "attachment; filename=\"%{FILENAME}e\"" env=FIL
   }
   async function unlockToken (tid, signed) {
     let res = ''
-    try { const fData = new FormData(); if (mydocs) fData.append('network', 'hd'); if (split96) fData.append('network', 'hd96'); fData.append('tid', tId); fData.append('signed', signed); res = await fetch('https://' + currentServer + '.room-house.com' + currentServerPort + '/cgi/unlock_token.pl', { body: fData, method: 'post', enctype: 'multipart/form-data' }).then((response) => response.json()).then((res) => { return res }) } catch (e) { console.log('failed unlock token') }
+    try { const fData = new FormData(); if (mydocs) fData.append('network', 'hd'); if (split96) fData.append('network', 'hd96'); fData.append('tid', tId); fData.append('signed', signed); res = await fetch('https://' + currentServer + '.' + currentDomain + currentServerPort + '/cgi/unlock_token.pl', { body: fData, method: 'post', enctype: 'multipart/form-data' }).then((response) => response.json()).then((res) => { return res }) } catch (e) { console.log('failed unlock token') }
     return res
   }
   /* async function unlockToken (formData) {
@@ -561,11 +563,11 @@ Header set "Content-Disposition" "attachment; filename=\"%{FILENAME}e\"" env=FIL
           </div>{Unlocker}{Informer}
         {Memoized}
         {museoReal !== '' && <div style={{ backgroundColor: '#fff', textAlign: 'right', lineHeight: '16px', fontSize: '16px' }}><NavMuseo onClick={emptyBucket} title={museoReal} href={museoHref} col={museoCol} /></div>}
-        {museoReal === '' && typeof window !== 'undefined' && window.location.hostname === 'canneverbe.room-house.com' && <div style={{ fontSize: '8px' }}>&nbsp;</div>}
+        {museoReal === '' && typeof window !== 'undefined' && window.location.hostname === 'canneverbe' + '.' + currentDomain && <div style={{ fontSize: '8px' }}>&nbsp;</div>}
         <CardContent id={'cc_' + tId} style={{ backgroundColor: '#fff', marginTop: '-4px', display: scalingAllowed && hiResScreen ? 'none' : 'block' }} className={classes.cardContent} onClick={() => { setFullName(!fullName) }}>
           <NFTName name={(isDescOpen && name.length < stringLengthLimit) || fullName ? currName : shortName} variant={notebook ? 'h6' : 'h6'}/>
-          {!badThingsHappen && typeof window !== 'undefined' && window.location.hostname !== 'mydocs.room-house.com' && window.location.hostname !== 'split.room-house.com' && <NavDesc onClick={emptyBucket} title={isShortDesc && !fullName ? shortDesc : description} href={href} />}
-          {!badThingsHappen && typeof window !== 'undefined' && window.location.hostname === 'mydocss.room-house.com' && <div onClick={isShortDesc ? setIsShortDesc(false) : setIsShortDesc(true)}>{isShortDesc && !fullName ? shortDesc : description}</div>}
+          {!badThingsHappen && typeof window !== 'undefined' && window.location.hostname !== 'mydocs' + '.' + currentDomain && window.location.hostname !== 'split' + '.' + currentDomain && <NavDesc onClick={emptyBucket} title={isShortDesc && !fullName ? shortDesc : description} href={href} />}
+          {!badThingsHappen && typeof window !== 'undefined' && window.location.hostname === 'mydocss' + '.' + currentDomain && <div onClick={isShortDesc ? setIsShortDesc(false) : setIsShortDesc(true)}>{isShortDesc && !fullName ? shortDesc : description}</div>}
           {badThingsHappen && <div style={{ cursor: 'pointer' }} onClick={() => { location.reload() }}>CLICK TO RELOAD</div>}
           {isDescOpen
             ? <>

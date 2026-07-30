@@ -4,11 +4,13 @@ import axios from 'axios'
 // import getUri from './getUri'
 
 const currentServer = process.env.CURRENT_SERVER
+// const currentDomain = process.env.CURRENT_DOMAIN // creates lots of problems ?!
+const currentDomain = 'room-house.com'
 const currentServerPort = process.env.CURRENT_SERVER_PORT
 const resServer = process.env.RES_SERVER
 const resServerPort = process.env.RES_SERVER_PORT
-const mydocs = typeof window !== 'undefined' && window.location.hostname === 'mydocs.room-house.com'
-const split96 = typeof window !== 'undefined' && window.location.hostname === 'split.room-house.com'
+const mydocs = typeof window !== 'undefined' && window.location.hostname === 'mydocs.' + currentDomain
+const split96 = typeof window !== 'undefined' && window.location.hostname === 'split.' + currentDomain
 
 const cache1 = {}
 const cache2 = {}
@@ -16,13 +18,13 @@ const cache2 = {}
 // const cache3 = {}
 // const cache4 = {}
 
-const test_placeh = {'name':'Hola!', 'description':'This is a Test', 'image':'https://' + currentServer + '.room-house.com' + currentServerPort + '/img/bluesky.jpg', 'tags':'photo'}
-const placeh = {'name':'Please Wait', 'description':'..on approval by R-H', 'image':'https://' + currentServer + '.room-house.com' + currentServerPort + '/img/bluesky.jpg', 'tags':'photo'}
-const burned_placeh = {'name':'Token Missing or Locked', 'description':'Reload the page', 'image':'https://' + currentServer + '.room-house.com' + currentServerPort + '/img/gd2560d.png', 'tags':'photo'}
+const test_placeh = {'name':'Hola!', 'description':'This is a Test', 'image':'https://' + currentServer + '.' + currentDomain + currentServerPort + '/img/bluesky.jpg', 'tags':'photo'}
+const placeh = {'name':'Please Wait', 'description':'..on approval by R-H', 'image':'https://' + currentServer + '.' + currentDomain + currentServerPort + '/img/bluesky.jpg', 'tags':'photo'}
+const burned_placeh = {'name':'Token Missing or Locked', 'description':'Reload the page', 'image':'https://' + currentServer + '.' + currentDomain + currentServerPort + '/img/gd2560d.png', 'tags':'photo'}
 
 export async function fetchCheckUri (tokenUri, tokenId, signed) {
   if (cache2[tokenId]) return cache2[tokenId]
-  let res = ''; try { const fData1 = new FormData(); fData1.append('uri', tokenUri); fData1.append('signed', signed); res = await fetch('https://' + currentServer + '.room-house.com' + currentServerPort + '/cgi/check_uri.pl', { body: fData1, method: 'post', enctype: 'multipart/form-data' }).then((response) => response.json()).then((res) => { return res }) } catch (e) {  console.log('failed renamer') }
+  let res = ''; try { const fData1 = new FormData(); fData1.append('uri', tokenUri); fData1.append('signed', signed); res = await fetch('https://' + currentServer + '.' + currentDomain + currentServerPort + '/cgi/check_uri.pl', { body: fData1, method: 'post', enctype: 'multipart/form-data' }).then((response) => response.json()).then((res) => { return res }) } catch (e) {  console.log('failed renamer') }
 
   cache2[tokenId] = res
   // console.log('tokenId', tokenId, 'cache2', cache2[tokenId])
@@ -38,7 +40,7 @@ export async function getTokenMetadataByTokenId (nftContract, tokenId, signed , 
     let tokenUri = ''; try { if (cache1[tokenId]) { tokenUri = cache1[tokenId] } else { tokenUri = await nftContract.tokenURI(tokenId); cache1[tokenId] = tokenUri; /* console.log('No error, tokenUri', tokenUri) */ } } catch (error) { console.log('Caught get tokenUri err', error)
     /* if (par) { const fData = new FormData()
       fData.append('checking', tokenId); if (mydocs) fData.append('network', 'hd')
-      const ret = await fetch('https://' + currentServer + '.room-house.com' + currentServerPort + '/cgi/check_token.pl', { body: fData, method: 'post', enctype: 'multipart/form-data' })
+      const ret = await fetch('https://' + currentServer + '.' + currentDomain + currentServerPort + '/cgi/check_token.pl', { body: fData, method: 'post', enctype: 'multipart/form-data' })
         .then((response) => response.json())
         .then((result) => { return result })
         .catch((err) => { console.log('Fetch checker Error', err); return err })
@@ -56,8 +58,8 @@ export async function getTokenMetadataByTokenId (nftContract, tokenId, signed , 
       return data.mData
     } else {
       // console.log('nft.js, signed2', signed)
-      const regex = new RegExp(`${resServer}.room-house.com`)
-      let result = tokenUri.replace(regex, currentServer + '.room-house.com')
+      const regex = new RegExp(`${resServer}.${currentDomain}`)
+      let result = tokenUri.replace(regex, currentServer + '.' + currentDomain)
     
       let num_provider = 0
 
@@ -69,12 +71,12 @@ export async function getTokenMetadataByTokenId (nftContract, tokenId, signed , 
       const { name, description, image, tags } = metadata
 
       let curImg = image
-      curImg = num_provider ? curImg : curImg.replace(regex, currentServer + '.room-house.com')
+      curImg = num_provider ? curImg : curImg.replace(regex, currentServer + '.' + currentDomain)
 
       // checking token state: signed? locked? - can be a lot of work!
       /* const fData = new FormData()
       fData.append('checking', tokenId); if (mydocs) fData.append('network', 'hd')
-      const ret = await fetch('https://' + currentServer + '.room-house.com' + currentServerPort + '/cgi/check_token.pl', { body: fData, method: 'post', enctype: 'multipart/form-data' })
+      const ret = await fetch('https://' + currentServer + '.' + currentDomain + currentServerPort + '/cgi/check_token.pl', { body: fData, method: 'post', enctype: 'multipart/form-data' })
         .then((response) => response.json())
         .then((result) => { return result })
         .catch((err) => { console.log('Fetch checker Error', err); return err })
@@ -123,7 +125,7 @@ export function mapCreatedAndOwnedTokenIdsAsMarketItemsOld (marketplaceContract,
     if (typeof window !== 'undefined') fData.append('loco', window.location.hostname)
     // if (mydocs) fData.append('network', 'hd')
     // if (split96) fData.append('network', 'hd96')
-    await fetch('https://' + currentServer + '.room-house.com' + currentServerPort + '/cgi/get_data.pl', { body: fData, method: 'post', enctype: 'multipart/form-data' })
+    await fetch('https://' + currentServer + '.' + currentDomain + currentServerPort + '/cgi/get_data.pl', { body: fData, method: 'post', enctype: 'multipart/form-data' })
       .then((response) => response.json())
       .then((result) => { rawData = result.map((element) => parseInt(element[0])); rawData = rawData.filter(item => item !== 9598); metadata.creator = result.map((element) => element[1])[0]; metadata.owner = result.map((element) => element[2])[0]; })
       .catch((err) => { console.log('Fetch fData Error', err) })

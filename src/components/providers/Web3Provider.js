@@ -13,9 +13,10 @@ import { useDispatch } from 'react-redux'
 import { setLoading, setLooping } from '../../../store/actions/dataAction'
 import { isMobile } from 'react-device-detect'
 
+const currentDomain = 'room-house.com'
 const currentServer = process.env.CURRENT_SERVER
 const currentServerPort = process.env.CURRENT_SERVER_PORT
-const split96 = typeof window !== 'undefined' && window.location.hostname === 'split.room-house.com'
+const split96 = typeof window !== 'undefined' && window.location.hostname === 'split' + '.' + currentDomain
 
 const contextDefaultValues = {
   account: '',
@@ -172,7 +173,7 @@ export default function Web3Provider ({ children }) {
     const signerAddress = await signer.getAddress()
     let signature = 'hello'
     let res = ''
-    try { const fData = new FormData(); fData.append('acc', signerAddress); res = await fetch('https://' + currentServer + '.room-house.com' + currentServerPort + '/cgi/check_signed.pl', { body: fData, method: 'post', enctype: 'multipart/form-data' }).then((response) => response.json()).then((res) => { return res }) } catch (e) { console.log('failed check_signer') }
+    try { const fData = new FormData(); fData.append('acc', signerAddress); res = await fetch('https://' + currentServer + '.' + currentDomain + currentServerPort + '/cgi/check_signed.pl', { body: fData, method: 'post', enctype: 'multipart/form-data' }).then((response) => response.json()).then((res) => { return res }) } catch (e) { console.log('failed check_signer') }
     console.log('AFTER SIGN CHECK', res, 'signed', signed)
     if (res.result !== 'OK' && signed === '' && /my-nfts$/i.test(window.location.href) && !param) { dispatch(setLooping(true)); signature = await signPersonal(provider, signature); /* signature = await signer.signMessage(signature); console.log('signature set to', signature); */ setSigned(signature); dispatch(setLooping(false)) }
     await getAndSetAccountAndBalance(provider, signerAddress)
@@ -217,11 +218,11 @@ export default function Web3Provider ({ children }) {
       return false
     }
     // const { data } = await axios(`/api/addresses?network=${networkName}`)
-    const { data } = typeof window !== 'undefined' && (window.location.hostname === 'happydox.room-house.com' || window.location.hostname === 'mydocs.room-house.com') ? await axios(`/api/addresses?network=${networkName + '_HD'}`) : split96 ? await axios(`/api/addresses?network=${networkName + '_HD96'}`) : await axios(`/api/addresses?network=${networkName}`)
+    const { data } = typeof window !== 'undefined' && (window.location.hostname === 'happydox' + '.' + currentDomain || window.location.hostname === 'mydocs' + '.' + currentDomain) ? await axios(`/api/addresses?network=${networkName + '_HD'}`) : split96 ? await axios(`/api/addresses?network=${networkName + '_HD96'}`) : await axios(`/api/addresses?network=${networkName}`)
     // console.log('Here wind type', typeof window, 'location', window.location.hostname)
-    const marketplaceContract = typeof window !== 'undefined' && (window.location.hostname === 'happydox.room-house.com' || window.location.hostname === 'mydocs.room-house.com' || window.location.hostname === 'split.room-house.com') ? new ethers.Contract(data.marketplaceAddress, MarketHD.abi, signer) : new ethers.Contract(data.marketplaceAddress, Market.abi, signer)
+    const marketplaceContract = typeof window !== 'undefined' && (window.location.hostname === 'happydox' + '.' + currentDomain || window.location.hostname === 'mydocs' + '.' + currentDomain || window.location.hostname === 'split' + '.' + currentDomain) ? new ethers.Contract(data.marketplaceAddress, MarketHD.abi, signer) : new ethers.Contract(data.marketplaceAddress, Market.abi, signer)
     setMarketplaceContract(marketplaceContract)
-    const nftContract = typeof window !== 'undefined' && (window.location.hostname === 'happydox.room-house.com' || window.location.hostname === 'mydocs.room-house.com' || window.location.hostname === 'split.room-house.com') ? new ethers.Contract(data.nftAddress, NFT_HD.abi, signer) : new ethers.Contract(data.nftAddress, NFT.abi, signer)
+    const nftContract = typeof window !== 'undefined' && (window.location.hostname === 'happydox' + '.' + currentDomain || window.location.hostname === 'mydocs' + '.' + currentDomain || window.location.hostname === 'split' + '.' + currentDomain) ? new ethers.Contract(data.nftAddress, NFT_HD.abi, signer) : new ethers.Contract(data.nftAddress, NFT.abi, signer)
     setNFTContract(nftContract)
     // console.log('web3Provider, market addr', marketplaceContract.address, 'nft contract addr', nftContract.address)
     return true

@@ -23,7 +23,7 @@ function MyApp (props) {
   // const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
   const { Component, ...rest } = props
   const { emotionCache = clientSideEmotionCache, pageProps } = wrapper.useWrappedStore(rest)
-  const titel = typeof window !== 'undefined' && window.location.hostname.match(/tokenizer/ig) ? 'File Tokenizer' : typeof window !== 'undefined' && window.location.hostname.match(/room-house/ig) ? 'Room-House Token Gallery' : ''
+  const titel = typeof window !== 'undefined' && window.location.hostname.match(/tokenizer/ig) ? 'FileTokenizer' : typeof window !== 'undefined' && window.location.hostname.match(/room-house/ig) ? 'Room-House Token Gallery' : ''
   return (
   <Provider store={store}>
     <StylesProvider generateClassName={generateClassName}>

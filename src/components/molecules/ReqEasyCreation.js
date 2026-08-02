@@ -29,6 +29,7 @@ export default function ReqEasyCreation () {
   const { register, handleSubmit, reset } = useForm()
   const [isLoading, setIsLoading] = useState(false)
   const { currLang, setCurrLang } = useContext(NFTModalContext)
+  const [currCheck, setCurrCheck] = useState(false)
   const Labee = currLang === 'EN' ? 'Title' : 'Название'
   const Descee = currLang === 'EN' ? 'Description' : 'Описание'
 
@@ -41,10 +42,18 @@ export default function ReqEasyCreation () {
     setTimeout(() => { if (!file) setFileUrl(defaultFileUrl) }, 100)
   }, [currLang])
 
+  /* useEffect(() => {
+    setTimeout(() => { setFileUrl(defaultFileUrl); setFile(null); document.getElementById('labelFileName').innerText = ''; document.getElementById('labelFileName').style.display = 'none' }, 100)
+  }, [currCheck]) */
+
   const toggleLang = () => {
     currLang === 'EN' ? setCurrLang('RU') : setCurrLang('EN')
   }
-
+  const toggleCheck = () => {
+    document.getElementById('reqformdiv4').style.visibility = 'hidden' // always down the flag
+    currCheck ? setCurrCheck(false) : setCurrCheck(true)
+    // console.log('current check', currCheck)
+  }
   function createNFTFormDataFile (name, description, file, sum, origN, size, par) {
     const formData = new FormData()
     formData.append('name', name)
@@ -79,10 +88,11 @@ export default function ReqEasyCreation () {
   async function onSubmitEasy ({ name, description }) {
     if ((!name.length || !description.length || !file) && currLang === 'EN') { alert('Please provide File, Title and Description!'); return }
     if ((!name.length || !description.length || !file) && currLang !== 'EN') { alert('Нужно указать файл, его название и описание!'); return }
-    const yon = currLang === 'EN' ? window.confirm('EasyHD Token Mint selected. This Token only saves hash of the file in blockchain. OK?') : window.confirm('Печатаем EasyHD ТОКЕН? Он только сохраняет хэш сумму файла в блокчейн. ')
+    const yon = currLang === 'EN' ? window.confirm('This Token only saves hash of the file in blockchain. OK?') : window.confirm('Он только сохраняет хэш сумму файла в блокчейн. OK?')
     if (yon) {
       try {
-        if (!file || isLoading) { alert('No file selected!'); return }
+        if (!file) { alert('No file selected!'); return }
+        if (isLoading) return
         // console.log("Here File:", file)
         setIsLoading(true)
         if (document.getElementById('retBut')) document.getElementById('retBut').style.display = 'none'
@@ -107,21 +117,51 @@ export default function ReqEasyCreation () {
 
         document.getElementById('reqformdiv4').innerText = hash2
         if (check === 'OK') document.getElementById('reqformdiv4').click(); else document.getElementById('reqformdiv4').style.display = 'block'
-        setFileUrl(defaultFileUrl)
+        // setFileUrl(defaultFileUrl)
         reset()
       } catch (error) {
         console.log(error)
       } finally {
         setIsLoading(false)
-
-        // document.getElementById('reqformdiv4').style.display = 'block'
       }
     }
   }
-  // const testClick = () => { console.log('test clicked!') }
+  async function onSubmitCheck () {
+    // const yon = currLang === 'EN' ? window.confirm('Check the selected file hashsum. OK?') : window.confirm('Check the selected file hashsum. OK?')
+    const yon = currLang.length // always do
+    if (yon) {
+      try {
+        if (!file) { alert('No file selected!'); return }
+        if (isLoading) return
+        // console.log("Here File:", file)
+        setIsLoading(true)
+        if (document.getElementById('retBut')) document.getElementById('retBut').style.display = 'none'
+        const csum = async (file) => {
+          if (Object.prototype.toString.call(file) === '[object File]') {
+            const buffer = await file.arrayBuffer()
+            const hash = await crypto.subtle.digest('SHA-256', buffer)
+            const ret = Array.from(new Uint8Array(hash)).map(byte => byte.toString(16).padStart(2, '0')).join('')
+            // console.log('csum is', ret)
+            return ret
+          } else throw Error('File is not valid.')
+        }
+        const checksum = await csum(file); console.log('checksum', checksum, 'name', file.name, 'size', file.size) // correct
+        document.getElementById('reqformdiv4').innerText = '0x' + checksum
+        document.getElementById('alerter').innerHTML = 'Click to Copy 0x' + checksum.substr(0, 6) + '..'
+        document.getElementById('alerter').style.display = 'block'
+        // setFileUrl(defaultFileUrl)
+        reset()
+      } catch (error) {
+        console.log(error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+  }
   return (
     <Card className={classes.root} component="form" sx={{ maxWidth: 345, margin: '0 auto', border: '1px solid #fff', position: 'relative', background: '#012', width: isMobile ? '77%' : '96%', height: isMobile ? '77%' : '84%' }} onSubmit={handleSubmit(onSubmitEasy)}>
-      <div onClick={toggleLang} style={{ zIndex: '100001', position: 'absolute', display: 'block', color: '#fff', backgroundColor: '#012', border: '1px solid #fff', fontSize: '24px', width: '40px', height: '40px', borderRadius: '20px', cursor: 'pointer', textAlign: 'center', padding: '2px', margin: '10px 5px', lineHeight: '36px' }}>{currLang}</div>
+      <><div onClick={toggleLang} style={{ zIndex: '100001', position: 'absolute', display: 'block', color: '#fff', backgroundColor: '#012', border: '1px solid #fff', fontSize: '24px', width: '40px', height: '40px', borderRadius: '20px', cursor: 'pointer', textAlign: 'center', padding: '2px', margin: '10px 5px', lineHeight: '36px' }}>{currLang}</div>
+      <div onClick={toggleCheck} style={{ zIndex: '100001', position: 'absolute', right: '1%', display: 'block', color: '#fff', backgroundColor: '#012', border: '1px solid #fff', fontSize: '24px', width: currLang === 'EN' ? '120px' : '120px', height: '40px', borderRadius: '20px', cursor: 'pointer', textAlign: 'center', padding: '2px', margin: '10px 5px', lineHeight: '36px' }}>{ currCheck ? currLang === 'EN' ? 'Mint' : 'Токен' : currLang === 'EN' ? 'Check' : 'Сумма' }</div></>
       <label htmlFor="file-input">
         <CardMedia
           className={classes.media}
@@ -139,7 +179,7 @@ export default function ReqEasyCreation () {
           onChange={onFileChange}
         />
       <CardContent sx={{ paddingBottom: 0 }}>
-        <TextField
+        {!currCheck && <TextField
           id="name-input"
           label={Labee}
           name="name"
@@ -151,8 +191,8 @@ export default function ReqEasyCreation () {
           margin="dense"
           disabled={isLoading}
           {...register('name')}
-        />
-         <TextField
+        />}
+         {!currCheck && <TextField
           id="description-input"
           label={Descee}
           name="description"
@@ -166,10 +206,11 @@ export default function ReqEasyCreation () {
           margin="dense"
           disabled={isLoading}
           {...register('description')}
-        />
+        />}
       </CardContent>
       <CardActions className={classes.cardActions}>
-        <Button style={{ position: 'absolute', textAlign: 'center', fontSize: '24px', bottom: '2px', marginBottom: '5px' }} size="small" color="secondary" onClick={handleSubmit(onSubmitEasy)}>{isLoading ? <CircularProgress size="20px" /> : currLang === 'EN' ? 'Mint Token' : 'Создать Токен'}</Button>
+        {!currCheck && <Button style={{ position: 'absolute', textAlign: 'center', fontSize: '24px', bottom: '2px', marginBottom: '5px' }} size="small" color="secondary" onClick={handleSubmit(onSubmitEasy)}>{isLoading ? <CircularProgress size="20px" /> : currLang === 'EN' ? 'Mint Token' : 'Создать Токен'}</Button>}
+        {currCheck && <Button style={{ position: 'absolute', textAlign: 'center', fontSize: '24px', bottom: '2px', marginBottom: '5px' }} size="small" color="secondary" onClick={handleSubmit(onSubmitCheck)}>{isLoading ? <CircularProgress size="20px" /> : currLang === 'EN' ? 'Check Sum' : 'Проверить Сумму'}</Button>}
       </CardActions>
     </Card>
   )

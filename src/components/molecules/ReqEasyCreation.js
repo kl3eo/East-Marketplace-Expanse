@@ -24,7 +24,6 @@ const useStyles = makeStyles({
 })
 
 export default function ReqEasyCreation () {
-  const currentDomain = 'room-house.com'
   const [file, setFile] = useState(null)
   const classes = useStyles()
   const { register, handleSubmit, reset } = useForm()
@@ -56,7 +55,7 @@ export default function ReqEasyCreation () {
     par === 2 && formData.append('size', size)
     par === 1 && formData.append('account', 'DUMMY')
     par === 2 && formData.append('account', 'DUMMY2')
-    if (typeof window !== 'undefined' && window.location.hostname === 'tokenizer.' + currentDomain) formData.append('network', 'hd')
+    if (typeof window !== 'undefined' && window.location.hostname.match(/tokenizer/ig)) formData.append('network', 'hd')
     return formData
   }
 
@@ -75,40 +74,6 @@ export default function ReqEasyCreation () {
     event.target.files[0].name.match(/\.(mp4|MP4|webm|WEBM)$/ig) ? setFileUrl(defaultVideoFileUrl) : event.target.files[0].name.match(/\.(jpg|jpeg|png)$/ig) ? setFileUrl(URL.createObjectURL(event.target.files[0])) : setFileUrl(defaultFileTypeUrl)
     document.getElementById('labelFileName').innerText = event.target.files[0].name
     document.getElementById('labelFileName').style.display = event.target.files[0].name.match(/\.(jpg|jpeg|png|mp4|webm)$/ig) ? 'none' : 'block'
-  }
-
-  async function onSubmit ({ name, description }) {
-    if (!file || isLoading) return
-    const yon = currLang === 'EN' ? window.confirm('Mint New Token? This site does not use cookies and no personal data is collected.') : window.confirm('Печатаем ТОКЕН? Вы НЕ сообщаете свои персональные данные! Этот сайт НЕ использует куки!')
-    if (yon) {
-      try {
-        setIsLoading(true)
-        if (document.getElementById('retBut')) document.getElementById('retBut').style.display = 'none'
-        const formData = createNFTFormDataFile(name, description, file, null, null, null, 1)
-        const [metadataUrl, hash2, check] = await uploadFileToIPFS(formData)
-        formData.delete('file')
-        formData.delete('name')
-        formData.delete('description')
-        // console.log('metadataUrl', metadataUrl)
-        if (typeof metadataUrl === 'undefined') { document.getElementById('reqformdiv4').innerText = currLang === 'EN' ? 'Error occurred. Check file size must be < 100M.' : 'Проверьте размер файла < 100M.'; document.getElementById('reqformdiv4').style.display = 'block'; return }
-        if (metadataUrl === 'null' || metadataUrl === null) { document.getElementById('reqformdiv4').innerText = currLang === 'EN' ? 'Error occurred. Check file size must be < 100M.' : 'Ошибка. Проверьте размер файла < 100M.'; document.getElementById('reqformdiv4').style.display = 'block'; return }
-
-        document.getElementById('reqformdiv4').innerText = hash2
-        if (check === 'OK') document.getElementById('reqformdiv4').click(); else document.getElementById('reqformdiv4').style.display = 'block'
-        setFileUrl(defaultFileUrl)
-        reset()
-      } catch (error) {
-        console.log(error)
-      } finally {
-        setIsLoading(false)
-
-        document.getElementById('reqformdiv1').style.display = 'none'
-        document.getElementById('reqformdiv2').style.display = 'none'
-        document.getElementById('reqformdiv3').style.display = 'block'
-        // document.getElementById('reqformdiv4').style.display = 'block'
-        document.getElementById('reqformdiv5').style.display = 'block'
-      }
-    }
   }
 
   async function onSubmitEasy ({ name, description }) {
@@ -137,8 +102,8 @@ export default function ReqEasyCreation () {
         formData.delete('name')
         formData.delete('description')
         console.log('metadataUrl', metadataUrl)
-        if (typeof metadataUrl === 'undefined') { document.getElementById('reqformdiv4').innerText = currLang === 'EN' ? 'Error occurred. Please try later.' : 'Ошибка. Попробуйте позже.'; document.getElementById('reqformdiv4').style.display = 'block'; return }
-        if (metadataUrl === 'null' || metadataUrl === null) { document.getElementById('reqformdiv4').innerText = currLang === 'EN' ? 'Error occurred. Check file size must be < 100M.' : 'Ошибка. Проверьте размер файла < 100M.'; document.getElementById('reqformdiv4').style.display = 'block'; return }
+        if (typeof metadataUrl === 'undefined') { document.getElementById('reqformdiv4').innerText = currLang === 'EN' ? 'Error occurred. Please try later.' : 'Ошибка. Попробуйте позже.'; document.getElementById('reqformdiv4').style.display = 'block'; document.getElementById('reqformdiv4').style.visibility = 'visible'; return }
+        if (metadataUrl === 'null' || metadataUrl === null) { document.getElementById('reqformdiv4').innerText = currLang === 'EN' ? 'Error occurred. Check file size must be <= 2Gb.' : 'Ошибка. Проверьте размер файла <= 2Gb.'; document.getElementById('reqformdiv4').style.display = 'block'; document.getElementById('reqformdiv4').style.visibility = 'visible'; return }
 
         document.getElementById('reqformdiv4').innerText = hash2
         if (check === 'OK') document.getElementById('reqformdiv4').click(); else document.getElementById('reqformdiv4').style.display = 'block'
@@ -149,17 +114,13 @@ export default function ReqEasyCreation () {
       } finally {
         setIsLoading(false)
 
-        document.getElementById('reqformdiv1').style.display = 'none'
-        document.getElementById('reqformdiv2').style.display = 'none'
-        document.getElementById('reqformdiv3').style.display = 'block'
         // document.getElementById('reqformdiv4').style.display = 'block'
-        document.getElementById('reqformdiv5').style.display = 'block'
       }
     }
   }
   // const testClick = () => { console.log('test clicked!') }
   return (
-    <Card className={classes.root} component="form" sx={{ maxWidth: 345, margin: '0 auto', border: '1px solid #fff', position: 'relative', background: '#012', width: isMobile ? '77%' : '96%', height: isMobile ? '77%' : '84%' }} onSubmit={handleSubmit(onSubmit)}>
+    <Card className={classes.root} component="form" sx={{ maxWidth: 345, margin: '0 auto', border: '1px solid #fff', position: 'relative', background: '#012', width: isMobile ? '77%' : '96%', height: isMobile ? '77%' : '84%' }} onSubmit={handleSubmit(onSubmitEasy)}>
       <div onClick={toggleLang} style={{ zIndex: '100001', position: 'absolute', display: 'block', color: '#fff', backgroundColor: '#012', border: '1px solid #fff', fontSize: '24px', width: '40px', height: '40px', borderRadius: '20px', cursor: 'pointer', textAlign: 'center', padding: '2px', margin: '10px 5px', lineHeight: '36px' }}>{currLang}</div>
       <label htmlFor="file-input">
         <CardMedia
@@ -174,6 +135,7 @@ export default function ReqEasyCreation () {
           type="file"
           name="file"
           id="file-input"
+          disabled={isLoading}
           onChange={onFileChange}
         />
       <CardContent sx={{ paddingBottom: 0 }}>

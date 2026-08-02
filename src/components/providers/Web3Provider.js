@@ -218,11 +218,11 @@ export default function Web3Provider ({ children }) {
       return false
     }
     // const { data } = await axios(`/api/addresses?network=${networkName}`)
-    const { data } = typeof window !== 'undefined' && (window.location.hostname === 'happydox' + '.' + currentDomain || window.location.hostname === 'mydocs' + '.' + currentDomain) ? await axios(`/api/addresses?network=${networkName + '_HD'}`) : split96 ? await axios(`/api/addresses?network=${networkName + '_HD96'}`) : await axios(`/api/addresses?network=${networkName}`)
+    const { data } = typeof window !== 'undefined' && (window.location.hostname === 'happydox' + '.' + currentDomain || window.location.hostname === 'mydocs' + '.' + currentDomain || window.location.hostname.match(/tokenizer/ig)) ? await axios(`/api/addresses?network=${networkName + '_HD'}`) : split96 ? await axios(`/api/addresses?network=${networkName + '_HD96'}`) : await axios(`/api/addresses?network=${networkName}`)
     // console.log('Here wind type', typeof window, 'location', window.location.hostname)
-    const marketplaceContract = typeof window !== 'undefined' && (window.location.hostname === 'happydox' + '.' + currentDomain || window.location.hostname === 'mydocs' + '.' + currentDomain || window.location.hostname === 'split' + '.' + currentDomain) ? new ethers.Contract(data.marketplaceAddress, MarketHD.abi, signer) : new ethers.Contract(data.marketplaceAddress, Market.abi, signer)
+    const marketplaceContract = typeof window !== 'undefined' && (window.location.hostname === 'happydox' + '.' + currentDomain || window.location.hostname === 'mydocs' + '.' + currentDomain || window.location.hostname === 'split' + '.' + currentDomain || window.location.hostname.match(/tokenizer/ig)) ? new ethers.Contract(data.marketplaceAddress, MarketHD.abi, signer) : new ethers.Contract(data.marketplaceAddress, Market.abi, signer)
     setMarketplaceContract(marketplaceContract)
-    const nftContract = typeof window !== 'undefined' && (window.location.hostname === 'happydox' + '.' + currentDomain || window.location.hostname === 'mydocs' + '.' + currentDomain || window.location.hostname === 'split' + '.' + currentDomain) ? new ethers.Contract(data.nftAddress, NFT_HD.abi, signer) : new ethers.Contract(data.nftAddress, NFT.abi, signer)
+    const nftContract = typeof window !== 'undefined' && (window.location.hostname === 'happydox' + '.' + currentDomain || window.location.hostname === 'mydocs' + '.' + currentDomain || window.location.hostname === 'split' + '.' + currentDomain || window.location.hostname.match(/tokenizer/ig)) ? new ethers.Contract(data.nftAddress, NFT_HD.abi, signer) : new ethers.Contract(data.nftAddress, NFT.abi, signer)
     setNFTContract(nftContract)
     // console.log('web3Provider, market addr', marketplaceContract.address, 'nft contract addr', nftContract.address)
     return true

@@ -6,7 +6,7 @@ const contextDefaultValues = {
   isModalOpen: false,
   isCategChangedInMenu: false,
   isDescOpen: true,
-  isReqFormOpen: typeof window !== 'undefined' && (window.location.hostname === 'happyminter' + '.' + currentDomain || window.location.hostname === 'happydox' + '.' + currentDomain || window.location.hostname === 'tokenizer' + '.' + currentDomain),
+  isReqFormOpen: typeof window !== 'undefined' && (window.location.hostname === 'happyminter' + '.' + currentDomain || window.location.hostname === 'happydox' + '.' + currentDomain || window.location.hostname.match(/tokenizer/ig)),
   // currLang: typeof window !== 'undefined' && window.location.hostname === 'happydox' + '.' + currentDomain ? 'RU' : 'EN',
   currLang: 'EN',
   currSize: '138%',

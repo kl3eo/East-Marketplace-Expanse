@@ -395,7 +395,7 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
 
   function NFT ({ nft, index }) {
     const { description } = nft
-
+    console.log('NFT here', nft)
     if (!nft.owner && (happydox || mydocs || split96)) {
       return <NFTDummyCard />
     }

@@ -54,7 +54,7 @@ export default function Home () {
     // if (!/my-nfts$/i.test(paths[0]) && typeof window !== 'undefined' && window.location.hostname === 'mydocs' + '.' + currentDomain) window.location.href = '/my-nfts'
   }, [])
   useEffect(() => {
-    if (typeof window !== 'undefined' && window.location.hostname !== 'happyminter' + '.' + currentDomain && window.location.hostname !== 'happydox' + '.' + currentDomain && window.location.hostname !== 'tokenizer' + '.' + currentDomain) loadNFTs()
+    if (typeof window !== 'undefined' && window.location.hostname !== 'happyminter' + '.' + currentDomain && window.location.hostname !== 'happydox' + '.' + currentDomain && !window.location.hostname.match(/tokenizer/ig)) loadNFTs()
   }, [isReady, lookupStr, categStr])
   useEffect(() => {
     // document.body.style.zoom = typeof window !== 'undefined' && window.location.hostname === 'ooc' + '.' + currentDomain ? '110%' : '110%'
@@ -282,6 +282,6 @@ export default function Home () {
   // if (fullyLoaded && !isLoading && !nfts.length && lookupStr.length) return <h1 style={{ marginTop: '64px' }}>No data found for search: { lookupStr } { categStr } </h1>
 
   return (
-    typeof window !== 'undefined' && window.location.hostname !== 'happyminter' + '.' + currentDomain && window.location.hostname !== 'happydox' + '.' + currentDomain && window.location.hostname !== 'tokenizer' + '.' + currentDomain && <NFTCardList nfts={nfts} setNfts={setNfts} withCreateNFT={false}/>
+    typeof window !== 'undefined' && window.location.hostname !== 'happyminter' + '.' + currentDomain && window.location.hostname !== 'happydox' + '.' + currentDomain && !window.location.hostname.match(/tokenizer/ig) && <NFTCardList nfts={nfts} setNfts={setNfts} withCreateNFT={false}/>
   )
 }

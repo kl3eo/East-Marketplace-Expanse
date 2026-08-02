@@ -23,15 +23,15 @@ function MyApp (props) {
   // const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
   const { Component, ...rest } = props
   const { emotionCache = clientSideEmotionCache, pageProps } = wrapper.useWrappedStore(rest)
-
+  const titel = typeof window !== 'undefined' && window.location.hostname.match(/tokenizer/ig) ? 'File Tokenizer' : typeof window !== 'undefined' && window.location.hostname.match(/room-house/ig) ? 'Room-House Token Gallery' : ''
   return (
   <Provider store={store}>
     <StylesProvider generateClassName={generateClassName}>
       <Web3Provider>
         <CacheProvider value={emotionCache}>
           <Head>
-            <meta name="viewport" content="initial-scale=1, width=device-width" />
-            <title>Room-House Token Gallery</title>
+            <meta name="viewport" content="width=380" />
+            <title>{titel}</title>
           </Head>
           <ThemeProvider theme={theme}>
               <CssBaseline />

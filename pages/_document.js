@@ -12,14 +12,18 @@ export default class MyDocument extends Document {
           <meta httpEquiv="cache-control" content="no-cache"/>
           <meta httpEquiv="expires" content="0"/>
           <meta httpEquiv="pragma" content="no-cache"/>
-          <meta property="og:image" content="https://user-images.githubusercontent.com/16388408/151682517-6c0d89eb-80e6-4eeb-a6b0-6d584cdca5a3.png"/>
+          {/* <meta property="og:image" content="https://user-images.githubusercontent.com/16388408/151682517-6c0d89eb-80e6-4eeb-a6b0-6d584cdca5a3.png"/>
           <meta property="og:title" content="Room-House Tokens"/>
-          <meta property="og:description" content="Das Markt"/>
+          <meta property="og:description" content="Das Markt"/> */}
           {/* PWA primary color */}
           <meta name="theme-color" content={theme.palette.primary.main} />
-          <link
+          {/* <link
             rel="stylesheet"
             href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+          /> */}
+          <link
+            rel="stylesheet"
+            href="/fonts/styles.css"
           />
           {/* Inject MUI styles first to match with the prepend: true configuration. */}
           {this.props.emotionStyleTags}

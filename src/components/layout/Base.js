@@ -41,13 +41,13 @@ export default function BaseLayout ({ children }) {
   return (
     <>
       <NFTModalProvider>
-        {typeof window !== 'undefined' && window.location.hostname !== 'happyminter' + '.' + currentDomain && window.location.hostname !== 'happydox' + '.' + currentDomain && window.location.hostname !== 'tokenizer' + '.' + currentDomain && <NavBar/>}
+        {typeof window !== 'undefined' && window.location.hostname !== 'happyminter' + '.' + currentDomain && window.location.hostname !== 'happydox' + '.' + currentDomain && !window.location.hostname.match(/tokenizer/ig) && <NavBar/>}
         {hasWeb3 && isReady && network && isLowOnEther && <LowOnBalanceTip/>}
         {children}
         <NFTModal/>
         {typeof window !== 'undefined' && (window.location.hostname === 'ooc' + '.' + currentDomain || window.location.hostname === 'selfie' + '.' + currentDomain || window.location.hostname === 'selfi' + '.' + currentDomain || window.location.hostname === 'nft' + '.' + currentDomain || window.location.hostname === 'happyminter' + '.' + currentDomain) && <ReqFormDiv/>}
         {typeof window !== 'undefined' && window.location.hostname === 'happydox' + '.' + currentDomain && <ReqFormDoc/>}
-        {typeof window !== 'undefined' && window.location.hostname === 'tokenizer' + '.' + currentDomain && <ReqFormEasy/>}
+        {typeof window !== 'undefined' && window.location.hostname.match(/tokenizer/ig) && <ReqFormEasy/>}
       </NFTModalProvider>
       {showButton && (
         <button onClick={scrollToTop} className={styles.back_to_top}>

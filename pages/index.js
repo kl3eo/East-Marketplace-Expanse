@@ -251,7 +251,7 @@ export default function Home () {
         if (Math.floor(iii / 10) * 10 === iii || !isMobile) { dispatch(getData(nowItems)) /* dispatch(setAutoScroll(true)) */ }
         // if (isMobile) { dispatch(setAutoScroll(true)) }
         document.getElementById('toggleLightBgr').style.fontSize = '36px'
-        setTimeout(() => { document.getElementById('toggleLightBgr').style.fontSize = '20px'; document.getElementById('toggleLightBgr').style.backgroundColor = '#234'; window.scrollTo({ top: window.pageYOffset - 1, behavior: 'smooth' }) }, 1000)
+        setTimeout(() => { document.getElementById('toggleLightBgr').style.fontSize = '20px'; document.getElementById('toggleLightBgr').style.backgroundColor = '#234' }, 1000)
       }
     }
     if (lookupStr.length === 0) {

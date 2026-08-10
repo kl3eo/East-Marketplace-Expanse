@@ -1,4 +1,4 @@
-import {GET_DATA, DATA_ERROR, SET_CURRENT_DISP, SET_RELO, SET_CURRENT_SLICE, SET_LOADING, SET_LOOPING, SET_FULLY_LOADED, SET_SOMETHING_LOADED, SET_SCALING_ALLOWED, SET_LOOKUP, SET_CATEG, SET_AUTO_SCROLL, SET_LIGHT_BGR, SET_NUM, SET_CHU, SET_BEAU, SET_CURR_DIFF} from '../types'
+import {GET_DATA, DATA_ERROR, SET_CURRENT_DISP, SET_RELO, SET_CURRENT_SLICE, SET_LOADING, SET_LOOPING, SET_FULLY_LOADED, SET_SOMETHING_LOADED, SET_SCALING_ALLOWED, SET_LOOKUP, SET_CATEG, SET_AUTO_SCROLL, SET_LIGHT_BGR, SET_NUM, SET_CHU, SET_BEAU, SET_CURR_DIFF, SET_ROLL_FLAG} from '../types'
 export const getData = (data) => async dispatch => {
     
     try{
@@ -276,6 +276,23 @@ export const setBeau = (data) => async dispatch => {
     try{
         dispatch( {
             type: SET_BEAU,
+            payload: data
+        })
+    }
+    catch(error){
+        dispatch( {
+            type: DATA_ERROR,
+            payload: error,
+        })
+    }
+
+}
+
+export const setRollFlag = (data) => async dispatch => {
+    
+    try{
+        dispatch( {
+            type: SET_ROLL_FLAG,
             payload: data
         })
     }

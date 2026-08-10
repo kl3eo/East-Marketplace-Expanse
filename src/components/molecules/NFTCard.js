@@ -585,7 +585,7 @@ Header set "Content-Disposition" "attachment; filename=\"%{FILENAME}e\"" env=FIL
                   ? <OwnerTextField error={ownerError} disabled={isLoading} onChange={e => setOwner(e.target.value)}/>
                   : <NFTPrice nft={nft} variant={notebook ? 'h6' : 'h6'}/>
               }
-            </div><div style={{ float: 'left', marginLeft: '5px', fontSize: '16px', color: '#369', marginTop: mydocs ? '36px' : '0px', display: action === 'sell' || action === 'transfer' ? 'block' : 'none' }} onClick={onCliCliCli}>{action === 'sell' ? 'or Transfer' : action === 'transfer' ? 'or Burn' : 'or Sell'}</div>
+            </div><div style={{ float: 'left', marginLeft: '5px', fontSize: '16px', color: '#369', marginTop: mydocs ? '36px' : '0px', display: action === 'sell' || action === 'transfer' || action === 'burn' ? 'block' : 'none' }} onClick={onCliCliCli}>{action === 'sell' ? 'or Transfer' : action === 'transfer' ? 'or Burn' : 'or Sell'}</div>
             <div className={classes.priceContainer} style={{ float: 'right', display: nft.isLocked ? 'block' : 'none' }}>
               This Token is Locked. <span style={{ color: '#369', fontWeight: 'bold', cursor: 'pointer', textDecoration: 'underline' }} onClick={() => { document.getElementById('unlocker' + tId).style.display = 'table'; document.getElementById('cm_' + tId).style.display = 'none'; document.getElementById('cc_' + tId).style.display = 'none' }}>Unlock</span>&nbsp;<span style={{ color: '#59c', fontWeight: 'bold', cursor: 'pointer', textDecoration: 'underline' }} onClick={() => { setIsEdited(true) }}>Edit</span>
             </div>

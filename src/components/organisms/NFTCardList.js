@@ -120,7 +120,7 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
 
   useEffect(() => {
     maxOffs = 0
-    console.log('set maxOffs to zero')
+    // console.log('set maxOffs to zero')
   }, [isDescOpen, currSize])
 
   useEffect(() => {
@@ -128,7 +128,7 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
   }, [autoScroll])
 
   useEffect(() => {
-    console.log('USE_EFF, relo is', relo, 'lookupstr', lookupStr, 'categstr', categStr)
+    // console.log('USE_EFF, relo is', relo, 'lookupstr', lookupStr, 'categstr', categStr)
     dispatch(getData([]))
     // dispatch(setFullyLoaded(false)); console.log('falser 3')
     dispatch(setLoading(true))
@@ -137,7 +137,7 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
 
     if (!relo) {
       window.addEventListener('scroll', withRelo)
-      console.log('ADDED relo')
+      // console.log('ADDED relo')
       dispatch(setRelo(true))
     }
     dispatch(setCurrentSlice(0))
@@ -218,7 +218,7 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
     } else { // block with currDiff
       const state = store.getState()
       const storedFilteredItemsList = state.storedFilteredItemsList
-      const { currDiff, scalingAllowed, looping } = storedFilteredItemsList
+      const { currDiff, scalingAllowed, looping, rollFlag } = storedFilteredItemsList
       // this param is grab/2 = number of items displayed before the first scroll down makes new row. 8 rows by 6 = 48
       const numParam = isMobb ? 4 : scalingAllowed && hiResScreen ? 48 : goodNotebook ? 24 : 24
       const approxRows = currentSlice < 1 && currDiff === 0 ? parseInt((document.body.offsetHeight - window.innerHeight) / 16) : parseInt((document.body.offsetHeight - window.innerHeight) / numParam)
@@ -231,7 +231,7 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
       if ((window.pageYOffset > step || currentDisp < 16) && currentSlice < 1 && storedFilteredItems.length && storedFilteredItems.length > currentDisp) {
         const slicedStoredFilteredItems = storedFilteredItems.slice(0, numParam)
         setNfts(slicedStoredFilteredItems)
-        console.log('SET NFTS1, offset is', window.pageYOffset, 'window inner height is', window.innerHeight, 'slicedStoredFilteredItems', slicedStoredFilteredItems)
+        // console.log('SET NFTS1, offset is', window.pageYOffset, 'window inner height is', window.innerHeight, 'slicedStoredFilteredItems', slicedStoredFilteredItems)
         setLoadingMsg('')
         dispatch(setCurrentDisp(slicedStoredFilteredItems.length))
         dispatch(setCurrentSlice(1))
@@ -253,7 +253,8 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
       if (((maxOffs === 0 && window.pageYOffset > document.body.offsetHeight - window.innerHeight - lazyLoaderCatchParam) || (maxOffs && maxOffs - window.pageYOffset < 10)) && currentSlice <= (2 + currDiff) && storedFilteredItems.length && storedFilteredItems.length > numParam + itemsInRow * currDiff && (directionUpDown || autoScroll) && !recently) {
         // if (autoScroll) canRoll = 1 // good, double take on first scroll down
         // if ((!mydocs && !goodNotebook) || autoScroll || hiResScreen) canRoll = 1 // no double take on first scroll down
-        if (autoScroll || (scalingAllowed && hiResScreen)) canRoll = 1
+        // console.log('1', window.scrollMaxY, '2', window.pageYOffset)
+        if (autoScroll || (scalingAllowed && hiResScreen) || rollFlag) canRoll = 1
         // canRoll = 1 // no double take on first scroll down
         if (!dimmed) setDimmed(true)
 
@@ -268,7 +269,7 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
             document.getElementById('toggleLightBgr').style.fontSize = '20px'
             if (canRoll) setNfts(slicedStoredFilteredItems)
             if (!isMobb) { maxOffs = window.pageYOffset }
-            console.log('SET NFTS2, offset is', window.pageYOffset, 'diffo is', maxOffs - window.pageYOffset, 'currDiff is', currDiff)
+            // console.log('SET NFTS2, offset is', window.pageYOffset, 'diffo is', maxOffs - window.pageYOffset, 'currDiff is', currDiff)
             if (isMobb && canRoll) setTimeout(() => { dispatch(setCurrDiff(currDiff + 1)) }, llTimeOut)
             // though it looks correct to change currDiff AFTER the new slice has arrived, it breaks logics in other scenarios, like quickly going off after the "blue" has been triggered
             // but for mobiles it's good, to avoid "hidden" changes of slice (?!) which happens after "weak" swipe
@@ -327,7 +328,7 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
             document.getElementById('toggleLightBgr').style.fontSize = '20px'
             console.log('scroll6'); if (currDiff) { window.scrollTo({ top: 0, behavior: 'smooth' }) }
             const slicedStoredFilteredItems = storedFilteredItems.slice(itemsInRow + itemsInRow * (currDiff - 1), numParam + itemsInRow + itemsInRow * (currDiff - 1))
-            if (canRoll) { console.log('setting NFTS..numparam', numParam, 'itemsinro', itemsInRow, 'currDiff', currDiff); setNfts(slicedStoredFilteredItems) }
+            if (canRoll) { /* console.log('setting NFTS..numparam', numParam, 'itemsinro', itemsInRow, 'currDiff', currDiff); */ setNfts(slicedStoredFilteredItems) }
             maxOffs = 0
             setLoadingMsg('')
             dispatch(setCurrentDisp(slicedStoredFilteredItems.length))
@@ -395,7 +396,7 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
 
   function NFT ({ nft, index }) {
     const { description } = nft
-    console.log('NFT here', nft)
+    // console.log('NFT here', nft)
     if (!nft.owner && (happydox || mydocs || split96)) {
       return <NFTDummyCard />
     }
@@ -479,7 +480,7 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
     if (!isMobb && window.innerWidth > 1080) setLoadingMsg(pleaseWait)
     if (isMobb || window.innerWidth < 1280) setLoadingMsg('')
     setChunkLoaded(false)
-    console.log('onCliCli')
+    // console.log('onCliCli')
     const state = store.getState()
     const storedFilteredItemsList = state.storedFilteredItemsList
     const { storedFilteredItems, chu, categStr, lookupStr, beau, autoScroll } = storedFilteredItemsList
@@ -490,7 +491,7 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
     const fData = new FormData()
     fData.append('grab', grab)
     fData.append('beau', beau)
-    console.log('append beau in list', beau, 'chu is', chu)
+    // console.log('append beau in list', beau, 'chu is', chu)
     fData.append('lookupstr', letLook)
     fData.append('nextchunk', chu)
     fData.append('loco', window.location.hostname)
@@ -503,7 +504,7 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
       .then((response) => response.json())
       .then((result) => { /* console.log('result', result); */ rawData = result.map((element) => parseInt(element[0])); rawData = rawData.filter(item => item !== 9598) })
       .catch((err) => { console.log('Fetch fData Error', err) })
-    console.log('CliCli rawData', rawData)
+    // console.log('CliCli rawData', rawData)
 
     const da = rawData.length ? split96 || mydocs ? await marketplaceContract.fetchMoreMarketItemsByMarketItemIds(rawData, 1) : await marketplaceContract.fetchMarketItemsByMarketItemIds(rawData, 1) : []
     if (da.length) {
@@ -512,7 +513,7 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
       dispatch(getData(nowItems))
       dispatch(setChu(chu + 1))
       dispatch(setFullyLoaded(true)); console.log('truer 3')
-      console.log('dispatched', nowItems.length)
+      // console.log('dispatched', nowItems.length)
       enableScrolling()
     } else {
       dispatch(setFullyLoaded(true)); console.log('truer 4')
@@ -546,8 +547,9 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
     console.log('shown', contactShown)
   } */
   const onCliCliCli = () => {
-    toBurn ? setToBurn(false) : transferShown ? setToBurn(true) : console.log('transfer', transferShown)
-    transferShown ? setTransferShown(false) : setTransferShown(true)
+    toBurn ? setTransferShown(false) : console.log('transfer1', transferShown)
+    toBurn ? setToBurn(false) : transferShown ? setToBurn(true) : console.log('transfer2', transferShown)
+    transferShown ? setTransferShown(false) : toBurn ? console.log('transfer3', transferShown) : setTransferShown(true)
   }
 
   const continu = <span id='continu_bar' onClick={onCliCli} style={{ zIndex: '1002', display: chunkLoaded ? 'inline' : 'none', backgroundColor: '#012' }}>{contiNue}</span>

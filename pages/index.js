@@ -7,7 +7,7 @@ import { LinearProgress } from '@mui/material'
 import UnsupportedChain from '../src/components/molecules/UnsupportedChain'
 import { mapAvailableMarketItems } from '../src/utils/nft'
 import { useDispatch, useSelector } from 'react-redux'
-import { getData, setCurrentDisp, setLoading, setFullyLoaded, setSomethingLoaded, setChu, setCateg, setLookup, setLooping, setNum, setBeau, setRelo, setCurrentSlice, setLightBgr } from '../store/actions/dataAction'
+import { getData, setCurrentDisp, setLoading, setFullyLoaded, setSomethingLoaded, setChu, setCateg, setLookup, setLooping, setNum, setBeau, setRelo, setCurrentSlice, setLightBgr, setRollFlag } from '../store/actions/dataAction'
 import { store } from '../store/store'
 import { isMobile } from 'react-device-detect'
 
@@ -251,7 +251,7 @@ export default function Home () {
         if (Math.floor(iii / 10) * 10 === iii || !isMobile) { dispatch(getData(nowItems)) /* dispatch(setAutoScroll(true)) */ }
         // if (isMobile) { dispatch(setAutoScroll(true)) }
         document.getElementById('toggleLightBgr').style.fontSize = '36px'
-        setTimeout(() => { document.getElementById('toggleLightBgr').style.fontSize = '20px'; document.getElementById('toggleLightBgr').style.backgroundColor = '#234' }, 1000)
+        setTimeout(() => { document.getElementById('toggleLightBgr').style.fontSize = '20px'; document.getElementById('toggleLightBgr').style.backgroundColor = '#234'; if (window.scrollMaxY === window.pageYOffset) { window.scrollTo({ top: window.pageYOffset - 1, behavior: 'smooth' }); dispatch(setRollFlag(true)) } }, 1000)
       }
     }
     if (lookupStr.length === 0) {

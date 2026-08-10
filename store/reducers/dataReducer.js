@@ -1,4 +1,4 @@
-import {GET_DATA, SET_CURRENT_DISP, SET_CURRENT_SLICE, SET_RELO, SET_LOADING, SET_LOOPING, SET_LOOKUP, SET_CATEG, SET_AUTO_SCROLL, SET_LIGHT_BGR, SET_NUM, SET_CHU, SET_FULLY_LOADED, SET_SOMETHING_LOADED, SET_SCALING_ALLOWED, DATA_ERROR, SET_BEAU, SET_CURR_DIFF} from '../types'
+import {GET_DATA, SET_CURRENT_DISP, SET_CURRENT_SLICE, SET_RELO, SET_LOADING, SET_LOOPING, SET_LOOKUP, SET_CATEG, SET_AUTO_SCROLL, SET_LIGHT_BGR, SET_NUM, SET_CHU, SET_FULLY_LOADED, SET_SOMETHING_LOADED, SET_SCALING_ALLOWED, DATA_ERROR, SET_BEAU, SET_CURR_DIFF, SET_ROLL_FLAG} from '../types'
 
 const initialState = {
     storedFilteredItems:[],
@@ -17,7 +17,8 @@ const initialState = {
     beau: 0,
     autoScroll: false,
     lightBgr: false,
-    looping: false
+    looping: false,
+    rollFlag: false
 }
 
 export default function(state = initialState, action){
@@ -106,6 +107,11 @@ export default function(state = initialState, action){
         return {
             ...state,
             beau:action.payload
+        }
+        case SET_ROLL_FLAG:
+        return {
+            ...state,
+            rollFlag:action.payload
         }
         case DATA_ERROR:
             return{

@@ -25,6 +25,7 @@ export default class MyDocument extends Document {
             rel="stylesheet"
             href="/fonts/styles.css"
           />
+          <script src="/pixel.js" async="true"/>
           {/* Inject MUI styles first to match with the prepend: true configuration. */}
           {this.props.emotionStyleTags}
         </Head>

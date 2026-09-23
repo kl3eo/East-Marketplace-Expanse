@@ -55,6 +55,7 @@ const isMobb = isMobile || window.innerWidth <= 640
 const happydox = typeof window !== 'undefined' && window.location.hostname === 'happydox' + '.' + currentDomain
 const mydocs = typeof window !== 'undefined' && window.location.hostname === 'mydocs' + '.' + currentDomain
 const split96 = typeof window !== 'undefined' && window.location.hostname === 'split' + '.' + currentDomain
+const motivation = typeof window !== 'undefined' && window.location.hostname.match(/motivation/ig)
 // const bestnft = typeof window !== 'undefined' && window.location.hostname === 'nft' + '.' + currentDomain
 const notebook = typeof window !== 'undefined' && window.screen.width < 1920
 // const standardLaptop = typeof window !== 'undefined' && window.screen.width < 1440
@@ -82,7 +83,7 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
   const storedFilteredItemsList = useSelector(state => state.storedFilteredItemsList)
   const { storedFilteredItems, lookupStr, categStr, autoScroll, lightBgr, loading, fullyLoaded, somethingLoaded, scalingAllowed, relo } = storedFilteredItemsList
   const hideOffReq = 7000
-  const { isDescOpen, currSize, currLang, isCategChangedInMenu } = useContext(NFTModalContext)
+  const { isDescOpen, isReqFormOpen, currSize, currLang, isCategChangedInMenu } = useContext(NFTModalContext)
   // this param is grab/2 = number of items displayed before the first scroll down makes new row. 8 rows by 6 = 48
   // const numParam = isMobb ? 4 : scalingAllowed && hiResScreen && !split96 && !bestnft ? 48 : goodNotebook ? 24 : 24
   // const grab = scalingAllowed && hiResScreen ? 96 : 48
@@ -109,7 +110,7 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
       const { num, lookupStr, fullyLoaded, scalingAllowed } = storedFilteredItemsList
       const to = num < 5 ? 1500 : num < 17 ? 1500 : 2000
       // this param is grab/2 = number of items displayed before the first scroll down makes new row. 8 rows by 6 = 48
-      const numParam = isMobb ? 4 : scalingAllowed && hiResScreen ? 48 : goodNotebook ? 24 : 24
+      const numParam = isMobb ? 24 : scalingAllowed && hiResScreen ? 48 : goodNotebook ? 24 : 24
       if (lookupStr.length && num) { if (document.getElementById('office_bar')) document.getElementById('office_bar').style.display = 'none'; if (document.getElementById('stats_bar')) document.getElementById('stats_bar').style.display = 'none'; const items = currLang === 'EN' ? num === 1 ? 'item found' : 'items found' : num === 1 ? 'найден' : 'найдены'; dispatch(setFullyLoaded(false)); console.log('falser 15'); setLoadingMsg(num + ' ' + items); setNumFound(num); dispatch(setNum(0)); setTimeout(() => { if (num > numParam && !fullyLoaded) { setLoadingMsg('click to pause'); /* dispatch(setFullyLoaded(false)); */ if (isMobb) { document.getElementById('fixbar').style.display = 'inline' } } }, to) }
     }, 5000)
     fullyLoaded ? setLoadingMsg('') : console.log('toggled FL to', fullyLoaded)
@@ -220,7 +221,7 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
       const storedFilteredItemsList = state.storedFilteredItemsList
       const { currDiff, scalingAllowed, looping, rollFlag } = storedFilteredItemsList
       // this param is grab/2 = number of items displayed before the first scroll down makes new row. 8 rows by 6 = 48
-      const numParam = isMobb ? 4 : scalingAllowed && hiResScreen ? 48 : goodNotebook ? 24 : 24
+      const numParam = isMobb ? 24 : scalingAllowed && hiResScreen ? 48 : goodNotebook ? 24 : 24
       const approxRows = currentSlice < 1 && currDiff === 0 ? parseInt((document.body.offsetHeight - window.innerHeight) / 16) : parseInt((document.body.offsetHeight - window.innerHeight) / numParam)
       // this param tells how many new items appear on scroll up/down the edge of the frame; default is 6 for 6/12-in-row, 4 for 4-in-row
       const itemsInRow = isMobile ? 1 : approxRows < 240 ? scalingAllowed && hiResScreen ? 6 : goodNotebook ? 6 : 4 : approxRows < 400 ? 2 : 1 // 200 -> 240 ?
@@ -641,7 +642,7 @@ export default function NFTCardList ({ nfts, setNfts, withCreateNFT }) {
         </Grid>}
         {nfts.map((nft, i) =>
           <Fade in={true} key={i}>
-            <Grid item xs={12} sm={goodNotebook && !bigger ? 3 : 6} md={goodNotebook && !bigger ? 2 : scalingAllowed && !goodNotebook ? 2 : 3} lg={scalingAllowed && hiResScreen && !bigger ? 1 : goodNotebook && !bigger ? 2 : scalingAllowed && !goodNotebook ? 2 : 3} className={classes.gridItem} style={{ opacity: loading ? '0' : '1' }}>
+            <Grid item xs={12} sm={goodNotebook && !bigger ? 3 : motivation && isReqFormOpen ? 12 : 6} md={goodNotebook && !bigger ? 2 : scalingAllowed && !goodNotebook ? 2 : motivation && isReqFormOpen ? 12 : 3} lg={scalingAllowed && hiResScreen && !bigger ? 1 : goodNotebook && !bigger ? 2 : scalingAllowed && !goodNotebook ? 2 : motivation && isReqFormOpen ? 12 : 3} className={classes.gridItem} style={{ opacity: loading ? '0' : '1' }}>
                 <NFT nft={nft} index={i} style={{ opacity: dimmed ? '0.5' : '1' }}/>
             </Grid>
           </Fade>

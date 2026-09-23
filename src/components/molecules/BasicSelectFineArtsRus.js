@@ -43,8 +43,8 @@ export default function BasicSelectFineArts ({ disabledBox }) {
           inputProps={{ 'aria-label': 'Without label' }}
           onChange={handleChange}
         >
-          <MenuItem value="">Click to Open</MenuItem>
-          <MenuItem disabled={loading} selected={categStr === 'Painting'} value="Painting">Painting</MenuItem>
+          <MenuItem value="">Фильтр</MenuItem>
+          <MenuItem disabled={loading} selected={categStr === 'Painting'} value="Painting">Картины</MenuItem>
           <MenuItem disabled={loading} selected={categStr === 'Drawing'} value="Drawing">Рисунок</MenuItem>
           <MenuItem disabled={loading} selected={categStr === 'Photo'} value="Photo">Фото</MenuItem>
           <MenuItem disabled={loading} selected={categStr === 'Genre'} value="Genre">Жанр</MenuItem>

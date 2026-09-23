@@ -17,7 +17,7 @@ export default function ReqFormEasy () {
     document.getElementById('alerter').innerHTML = 'Hash copied to clipboard! - Хэш копирован в буфер обмена!'
     setTimeout(() => {
       document.getElementById('alerter').style.display = 'none'; document.getElementById('alerter').addEventListener('click', showBanner2)
-    }, 1500)
+    }, 2000)
   }
 
   function copyContent () {

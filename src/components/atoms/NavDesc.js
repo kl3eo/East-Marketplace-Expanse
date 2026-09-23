@@ -12,12 +12,11 @@ export default function NavDesc ({ title, href }) {
           component="a"
           target="_blank"
           style={{
-            margin: 'auto 0',
+            margin: 'auto 0 12px 0',
             color: '#369',
             display: 'inline',
             textDecoration: isActive && 'underline',
             textAlign: 'left',
-            fontSize: '12px',
             '&:hover': {
               backgroundColor: '#9cf',
               color: '#3c52b2'

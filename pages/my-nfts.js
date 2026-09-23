@@ -20,7 +20,7 @@ const currentServerPort = process.env.CURRENT_SERVER_PORT
 
 export default function CreatorDashboard () {
   const [nfts, setNfts] = useState([])
-  const { setIsDescOpen } = useContext(NFTModalContext)
+  const { setIsDescOpen, setIsReqFormOpen } = useContext(NFTModalContext)
   const { account, signed, marketplaceContract, nftContract, isReady, hasWeb3, network } = useContext(Web3Context)
   const [isLoading, setIsLoading] = useState(true)
   const [hasWindowEthereum, setHasWindowEthereum] = useState(false)
@@ -35,6 +35,7 @@ export default function CreatorDashboard () {
     // document.body.style.zoom = typeof window !== 'undefined' && window.location.hostname === 'ooc' + '.' + currentDomain ? '110%' : '110%' // this not working in FF, good in Chrome/Opera
     dispatch(setLightBgr(false))
     setIsDescOpen(true)
+    setIsReqFormOpen(false)
   }, [])
 
   useEffect(() => {

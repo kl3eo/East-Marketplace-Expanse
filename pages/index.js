@@ -19,13 +19,14 @@ const randomBeauty = Math.floor(Math.random() * 1024)
 const mydocs = typeof window !== 'undefined' && window.location.hostname === 'mydocs' + '.' + currentDomain
 const split96 = typeof window !== 'undefined' && window.location.hostname === 'split' + '.' + currentDomain
 const bestnft = typeof window !== 'undefined' && window.location.hostname === 'nft' + '.' + currentDomain
+const motivation = typeof window !== 'undefined' && window.location.hostname.match(/motivation/ig)
 const goodNotebook = typeof window !== 'undefined' && window.screen.width > 1600
 const hiResScreen = typeof window !== 'undefined' && window.screen.width >= 1920
 
 export default function Home () {
   const [nfts, setNfts] = useState([])
   const [isLoading, setIsLoading] = useState(true)
-  const { setIsDescOpen } = useContext(NFTModalContext)
+  const { setIsDescOpen, isReqFormOpen } = useContext(NFTModalContext)
   const { marketplaceContract, nftContract, isReady, network } = useContext(Web3Context)
 
   const dispatch = useDispatch()
@@ -39,7 +40,7 @@ export default function Home () {
     dispatch(setCurrentDisp(0))
     dispatch(getData([]))
     if (mydocs || split96 || bestnft) dispatch(setLightBgr(true))
-    if (mydocs || split96 || bestnft) setIsDescOpen(false)
+    if (mydocs || split96 || bestnft || motivation) setIsDescOpen(false)
     console.log('setting beau to', randomBeauty)
     dispatch(setBeau(randomBeauty))
     // here parse URL
@@ -54,8 +55,8 @@ export default function Home () {
     // if (!/my-nfts$/i.test(paths[0]) && typeof window !== 'undefined' && window.location.hostname === 'mydocs' + '.' + currentDomain) window.location.href = '/my-nfts'
   }, [])
   useEffect(() => {
-    if (typeof window !== 'undefined' && window.location.hostname !== 'happyminter' + '.' + currentDomain && window.location.hostname !== 'happydox' + '.' + currentDomain && !window.location.hostname.match(/tokenizer/ig)) loadNFTs()
-  }, [isReady, lookupStr, categStr])
+    if (typeof window !== 'undefined' && !isReqFormOpen) loadNFTs()
+  }, [isReady, lookupStr, categStr, isReqFormOpen])
   useEffect(() => {
     // document.body.style.zoom = typeof window !== 'undefined' && window.location.hostname === 'ooc' + '.' + currentDomain ? '110%' : '110%'
     if (document.getElementById('stats_bar') && !isMobile) document.getElementById('stats_bar').style.display = 'block'

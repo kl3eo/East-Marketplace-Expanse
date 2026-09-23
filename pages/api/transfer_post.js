@@ -18,11 +18,12 @@ import middleware from './middleware/middleware'
 import nextConnect from 'next-connect'
 import FormData from 'form-data'
 
-const currentServer = process.env.CURRENT_SERVER
+/* const currentServer = process.env.CURRENT_SERVER
 const currentDomain = 'room-house.com'
-const currentServerPort = process.env.CURRENT_SERVER_PORT
+const currentServerPort = process.env.CURRENT_SERVER_PORT */
 
-const nftBaseUrl = 'https://' + currentServer + '.' + currentDomain + currentServerPort
+// const nftBaseUrl = 'https://' + currentServer + '.' + currentDomain + currentServerPort
+const nftBaseUrl = 'http://127.0.0.1'
 
 const handler = nextConnect()
 handler.use(middleware)

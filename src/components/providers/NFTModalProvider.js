@@ -1,4 +1,6 @@
 import { createContext, useState } from 'react'
+import { useRouter } from 'next/router'
+import { isMobile, isAndroid } from 'react-device-detect'
 
 const currentDomain = 'room-house.com'
 const contextDefaultValues = {
@@ -6,10 +8,11 @@ const contextDefaultValues = {
   isModalOpen: false,
   isCategChangedInMenu: false,
   isDescOpen: true,
-  isReqFormOpen: typeof window !== 'undefined' && (window.location.hostname === 'happyminter' + '.' + currentDomain || window.location.hostname === 'happydox' + '.' + currentDomain || window.location.hostname.match(/tokenizer/ig)),
+  isAnswerShown: false,
+  isReqFormOpen: typeof window !== 'undefined' && (window.location.hostname === 'nft' + '.' + currentDomain || window.location.hostname === 'happyminter' + '.' + currentDomain || window.location.hostname === 'happydox' + '.' + currentDomain || window.location.hostname.match(/tokenizer/ig) || window.location.hostname.match(/motivation/ig)),
   // currLang: typeof window !== 'undefined' && window.location.hostname === 'happydox' + '.' + currentDomain ? 'RU' : 'EN',
-  currLang: 'EN',
-  currSize: '138%',
+  currLang: typeof window !== 'undefined' && window.location.hostname.match(/motivation/ig) ? 'RU' : 'EN',
+  currSize: isMobile ? isAndroid ? '120%' : '112%' : '138%',
   setModalNFT: () => {},
   setIsModalOpen: () => {},
   setIsCategChangedInMenu: () => {},
@@ -24,11 +27,14 @@ export const NFTModalContext = createContext(
 )
 
 export default function NFTModalProvider ({ children }) {
+  const { asPath } = useRouter()
+  const defVal = asPath.match(/\?/) ? false : contextDefaultValues.isReqFormOpen
   const [modalNFT, setModalNFT] = useState(contextDefaultValues.modalNFT)
   const [isModalOpen, setIsModalOpen] = useState(contextDefaultValues.isModalOpen)
   const [isCategChangedInMenu, setIsCategChangedInMenu] = useState(contextDefaultValues.isCategChangedInMenu)
   const [isDescOpen, setIsDescOpen] = useState(contextDefaultValues.isDescOpen)
-  const [isReqFormOpen, setIsReqFormOpen] = useState(contextDefaultValues.isReqFormOpen)
+  const [isAnswerShown, setIsAnswerShown] = useState(contextDefaultValues.isAnswerShown)
+  const [isReqFormOpen, setIsReqFormOpen] = useState(defVal)
   const [currLang, setCurrLang] = useState(contextDefaultValues.currLang)
   const [currSize, setCurrSize] = useState(contextDefaultValues.currSize)
 
@@ -38,6 +44,7 @@ export default function NFTModalProvider ({ children }) {
         modalNFT,
         isModalOpen,
         isDescOpen,
+        isAnswerShown,
         isCategChangedInMenu,
         isReqFormOpen,
         currLang,
@@ -46,6 +53,7 @@ export default function NFTModalProvider ({ children }) {
         setIsModalOpen,
         setIsCategChangedInMenu,
         setIsDescOpen,
+        setIsAnswerShown,
         setIsReqFormOpen,
         setCurrLang,
         setCurrSize

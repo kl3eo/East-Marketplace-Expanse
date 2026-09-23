@@ -32,6 +32,7 @@ export default function NFTCardCreation ({ addNFTToList }) {
   const classes = useStyles()
   const { register, handleSubmit, reset } = useForm()
   const { account, nftContract } = useContext(Web3Context)
+  // const { account } = useContext(Web3Context)
   const [isLoading, setIsLoading] = useState(false)
 
   async function createNft (metadataUrl) {
@@ -56,7 +57,9 @@ export default function NFTCardCreation ({ addNFTToList }) {
     const { data } = await axios.post('/api/upload', formData, {
       headers: { 'Content-Type': 'multipart/form-data' }
     })
-
+    // console.log('Here data', data)
+    // return data.tokenId
+    // uncomment up/comment down to use server mint
     return data.url
   }
 
@@ -73,12 +76,18 @@ export default function NFTCardCreation ({ addNFTToList }) {
       if (!file || isLoading) return
       setIsLoading(true)
       const formData = createNFTFormDataFile(name, description, file, account)
+
       const metadataUrl = await uploadFileToIPFS(formData)
       if (typeof metadataUrl === 'undefined') { alert('Error occurred. Check file size must be < 100M.'); return }
       if (metadataUrl === 'null' || metadataUrl === null) { alert('Error occurred. Check file size must be < 100M.'); return }
-      const tokenId = await createNft(metadataUrl)
-      console.log('new token:', tokenId)
-      addNFTToList(tokenId)
+      const tId = await createNft(metadataUrl)
+      // comment up/uncomment down to use server mint (see upload.js)
+      // const tokenId = await uploadFileToIPFS(formData)
+      // if (typeof tokenId === 'undefined') { alert('Error1 occurred. Check file size must be < 100M.'); return }
+      // if (tokenId === 'null' || tokenId === null) { alert('Error2 occurred. Check file size must be < 100M.'); return }
+      // const tId = typeof tokenId === 'object' ? parseInt(tokenId.hex, 16) : parseInt(tokenId)
+      // console.log('new token:', tId)
+      addNFTToList(tId)
       setFileUrl(defaultFileUrl)
       reset()
     } catch (error) {

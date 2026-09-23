@@ -6,6 +6,13 @@ import axios from 'axios'
 import { NFTModalContext } from '../providers/NFTModalProvider'
 import { isMobile } from 'react-device-detect'
 
+// use these to mint on client
+import Web3 from 'web3'
+import { ethers } from 'ethers'
+import contract from '../../../artifacts/contracts/NFT_HD.sol/NFT_HD.json'
+
+// const onClient = true
+
 const useStyles = makeStyles({
   root: {
     flexDirection: 'column',
@@ -23,6 +30,15 @@ const useStyles = makeStyles({
   }
 })
 
+// use these to mint on client
+// const contractAddress = process.env.NFT_CONTRACT_ADDRESS_EXPANSE_HD
+const contractAddress = '0xaD3321ae0CefC926e2140bDA7c67Aaf5d4432B5A'
+const contractInterface = contract.abi
+// const providerURL = process.env.DEV_API_URL
+const providerURL = 'https://wien.room-house.com'
+const provider = ethers.getDefaultProvider(providerURL)
+const web3 = new Web3(new Web3.providers.HttpProvider(providerURL))
+
 export default function ReqEasyCreation () {
   const [file, setFile] = useState(null)
   const classes = useStyles()
@@ -30,10 +46,11 @@ export default function ReqEasyCreation () {
   const [isLoading, setIsLoading] = useState(false)
   const { currLang, setCurrLang } = useContext(NFTModalContext)
   const [currCheck, setCurrCheck] = useState(false)
+  const [onClient, setOnClient] = useState(true)
   const Labee = currLang === 'EN' ? 'Title' : 'Название'
   const Descee = currLang === 'EN' ? 'Description' : 'Описание'
 
-  const defaultFileUrl = currLang === 'EN' ? '/nft_rh_250_bw.png' : '/nft_rh_250_ru_bw.png'
+  const defaultFileUrl = currLang === 'EN' ? '/nft_rh_250_bw2.png' : '/nft_rh_250_ru_bw2.png'
   const defaultVideoFileUrl = '/nft_rh_250_blank.png'
   const defaultFileTypeUrl = '/nft_rh_250_blank.png'
   const [fileUrl, setFileUrl] = useState(defaultFileUrl)
@@ -42,37 +59,40 @@ export default function ReqEasyCreation () {
     setTimeout(() => { if (!file) setFileUrl(defaultFileUrl) }, 100)
   }, [currLang])
 
-  /* useEffect(() => {
-    setTimeout(() => { setFileUrl(defaultFileUrl); setFile(null); document.getElementById('labelFileName').innerText = ''; document.getElementById('labelFileName').style.display = 'none' }, 100)
-  }, [currCheck]) */
-
+  const toggleAlgo = () => {
+    onClient ? setOnClient(false) : setOnClient(true)
+  }
   const toggleLang = () => {
     currLang === 'EN' ? setCurrLang('RU') : setCurrLang('EN')
   }
   const toggleCheck = () => {
     document.getElementById('reqformdiv4').style.visibility = 'hidden' // always down the flag
     currCheck ? setCurrCheck(false) : setCurrCheck(true)
-    // console.log('current check', currCheck)
   }
-  function createNFTFormDataFile (name, description, file, sum, origN, size, par) {
+  function createNFTFormDataFile (name, description, file, sum, origN, size, addr) {
     const formData = new FormData()
     formData.append('name', name)
     formData.append('description', description)
-    par === 1 && formData.append('file', file)
-    par === 2 && formData.append('checksum', sum)
-    par === 2 && formData.append('originalFilename', origN)
-    par === 2 && formData.append('size', size)
-    par === 1 && formData.append('account', 'DUMMY')
-    par === 2 && formData.append('account', 'DUMMY2')
-    if (typeof window !== 'undefined' && window.location.hostname.match(/tokenizer/ig)) formData.append('network', 'hd')
+    formData.append('checksum', sum)
+    formData.append('originalFilename', origN)
+    formData.append('size', size)
+    formData.append('account', 'DUMMY2')
+    !onClient && formData.append('network', 'hd')
+    onClient && formData.append('network', 'easy')
+    onClient && formData.append('recv', addr)
     return formData
   }
-
+  async function createNFT (metadataUrl, nftContract) {
+    const transaction = await nftContract.WhistlerTurnerGainsboroughReynoldsConstable(metadataUrl)
+    const tx = await transaction.wait()
+    const event = tx.events[0]
+    const tokenId = event.args[2]
+    return tokenId
+  }
   async function uploadFileToIPFS (formData) {
     const { data } = await axios.post('/api/upload', formData, {
       headers: { 'Content-Type': 'multipart/form-data' }
     })
-    console.log('upload api, data', data)
     if (typeof data === 'undefined') return
     return [data.url, data.hash, data.check]
   }
@@ -93,7 +113,6 @@ export default function ReqEasyCreation () {
       try {
         if (!file) { alert('No file selected!'); return }
         if (isLoading) return
-        // console.log("Here File:", file)
         setIsLoading(true)
         if (document.getElementById('retBut')) document.getElementById('retBut').style.display = 'none'
         const csum = async (file) => {
@@ -101,12 +120,16 @@ export default function ReqEasyCreation () {
             const buffer = await file.arrayBuffer()
             const hash = await crypto.subtle.digest('SHA-256', buffer)
             const ret = Array.from(new Uint8Array(hash)).map(byte => byte.toString(16).padStart(2, '0')).join('')
-            // console.log('csum is', ret)
             return ret
           } else throw Error('File is not valid.')
         }
         const checksum = await csum(file); console.log('checksum', checksum, 'name', file.name, 'size', file.size) // correct
-        const formData = createNFTFormDataFile(name, description, null, checksum, file.name, file.size, 2)
+        // now let's create a new account
+        const pkey = web3.utils.randomHex(32)
+        const account = web3.eth.accounts.privateKeyToAccount(pkey)
+        console.log('new acc addr', account.address)
+
+        const formData = createNFTFormDataFile(name, description, null, checksum, file.name, file.size, account.address)
         const [metadataUrl, hash2, check] = await uploadFileToIPFS(formData)
         formData.delete('file')
         formData.delete('name')
@@ -115,7 +138,8 @@ export default function ReqEasyCreation () {
         if (typeof metadataUrl === 'undefined') { document.getElementById('reqformdiv4').innerText = currLang === 'EN' ? 'Error occurred. Please try later.' : 'Ошибка. Попробуйте позже.'; document.getElementById('reqformdiv4').style.display = 'block'; document.getElementById('reqformdiv4').style.visibility = 'visible'; return }
         if (metadataUrl === 'null' || metadataUrl === null) { document.getElementById('reqformdiv4').innerText = currLang === 'EN' ? 'Error occurred. Check file size must be <= 2Gb.' : 'Ошибка. Проверьте размер файла <= 2Gb.'; document.getElementById('reqformdiv4').style.display = 'block'; document.getElementById('reqformdiv4').style.visibility = 'visible'; return }
 
-        document.getElementById('reqformdiv4').innerText = hash2
+        if (onClient) { const wallet = new ethers.Wallet(pkey, provider); const myTokens = new ethers.Contract(contractAddress, contractInterface, wallet); const tokenId = await createNFT(metadataUrl, myTokens); console.log('minted tokenId', tokenId._hex) }
+        document.getElementById('reqformdiv4').innerText = onClient ? 'Private key: ' + pkey : 'Private key: ' + hash2.split('Private key: ')[1]
         if (check === 'OK') document.getElementById('reqformdiv4').click(); else document.getElementById('reqformdiv4').style.display = 'block'
         // setFileUrl(defaultFileUrl)
         reset()
@@ -127,13 +151,12 @@ export default function ReqEasyCreation () {
     }
   }
   async function onSubmitCheck () {
-    // const yon = currLang === 'EN' ? window.confirm('Check the selected file hashsum. OK?') : window.confirm('Check the selected file hashsum. OK?')
     const yon = currLang.length // always do
     if (yon) {
       try {
         if (!file) { alert('No file selected!'); return }
         if (isLoading) return
-        // console.log("Here File:", file)
+
         setIsLoading(true)
         if (document.getElementById('retBut')) document.getElementById('retBut').style.display = 'none'
         const csum = async (file) => {
@@ -141,11 +164,12 @@ export default function ReqEasyCreation () {
             const buffer = await file.arrayBuffer()
             const hash = await crypto.subtle.digest('SHA-256', buffer)
             const ret = Array.from(new Uint8Array(hash)).map(byte => byte.toString(16).padStart(2, '0')).join('')
-            // console.log('csum is', ret)
+
             return ret
           } else throw Error('File is not valid.')
         }
         const checksum = await csum(file); console.log('checksum', checksum, 'name', file.name, 'size', file.size) // correct
+
         document.getElementById('reqformdiv4').innerText = '0x' + checksum
         document.getElementById('alerter').innerHTML = 'Click to Copy 0x' + checksum.substr(0, 6) + '..'
         document.getElementById('alerter').style.display = 'block'
@@ -161,13 +185,14 @@ export default function ReqEasyCreation () {
   return (
     <Card className={classes.root} component="form" sx={{ maxWidth: 345, margin: '0 auto', border: '1px solid #fff', position: 'relative', background: '#012', width: isMobile ? '77%' : '96%', height: isMobile ? '77%' : '84%' }} onSubmit={handleSubmit(onSubmitEasy)}>
       <><div onClick={toggleLang} style={{ zIndex: '100001', position: 'absolute', display: 'block', color: '#fff', backgroundColor: '#012', border: '1px solid #fff', fontSize: '24px', width: '40px', height: '40px', borderRadius: '20px', cursor: 'pointer', textAlign: 'center', padding: '2px', margin: '10px 5px', lineHeight: '36px' }}>{currLang}</div>
-      <div onClick={toggleCheck} style={{ zIndex: '100001', position: 'absolute', right: '1%', display: 'block', color: '#fff', backgroundColor: '#012', border: '1px solid #fff', fontSize: '24px', width: currLang === 'EN' ? '120px' : '120px', height: '40px', borderRadius: '20px', cursor: 'pointer', textAlign: 'center', padding: '2px', margin: '10px 5px', lineHeight: '36px' }}>{ currCheck ? currLang === 'EN' ? 'Mint' : 'Токен' : currLang === 'EN' ? 'Check' : 'Сумма' }</div></>
+      <div id='algoClicker' onClick={toggleAlgo} style={{ zIndex: '100001', position: 'absolute', left: '48px', display: 'block', color: onClient ? '#fff' : 'ddd', backgroundColor: onClient ? '#012' : '#012', border: '1px solid #fff', fontSize: '24px', width: '76px', height: '40px', borderRadius: '20px', cursor: 'pointer', textAlign: 'center', padding: '2px', margin: '10px 5px', lineHeight: '36px' }}>{onClient ? 'CliHD' : 'SrvHD'}</div>
+      <div id='checkClicker' onClick={toggleCheck} style={{ zIndex: '100001', position: 'absolute', right: '1%', display: 'block', color: '#fff', backgroundColor: '#012', border: '1px solid #fff', fontSize: '24px', width: '130px', height: '40px', borderRadius: '20px', cursor: 'pointer', textAlign: 'center', padding: '2px', margin: '10px 5px', lineHeight: '36px' }}>{ currCheck ? currLang === 'EN' ? 'Mint Token' : 'Токен' : currLang === 'EN' ? 'Check File' : 'Хэш' }</div></>
       <label htmlFor="file-input">
         <CardMedia
           className={classes.media}
           alt='Select image'
           image={fileUrl} sx={{ position: 'relative' }}>
-          <div id="labelFileName" style={{ color: '#369', fontSize: '24px', position: 'absolute', top: '10px', left: '48px', display: 'none' }}></div>
+          <div id="labelFileName" style={{ color: '#369', fontSize: '24px', position: 'absolute', top: '48px', left: '8px', display: 'none' }}></div>
         </CardMedia>
       </label>
       <input
@@ -209,7 +234,7 @@ export default function ReqEasyCreation () {
         />}
       </CardContent>
       <CardActions className={classes.cardActions}>
-        {!currCheck && <Button style={{ position: 'absolute', textAlign: 'center', fontSize: '24px', bottom: '2px', marginBottom: '5px' }} size="small" color="secondary" onClick={handleSubmit(onSubmitEasy)}>{isLoading ? <CircularProgress size="20px" /> : currLang === 'EN' ? 'Mint Token' : 'Создать Токен'}</Button>}
+        {!currCheck && <Button style={{ position: 'absolute', textAlign: 'center', fontSize: '24px', bottom: '2px', marginBottom: '5px' }} size="small" color="secondary" onClick={handleSubmit(onSubmitEasy)}>{isLoading ? <><CircularProgress size="20px" /><span style={{ fontSize: '1em' }}>..please wait ..</span></> : currLang === 'EN' ? 'Mint Token' : 'Создать Токен'}</Button>}
         {currCheck && <Button style={{ position: 'absolute', textAlign: 'center', fontSize: '24px', bottom: '2px', marginBottom: '5px' }} size="small" color="secondary" onClick={handleSubmit(onSubmitCheck)}>{isLoading ? <CircularProgress size="20px" /> : currLang === 'EN' ? 'Check Sum' : 'Проверить Сумму'}</Button>}
       </CardActions>
     </Card>

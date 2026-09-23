@@ -4,11 +4,23 @@ import middleware from './middleware/middleware'
 import nextConnect from 'next-connect'
 import FormData from 'form-data'
 
+// import Web3 from 'web3'
+import { ethers } from 'ethers'
+import contract from '../../artifacts/contracts/NFT.sol/NFT.json'
+
+const contractAddress = process.env.NFT_CONTRACT_ADDRESS_EXPANSE
+const contractInterface = contract.abi
+
+const providerURL = process.env.DEV_API_URL
+const provider = ethers.getDefaultProvider(providerURL)
+// const web3 = new Web3(new Web3.providers.HttpProvider(providerURL))
+
 const currentServer = process.env.CURRENT_SERVER
 const currentDomain = 'room-house.com'
 const currentServerPort = process.env.CURRENT_SERVER_PORT
 
 const nftBaseUrl = 'https://' + currentServer + '.' + currentDomain + currentServerPort
+// const nftBaseUrl = 'http://127.0.0.1'
 
 const handler = nextConnect()
 handler.use(middleware)
@@ -103,12 +115,30 @@ handler.post(async function handlePost ({ body, files }, response) {
       formData1.append('csum', body.checksum[0])
       if (typeof body.network !== 'undefined' && body.network[0] === 'hd') formData1.append('network', 'hd')
       if (typeof body.network !== 'undefined' && body.network[0] === 'hd96') formData1.append('network', 'hd96')
+      if (typeof body.network !== 'undefined' && body.network[0] === 'easy') formData1.append('network', 'easy')
+      // console.log('Here recv', body.recv[0])
+      if (typeof body.network !== 'undefined' && typeof body.recv !== 'undefined' && body.network[0] === 'easy') formData1.append('recv', body.recv[0])
       const { data: responseData } = await axios.post(`${nftBaseUrl}/cgi/uploadee_post.pl`, formData1, { headers: { 'Content-Type': `multipart/form-data; boundary=${formData1._boundary}` } })
       const hash2 = `${responseData.result}`; const check = `${responseData.check}`
       return response.status(200).json({
         url: metadaUrl,
         hash: hash2,
         check: check
+      })
+    }
+    // if (body.account[0] !== 'DUMMY' && body.account[0] !== 'DUMMY2' && body.account[0].length) { // mint on server; WORKS; use it with pkeys fetched from DB; use it when don't want to show your mint tool to the world ( private minter )
+    if (body.account[0] === 'DUMMY3333') { // doesn't happen
+      const pk = '0xtest' // test
+      const signer = pk.substring(2)
+      const wallet = new ethers.Wallet(signer, provider)
+      const myTokens = new ethers.Contract(
+        contractAddress,
+        contractInterface,
+        wallet
+      )
+      const tokenId = await createNFT(metadaUrl, myTokens)
+      return response.status(200).json({
+        tokenId: tokenId
       })
     }
     return response.status(200).json({
@@ -118,6 +148,15 @@ handler.post(async function handlePost ({ body, files }, response) {
     console.log('Error uploading file: ', error)
   }
 })
+
+async function createNFT (metadataUrl, nftContract) {
+  const transaction = await nftContract.mintToken(metadataUrl)
+  const tx = await transaction.wait()
+  const event = tx.events[0]
+  const tokenId = event.args[2]
+  // console.log('created nw token No.', tokenId)
+  return tokenId
+}
 
 async function uploadFileToIPFS (data) {
   // already checked

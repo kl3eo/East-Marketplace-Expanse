@@ -10,7 +10,8 @@ const resServer = process.env.RES_SERVER
 
 const burnedPlaceh = { name: 'Token Missing or Locked', description: 'Reload the page', image: 'https://' + currentServer + '.' + currentDomain + currentServerPort + '/img/gd2560d.png', tags: 'photo' }
 
-const nftBaseUrl = 'https://' + currentServer + '.' + currentDomain + currentServerPort
+// const nftBaseUrl = 'https://' + currentServer + '.' + currentDomain + currentServerPort
+const nftBaseUrl = 'http://127.0.0.1'
 
 const handler = nextConnect()
 handler.use(middleware)
@@ -28,7 +29,10 @@ handler.post(async function handlePost ({ body }, response) {
     const formData1 = new FormData()
     formData1.append('uri', tokenUri)
     formData1.append('signed', signed)
-    const { data: responseData } = await axios.post(`${nftBaseUrl}/cgi/checkee_uri.pl`, formData1, { headers: { 'Content-Type': `multipart/form-data; boundary=${formData1._boundary}` } })
+    // console.log('BEFORE checkee_uri')
+    // const { data: responseData } = await axios.post(`${nftBaseUrl}/cgi/checkee_uri.pl`, formData1, { headers: { 'Content-Type': `multipart/form-data; boundary=${formData1._boundary}` } })
+    const respo = await fetch(`${nftBaseUrl}/cgi/checkee_uri.pl`, { body: formData1, method: 'post', enctype: 'multipart/form-data' })
+    const responseData = await respo.json()
     const rdr = responseData.random
     // const isOne = responseData.with_verify === 1
     // const isOnee = responseData.with_verify === '1'
@@ -38,7 +42,7 @@ handler.post(async function handlePost ({ body }, response) {
     const isSigned = responseData === '' ? false : responseData.with_verify === '1' // must be char!
     // console.log('response data hash', responseData.hash, 'isLocked', isLocked, 'isSigned', isSigned)
     if (isLocked) setTimeout(async () => { const formData2 = new FormData(); formData2.append('uri', tokenUri); formData2.append('signed', signed); formData2.append('random', rdr); await axios.post(`${nftBaseUrl}/cgi/rmee_uri.pl`, formData2, { headers: { 'Content-Type': `multipart/form-data; boundary=${formData2._boundary}` } }) }, 10000)
-    // console.log('after check_uri.pl, tokenUriNew', tokenUriNew, 'isLocked', isLocked)
+    // console.log('AFTER check_uri.pl, tokenUriNew', tokenUriNew, 'isLocked', isLocked)
     const regex = new RegExp(`${resServer}.${currentDomain}`)
     const result = tokenUriNew.replace(regex, currentServer + '.' + currentDomain)
 

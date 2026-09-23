@@ -24,11 +24,12 @@ const useStyles = makeStyles({
   }
 })
 
-export default function ReqCardCreation () {
+export default function ReqCardCreation ({ updateParent }) {
   const [file, setFile] = useState(null)
   const classes = useStyles()
   const { register, handleSubmit, reset } = useForm()
   const [isLoading, setIsLoading] = useState(false)
+  const [currModeFa, setCurrModeFa] = useState(true)
   const { setIsReqFormOpen, currLang, setCurrLang } = useContext(NFTModalContext)
   const Labee = currLang === 'EN' ? 'Title' : 'Название'
   const Descee = currLang === 'EN' ? 'Description' : 'Описание'
@@ -44,6 +45,9 @@ export default function ReqCardCreation () {
 
   const toggleLang = () => {
     currLang === 'EN' ? setCurrLang('RU') : setCurrLang('EN')
+  }
+  const toggleMode = () => {
+    setCurrModeFa(!currModeFa); updateParent(currModeFa)
   }
 
   function createNFTFormDataFile (name, description, file, sum, origN, size, par) {
@@ -102,9 +106,9 @@ export default function ReqCardCreation () {
       } finally {
         setIsLoading(false)
         // setIsReqFormOpen(false)
-        document.getElementById('reqformdiv1').style.display = 'none'
+        // document.getElementById('reqformdiv1').style.display = 'none'
         document.getElementById('reqformdiv2').style.display = 'none'
-        document.getElementById('reqformdiv3').style.display = 'block'
+        // document.getElementById('reqformdiv3').style.display = 'block'
         // document.getElementById('reqformdiv4').style.display = 'block'
         document.getElementById('reqformdiv5').style.display = 'block'
       }
@@ -149,9 +153,9 @@ export default function ReqCardCreation () {
       } finally {
         setIsLoading(false)
         // setIsReqFormOpen(false)
-        document.getElementById('reqformdiv1').style.display = 'none'
+        // document.getElementById('reqformdiv1').style.display = 'none'
         document.getElementById('reqformdiv2').style.display = 'none'
-        document.getElementById('reqformdiv3').style.display = 'block'
+        // document.getElementById('reqformdiv3').style.display = 'block'
         // document.getElementById('reqformdiv4').style.display = 'block'
         document.getElementById('reqformdiv5').style.display = 'block'
       }
@@ -161,6 +165,7 @@ export default function ReqCardCreation () {
   return (
     <Card className={classes.root} component="form" sx={{ maxWidth: 345, margin: '0 auto', position: 'relative', background: '#ffeedd', width: isMobile ? '77%' : '96%', height: isMobile ? '77%' : '84%' }} onSubmit={handleSubmit(onSubmit)}>
       <div onClick={toggleLang} style={{ zIndex: '100001', position: 'absolute', display: 'block', color: '#fff', backgroundColor: '#906', fontSize: '24px', width: '40px', height: '40px', borderRadius: '20px', cursor: 'pointer', textAlign: 'center', padding: '2px', margin: '10px 5px', lineHeight: '36px' }}>{currLang}</div>
+      <div onClick={toggleMode} style={{ zIndex: '100001', position: 'absolute', display: 'block', color: '#fff', backgroundColor: '#609', fontSize: '24px', width: '40px', height: '40px', borderRadius: '20px', cursor: 'pointer', textAlign: 'center', padding: '2px', margin: '10px 5px', lineHeight: '36px', right: '0px' }}>{currModeFa ? 'FA' : 'P'}</div>
       <label htmlFor="file-input">
         <CardMedia
           className={classes.media}

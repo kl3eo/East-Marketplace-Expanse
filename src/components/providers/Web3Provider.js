@@ -1,5 +1,6 @@
-import { createContext, useEffect, useState } from 'react'
+import { createContext, useEffect, useState, useContext } from 'react'
 import Web3Modal from 'web3modal'
+import { NFTModalContext } from '../providers/NFTModalProvider'
 import { ethers } from 'ethers'
 // import hre from 'hardhat'
 // import getSigners from '../../utils/getSigners'
@@ -52,6 +53,8 @@ export default function Web3Provider ({ children }) {
   const [hasInit, setHasInit] = useState(contextDefaultValues.hasInit)
   const dispatch = useDispatch()
 
+  const { isReqFormOpen } = useContext(NFTModalContext)
+
   useEffect(() => {
     console.log('calling initializeWeb3 with useEffect')
     initializeWeb3()
@@ -74,13 +77,16 @@ export default function Web3Provider ({ children }) {
     const myProvider = ethers.getDefaultProvider(providerURL)
     // console.log('w/o signer, got provider', myProvider)
     setHasWeb3(false)
-    await getAndSetWeb3ContextWithoutSigner(myProvider)
+    // let new people read intro for 1 sec
+    if (isReqFormOpen && isMobile) { setTimeout(async () => { await getAndSetWeb3ContextWithoutSigner(myProvider) }, 1000) } else { await getAndSetWeb3ContextWithoutSigner(myProvider) }
     console.log('w/o signer, after set Context')
   }
 
   async function initializeWeb3 () {
     console.log('in initializeWeb3 called, hasInit', hasInit, 'ethereum', window.ethereum, 'ready', isReady, 'account', account, 'network', network, 'hasweb3', hasWeb3)
+    // in initializeWeb3 called, hasInit false ethereum ready false account <empty string> network expanse hasweb3 false
     if (hasWeb3) return
+    // if (!account.length) { alert('Please re-open MetaMask and re-load the page!'); return }
     try {
       const accs = hasInit || isMobile ? ['a'] : await checkConnection()
       // const notLocked = await isUnlocked()
@@ -92,7 +98,7 @@ export default function Web3Provider ({ children }) {
         await initializeWeb3WithoutSigner()
         return
       } else {
-        // console.log('going to init with signer, accs', accs, 'ethereum', window.ethereum)
+        console.log('going to init with signer, accs', accs, 'ethereum', window.ethereum)
         // dispatch(setFullyLoaded(false)); console.log('falser 12')
       }
 
@@ -110,7 +116,7 @@ export default function Web3Provider ({ children }) {
       // const myProvider = new ethers.BrowserProvider(window.ethereum) // supported in ethers ^6.9.0
       console.log('calling withsigner, myProvider', myProvider)
       await getAndSetWeb3ContextWithSigner(myProvider, false)
-      // console.log('calling getSigners')
+      console.log('after SetContext')
       // await getSigners()
 
       function onAccountsChanged (accounts) {
@@ -180,7 +186,7 @@ export default function Web3Provider ({ children }) {
     const networkName = await getAndSetNetwork(provider)
     const success = await setupContracts(signer, networkName)
     if (loading) setIsReady(success)
-    // console.log('with signer, isready?', success)
+    // console.log('with signer, isready?', isReady, 'loading', loading, 'success', success)
     // dispatch(setFullyLoaded(true))
   }
 
@@ -206,6 +212,7 @@ export default function Web3Provider ({ children }) {
 
   async function getAndSetNetwork (provider) {
     const { name: network } = await provider.getNetwork()
+    console.log('set network to', network)
     const networkName = networkNames[network]
     setNetwork(networkName)
     return networkName
@@ -220,6 +227,7 @@ export default function Web3Provider ({ children }) {
     // const { data } = await axios(`/api/addresses?network=${networkName}`)
     const { data } = typeof window !== 'undefined' && (window.location.hostname === 'happydox' + '.' + currentDomain || window.location.hostname === 'mydocs' + '.' + currentDomain || window.location.hostname.match(/tokenizer/ig)) ? await axios(`/api/addresses?network=${networkName + '_HD'}`) : split96 ? await axios(`/api/addresses?network=${networkName + '_HD96'}`) : await axios(`/api/addresses?network=${networkName}`)
     // console.log('Here wind type', typeof window, 'location', window.location.hostname)
+    // console.log('here data', data)
     const marketplaceContract = typeof window !== 'undefined' && (window.location.hostname === 'happydox' + '.' + currentDomain || window.location.hostname === 'mydocs' + '.' + currentDomain || window.location.hostname === 'split' + '.' + currentDomain || window.location.hostname.match(/tokenizer/ig)) ? new ethers.Contract(data.marketplaceAddress, MarketHD.abi, signer) : new ethers.Contract(data.marketplaceAddress, Market.abi, signer)
     setMarketplaceContract(marketplaceContract)
     const nftContract = typeof window !== 'undefined' && (window.location.hostname === 'happydox' + '.' + currentDomain || window.location.hostname === 'mydocs' + '.' + currentDomain || window.location.hostname === 'split' + '.' + currentDomain || window.location.hostname.match(/tokenizer/ig)) ? new ethers.Contract(data.nftAddress, NFT_HD.abi, signer) : new ethers.Contract(data.nftAddress, NFT.abi, signer)

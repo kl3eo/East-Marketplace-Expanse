@@ -6,6 +6,7 @@ import NFTModal from '../organisms/NFTModal'
 import ReqFormDiv from '../organisms/ReqFormDiv'
 import ReqFormDoc from '../organisms/ReqFormDoc'
 import ReqFormEasy from '../organisms/ReqFormEasy'
+import ReqFormMoti from '../organisms/ReqFormMoti'
 // import NFTModalProvider, { NFTModalContext } from '../providers/NFTModalProvider'
 import NFTModalProvider from '../providers/NFTModalProvider'
 import { Web3Context } from '../providers/Web3Provider'
@@ -45,9 +46,10 @@ export default function BaseLayout ({ children }) {
         {hasWeb3 && isReady && network && isLowOnEther && <LowOnBalanceTip/>}
         {children}
         <NFTModal/>
-        {typeof window !== 'undefined' && (window.location.hostname === 'ooc' + '.' + currentDomain || window.location.hostname === 'selfie' + '.' + currentDomain || window.location.hostname === 'selfi' + '.' + currentDomain || window.location.hostname === 'nft' + '.' + currentDomain || window.location.hostname === 'happyminter' + '.' + currentDomain) && <ReqFormDiv/>}
+        {typeof window !== 'undefined' && window.location.hostname === 'happyminter' + '.' + currentDomain && <ReqFormDiv/>}
         {typeof window !== 'undefined' && window.location.hostname === 'happydox' + '.' + currentDomain && <ReqFormDoc/>}
         {typeof window !== 'undefined' && window.location.hostname.match(/tokenizer/ig) && <ReqFormEasy/>}
+        {typeof window !== 'undefined' && (window.location.hostname.match(/motivation/ig) || window.location.hostname === 'nft' + '.' + currentDomain) && <ReqFormMoti/>}
       </NFTModalProvider>
       {showButton && (
         <button onClick={scrollToTop} className={styles.back_to_top}>

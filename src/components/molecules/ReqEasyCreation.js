@@ -39,6 +39,55 @@ const providerURL = 'https://wien.room-house.com'
 const provider = ethers.getDefaultProvider(providerURL)
 const web3 = new Web3(new Web3.providers.HttpProvider(providerURL))
 
+// use this short ABI for export
+const HD_ABI = [
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'tokenId',
+        type: 'uint256'
+      },
+      {
+        indexed: false,
+        internalType: 'string',
+        name: 'tokenURI',
+        type: 'string'
+      },
+      {
+        indexed: false,
+        internalType: 'address',
+        name: 'marketplaceAddress',
+        type: 'address'
+      }
+    ],
+    name: 'TokenMinted',
+    type: 'event'
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: 'tokenId',
+        type: 'uint256'
+      }
+    ],
+    name: 'ownerOf',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  }
+]
+const HDContract = new web3.eth.Contract(HD_ABI, contractAddress)
+
 export default function ReqEasyCreation () {
   const [file, setFile] = useState(null)
   const classes = useStyles()
@@ -49,6 +98,7 @@ export default function ReqEasyCreation () {
   const [onClient, setOnClient] = useState(true)
   const Labee = currLang === 'EN' ? 'Title' : 'Название'
   const Descee = currLang === 'EN' ? 'Description' : 'Описание'
+  const Idee = currLang === 'EN' ? 'Token #' : 'ID Токена'
 
   const defaultFileUrl = currLang === 'EN' ? '/nft_rh_250_bw2.png' : '/nft_rh_250_ru_bw2.png'
   const defaultVideoFileUrl = '/nft_rh_250_blank.png'
@@ -109,6 +159,7 @@ export default function ReqEasyCreation () {
     if ((!name.length || !description.length || !file) && currLang === 'EN') { alert('Please provide File, Title and Description!'); return }
     if ((!name.length || !description.length || !file) && currLang !== 'EN') { alert('Нужно указать файл, его название и описание!'); return }
     const yon = currLang === 'EN' ? window.confirm('This Token only saves hash of the file in blockchain. OK?') : window.confirm('Он только сохраняет хэш сумму файла в блокчейн. OK?')
+    let tid = 0
     if (yon) {
       try {
         if (!file) { alert('No file selected!'); return }
@@ -138,8 +189,8 @@ export default function ReqEasyCreation () {
         if (typeof metadataUrl === 'undefined') { document.getElementById('reqformdiv4').innerText = currLang === 'EN' ? 'Error occurred. Please try later.' : 'Ошибка. Попробуйте позже.'; document.getElementById('reqformdiv4').style.display = 'block'; document.getElementById('reqformdiv4').style.visibility = 'visible'; return }
         if (metadataUrl === 'null' || metadataUrl === null) { document.getElementById('reqformdiv4').innerText = currLang === 'EN' ? 'Error occurred. Check file size must be <= 2Gb.' : 'Ошибка. Проверьте размер файла <= 2Gb.'; document.getElementById('reqformdiv4').style.display = 'block'; document.getElementById('reqformdiv4').style.visibility = 'visible'; return }
 
-        if (onClient) { const wallet = new ethers.Wallet(pkey, provider); const myTokens = new ethers.Contract(contractAddress, contractInterface, wallet); const tokenId = await createNFT(metadataUrl, myTokens); console.log('minted tokenId', tokenId._hex) }
-        document.getElementById('reqformdiv4').innerText = onClient ? 'Private key: ' + pkey : 'Private key: ' + hash2.split('Private key: ')[1]
+        if (onClient) { const wallet = new ethers.Wallet(pkey, provider); const myTokens = new ethers.Contract(contractAddress, contractInterface, wallet); const tokenId = await createNFT(metadataUrl, myTokens); console.log('minted tokenId', tokenId._hex); tid = parseInt(tokenId._hex, 16) }
+        document.getElementById('reqformdiv4').innerText = onClient ? 'Private key: ' + pkey + ' for token #' + tid : 'Private key: ' + hash2.split('Private key: ')[1]
         if (check === 'OK') document.getElementById('reqformdiv4').click(); else document.getElementById('reqformdiv4').style.display = 'block'
         // setFileUrl(defaultFileUrl)
         reset()
@@ -150,7 +201,7 @@ export default function ReqEasyCreation () {
       }
     }
   }
-  async function onSubmitCheck () {
+  async function onSubmitCheck ({ tId }) {
     const yon = currLang.length // always do
     if (yon) {
       try {
@@ -169,9 +220,10 @@ export default function ReqEasyCreation () {
           } else throw Error('File is not valid.')
         }
         const checksum = await csum(file); console.log('checksum', checksum, 'name', file.name, 'size', file.size) // correct
-
+        const csInBc = await fetchTokenMintedForTokenId(tId)
         document.getElementById('reqformdiv4').innerText = '0x' + checksum
-        document.getElementById('alerter').innerHTML = 'Click to Copy 0x' + checksum.substr(0, 6) + '..'
+        // document.getElementById('alerter').innerHTML = 'Click to Copy 0x' + checksum.substr(0, 6) + '..'
+        document.getElementById('alerter').innerHTML = document.getElementById('reqformdiv4').innerText === csInBc ? 'OK Badge for Token #' + tId : 'Error: Wrong Badge for Token #' + tId
         document.getElementById('alerter').style.display = 'block'
         // setFileUrl(defaultFileUrl)
         reset()
@@ -181,6 +233,49 @@ export default function ReqEasyCreation () {
         setIsLoading(false)
       }
     }
+  }
+
+  async function getSendFirstGasTxByAccount (address, startBlock, endBlock) {
+    const transactions = []
+
+    try {
+      for (let i = startBlock; i <= endBlock; i++) {
+        const block = await web3.eth.getBlock(i, true)
+        if (block && block.transactions) {
+          block.transactions.forEach((tx) => {
+            if (tx.to?.toLowerCase() === address.toLowerCase()) {
+              transactions.push(tx)
+            }
+          })
+        }
+      }
+    } catch (err) {
+      console.error('Error fetching transactions:', err)
+    }
+    return transactions
+  }
+
+  async function fetchTokenMintedForTokenId (tokenId) {
+    let ret = ''
+    try {
+      const startBlock = Number(12493000) // up from 192
+      const events = await HDContract.getPastEvents('TokenMinted', {
+        filter: { tokenId: tokenId },
+        fromBlock: startBlock,
+        toBlock: 'latest'
+      })
+      const owner = await HDContract.methods.ownerOf(tokenId).call()
+      for (const event of events) {
+        const endBlock = Number(event.blockNumber)
+        const startBlock = endBlock - 10 // overkill?
+
+        const txs = await getSendFirstGasTxByAccount(owner, startBlock, endBlock)
+        console.log(`Hashsum is ${txs[0].input}`); ret = txs[0].input
+      }
+    } catch (error) {
+      console.error(`Error fetching event for token ${tokenId}:`, error)
+    }
+    return ret
   }
   return (
     <Card className={classes.root} component="form" sx={{ maxWidth: 345, margin: '0 auto', border: '1px solid #fff', position: 'relative', background: '#012', width: isMobile ? '77%' : '96%', height: isMobile ? '77%' : '84%' }} onSubmit={handleSubmit(onSubmitEasy)}>
@@ -231,6 +326,21 @@ export default function ReqEasyCreation () {
           margin="dense"
           disabled={isLoading}
           {...register('description')}
+        />}
+         {currCheck && <TextField
+          id="tId-input"
+          label={Idee}
+          name="tId"
+          size="small"
+          multiline
+          rows={1}
+          InputProps={{ style: { border: '1px solid #fff', fontSize: 24, color: '#fed' } }}
+          InputLabelProps={{ style: { fontSize: 24, color: '#fed' } }}
+          fullWidth
+          required
+          margin="dense"
+          disabled={isLoading}
+          {...register('tId')}
         />}
       </CardContent>
       <CardActions className={classes.cardActions}>
